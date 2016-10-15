@@ -1,0 +1,192 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="row">
+    <div class="large-6 large-centered columns text-center">
+        <div class="panel">
+            <h3 style="margin-bottom: 0">Admin Tools</h3>
+            <span style="font-size: x-small"><a href="{{ url_for('admin_logout') }}">(logout)</a></span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+	<div class="large-6 large-centered columns">
+	
+	<div class="section-container auto" data-section data-options="deep_linking: true">      
+        <section class="active">
+        <p class="title" data-section-title><a href="#validate_match">Validate Match</a></p>
+        <div class="content" data-section-content data-slug="validate_match">
+            <form action="/admin/validate_match" method="post">
+                <div class="row"><div class="large-12 columns">
+
+                <div class="row collapse">
+                    <div class="large-3 columns">
+                        <span class="prefix">Pending matches</span>
+                    </div>
+
+                    <div class="large-9 columns">
+                        <select id="select_pending_match">
+                        {% for match in pending_matches %}
+                            {% if match.team1_rank < match.team2_rank %}
+                            <option value="{{ match.id }}">[{{ match.activity_id }}] ID: {{ match.id }}, {{ match.team1 }} won vs. {{ match.team2 }}</option>
+                            {% endif %}
+                            {% if match.team1_rank > match.team2_rank %}
+                            <option value="{{ match.id }}">[{{ match.activity_id }}] ID: {{ match.id }}, {{ match.team1 }} lost vs. {{ match.team2 }}</option>
+                            {% endif %}
+                            {% if match.team1_rank == match.team2_rank %}
+                            <option value="{{ match.id }}">[{{ match.activity_id }}] ID: {{ match.id }}, {{ match.team1 }} tied vs. {{ match.team2 }}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="large-5 columns">
+                    <a class="button small expand" href="#" onclick="App.Validation.invalidateSelectedMatch()">Invalidate match</a>
+                    </div>
+                    <div class="large-2 columns"></div>
+                    <div class="large-5 columns">
+                    <a class="button small expand" href="#" onclick="App.Validation.validateSelectedMatch()">Validate match</a>
+
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="large-5 columns"></div>
+                    <div class="large-2 columns"></div>
+                    <div class="large-5 columns">
+                    <a class="button small expand" href="#" onclick="App.Validation.validateAllPendingMatches()">Validate all</a>
+
+                    </div>
+                </div>
+
+                </div></div>
+		    </form>
+        </div>
+        </section>
+
+        <section>
+        <p class="title" data-section-title><a href="#add_activity">Add Activity</a></p>
+        <div class="content" data-section-content data-slug="add_activity">
+            <form action="/admin/add_activity" method="post">
+
+                <div class="row collapse">
+                    <div class="large-3 columns">
+                        <span class="prefix" required>Name</span>
+                    </div>
+                    <div class="large-9 columns">
+                        <input name="name" type="text" placeholder="Name of the activity" >
+                    </div>
+                </div>
+
+                <div class="row collapse">
+                    <div class="large-3 columns">
+                        <span class="prefix" required>URL</span>
+                    </div>
+                    <div class="large-9 columns">
+                        <input name="url" type="text" placeholder="Website URL of activity" >
+                    </div>
+                </div>
+
+                <div class="row collapse">
+                    <div class="large-3 columns">
+                        <span class="prefix">Skill Type</span>
+                    </div>
+                    
+                    <div class="large-9 columns">
+                        <select>
+                            <option value="default" selected>Default</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row collapse">
+                    <div class="large-4 columns">
+                        <span class="prefix">Teams per match</span>
+                    </div>
+
+                    <div class="large-4 columns">
+                        <input name="min_teams_per_match" type="number" placeholder="min" min="2" max="10" value="2" >
+                    </div>
+
+                    <div class="large-4 columns">
+                        <input name="max_teams_per_match" type="number" placeholder="max" min="2" max="10" value="2" >
+                    </div>
+                </div>
+
+                <div class="row collapse">
+                    <div class="large-4 columns">
+                        <span class="prefix">Players per team</span>
+                    </div>
+
+                    <div class="large-4 columns">
+                        <input name="min_players_per_team" type="number" placeholder="min" min="1" max="20" value="1" >
+                    </div>
+
+                    <div class="large-4 columns">
+                        <input name="max_players_per_team" type="number" placeholder="max" min="1" max="20" value="1" >
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="large-3 columns">
+                        <span class="prefix" style="border-bottom: medium none; border-right: 1px solid #D9D9D9">About</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns">
+                        <textarea name="about" rows="3" placeholder="Some details about the activity"></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="large-12 columns">
+                    <a class="button small right disabled" href="#">Add activity</a>
+                    </div>
+                </div>
+		    </form>
+        </div>
+        </section>
+
+        <section>
+        <p class="title" data-section-title><a href="#add_player">Add Player</a></p>
+        <div class="content" data-section-content data-slug="add_player">
+            <form action="/admin/add_player" method="post">
+                <div class="row"><div class="large-12 columns">
+
+                <div class="row collapse">          
+                    <div class="large-3 columns">
+                        <span class="prefix" required>Player name</span>
+                    </div>
+                    <div class="large-9 columns">
+                        <input name="name" type="text" placeholder="" >
+                    </div>
+                </div>
+                
+                <div class="row collapse">
+                    <div class="large-3 columns">
+                        <span class="prefix">Email</span>
+                    </div>
+                    <div class="large-9 columns">
+                        <input name="email" type="email" placeholder="" >
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="large-12 columns">
+                    <input type="submit" class="button small right" value="Add player" />
+                    </div>
+                </div>
+
+        		</div></div>
+		    </form>
+        </div>
+        </section>
+    </div>
+
+	</div>
+</div>
+
+{% endblock %}

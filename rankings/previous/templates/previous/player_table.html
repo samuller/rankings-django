@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="small-12 large-4 large-centered columns">
+		<ul class="pricing-table">
+			<li class="title"><div class="row">
+			<div class="small-9 columns">Name</div>
+			<div class="small-3 columns"><span data-tooltip class="has-tip" title="Skill values range from 0 to 50.">Skill</span></div>
+			</div></li>
+			{% if active_players|count > 0 %}
+				{% for player in active_players %}
+				{% if player.skill != 0 %}
+				<li class="bullet-item"><div class="row">
+					<div class="small-9 columns">
+						<a href="{{ url_for('player_info', activity_url=activity.url, player_id=player.id) }}">{{ player.name }}</a>
+					</div>
+					<div class="small-3 columns">
+						<span title="{{ '%0.2f'| format(player.skill) }}">{{ '%0.0f'| format(player.skill) }}</span>
+					</div>
+				</div></li>
+				{% endif %}
+				{% endfor %}
+			{% else %}
+				<li class="bullet-item"><div class="row">
+					<div class="large-12 columns">No active players.</div>
+				</div></li>
+			{% endif %}
+		</ul>
+	</div>
+</div>
+

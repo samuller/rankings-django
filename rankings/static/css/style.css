@@ -1,0 +1,28 @@
+/* element details */
+* {
+ margin: 0;
+}
+html, body {
+ height: 100%;
+}
+footer  {
+ height: 4em;
+ background-color: black
+}
+/* elements under specific conditions */
+/* conditional classes */
+/* universal classes */
+.wrapper {
+ min-height: 100%;
+ height: auto !important;
+ height: 100%;
+ margin: 0 auto -4em;
+}
+.push {
+ height: 4em;
+}
+
+.button a{
+ color: #fff;
+}
+/* ids */

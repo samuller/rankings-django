@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="row">
+<div class="large-12 columns">
+
+    <div class="row"><div class="large-6 large-centered columns text-center"><div class="panel">
+    {% if admin is defined %}
+    <h3>Admin Login</h3>
+    {% else %}
+    <h3>Login</h3>
+    {% endif %}
+    </div></div></div>
+
+    <div class="row"><div class="large-6 large-centered columns text-center"><div class="panel">
+    <form action="{{ url_for('admin_login') }}" method="post">
+        {% if admin is defined %}
+        <div class="row"><div class="large-12 columns">
+        <label><input name="username" type="hidden" placeholder="username" value="admin" /></label>
+        <label><input name="password" type="password" placeholder="password" /></label>
+        </div></div>
+        {% else %}
+        <label><input name="username" type="text" placeholder="username" /></label>
+        <label><input name="password" type="password" placeholder="password" /></label>
+        {% endif %}
+        <label><input name="redirect" type="hidden" value="{{ request.base_url }}" /></label>
+        <input type="submit" style="position: absolute; left: -9999px"/>
+    </form>
+    </div></div></div>
+
+</div>
+</div>
+
+{% endblock %}

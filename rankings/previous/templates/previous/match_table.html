@@ -1,0 +1,40 @@
+<div class="row">
+	<div class="large-12 columns">
+		<h3 class="title">Match history</h3>
+		<p>Reported matches which have been validated.</p>
+		<ul class="pricing-table">
+		<li class="title"><div class="row">
+		<div class="large-1 columns">Id #</div>
+		<div class="large-3 columns">Date</div>
+		<div class="large-4 columns">Team 1</div>
+		<div class="large-4 columns">Team 2</div>
+		</div></li>
+		{% if matches|count > 0 %}
+		{% for match in matches %}
+		<li class="bullet-item"><div class="row">
+			<div class="large-1 columns">{{ match.id }}</div>
+			<div class="large-3 columns"><span title="{{ match.date }}">{{ match.relative_date }}</span></div>
+			<div class="large-4 columns">
+				{% if match.team1_rank == 1 %}
+				<span data-tooltip class="has-tip" title="Winner!">{{ match.team1 }}</span>
+				{% else %}
+				{{ match.team1 }}
+				{% endif %}
+			</div>
+			<div class="large-4 columns">
+				{% if match.team2_rank == 1 %}
+				<span data-tooltip class="has-tip" title="Winner!">{{ match.team2 }}</span>
+				{% else %}
+				{{ match.team2 }}
+				{% endif %}
+			</div>
+		</div></li>
+		{% endfor %}
+		{% else %}
+		<li class="bullet-item"><div class="row">
+			<div class="large-12 columns">No matches recorded.</div> 
+		</div></li>
+		{% endif %}
+		</ul>
+	</div>
+</div>

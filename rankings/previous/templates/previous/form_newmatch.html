@@ -1,0 +1,151 @@
+<h2>Match results</h2>
+
+<form method="" action="">
+<p class="lead">Specify the teams that played: </p>
+
+<ul class="pricing-table">
+    <li class="title"><div class="row">
+        <div class="large-12 columns">Team 1</div>
+    </div></li>
+
+    {% set player_count = 0 %}
+    <li class="bullet-item"><div class="row" style="display: table;">
+    <div style="display: table-cell; width: 50%">
+        <label id="p{{ player_count }}-status"></label>
+        <select id="p{{ player_count }}" onchange="App.Rankings.Submit.updatePlayerChoices()"></select>
+        <small id="p{{ player_count }}-status-details"></small>
+    </div>
+    {% set player_count = player_count + 1 %}
+    {% if activity.max_players_per_team >= 2 %}
+    <div style="display: table-cell;">
+        &nbsp;
+    </div>
+    <div style="display: table-cell;">
+        <label id="p{{ player_count }}-status"></label>
+        <select id="p{{ player_count }}" onchange="App.Rankings.Submit.updatePlayerChoices()"></select>
+        <small id="p{{ player_count }}-status-details"></small>
+    </div>
+    {% set player_count = player_count + 1 %}
+    {% endif %}
+    </div></li>
+
+    <li class="title"><div class="row">
+        <div class="large-12 columns">Team 2</div>
+    </div></li>
+
+    <li class="bullet-item"><div class="row" style="display: table;">
+    <div style="display: table-cell; width: 50%">
+        <label id="p{{ player_count }}-status"></label>
+        <select id="p{{ player_count }}" onchange="App.Rankings.Submit.updatePlayerChoices()"></select>
+        <small id="p{{ player_count }}-status-details"></small>
+    </div>
+    {% set player_count = player_count + 1 %}
+    {% if activity.max_players_per_team >= 2 %}
+    <div style="display: table-cell;">
+        &nbsp;
+    </div>
+    <div style="display: table-cell;">
+        <label id="p{{ player_count }}-status"></label>
+        <select id="p{{ player_count }}" onchange="App.Rankings.Submit.updatePlayerChoices()"></select>
+        <small id="p{{ player_count }}-status-details"></small>
+    </div>
+    {% set player_count = player_count + 1 %}
+    {% endif %}
+    </div></li>
+
+</ul>
+</form>
+
+<div class="section-container auto" data-section data-options="deep_linking: true">
+    <section class="active">
+    <p class="title" data-section-title><a href="#single_match">Single Match</a></p>
+    <div class="content" data-section-content data-slug="single_match">
+        <div class="row">
+            <div class="large-12 columns">
+	            <p class="lead">Select the winning team for a single game:</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="large-6 columns">
+	            <button onclick="App.Rankings.SingleMatch.submit(1)" name="win" class="large button expand">Team 1</button>
+            </div>
+            <div class="large-6 columns">
+	            <button onclick="App.Rankings.SingleMatch.submit(2)" name="win" class="large button expand">Team 2</button>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <section>
+    <p class="title" data-section-title><a href="#multiple_matches">Multiple Matches</a></p>
+    <div class="content" data-section-content data-slug="multiple_matches">
+        <div class="row">
+            <div class="large-12 columns">
+	            <p class="lead">Select the results for multiple games (between the same teams):</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="large-4 columns">
+	            <button onclick="App.Rankings.MultiMatches.addMatchResult(1)" name="win" class="button expand">Team 1</button>
+	            <button onclick="App.Rankings.MultiMatches.addMatchResult(2)" name="win" class="button expand">Team 2</button>
+            </div>
+            <div class="large-4 columns">
+                <select id="multi-match-list" multiple="multiple" size="8" style="height: 100%">
+
+                </select>
+            </div>
+            <div class="large-4 columns">
+	            <button onclick="App.Rankings.MultiMatches.removeSelectedMatches()" name="win" class="button secondary expand">Remove selected</button>
+	            <button onclick="App.Rankings.MultiMatches.confirmAndSubmit()" name="win" class="button expand">Submit</button>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    {% if activity.max_players_per_team == 2 %}
+    <section>
+    <p class="title" data-section-title><a href="#mixed_bag">Round-Robin Teams</a></p>
+    <div class="content" data-section-content data-slug="mixed_bag">
+        <div class="row">
+            <div class="large-12 columns">
+	            <p class="lead">Select a result for a set of games consisting of all team combinations:</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="large-2 columns">&nbsp;</div>
+            <div class="large-8 text-center columns">
+                <div class="row">
+                    <div class="large-4 text-right columns">
+                        Won 3 games:
+                    </div>
+                    <div class="large-8 columns">
+	                    <select id="all_players_won"></select>
+                    </div>
+                </div>
+
+                <!--<p style="margin-bottom:15px">OR</p>-->
+
+                <div class="row">
+                    <div class="large-4 text-right columns">
+                        Lost 3 games:
+                    </div>
+                    <div class="large-8 columns">
+	                    <select id="all_players_lost"></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="large-12 text-right columns">
+                        <button onclick="App.Rankings.RoundRobin.submit()" name="win" class="button expand">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <div class="large-2 columns">&nbsp;</div>
+        </div>
+
+    </section>
+    {% endif %}
+</div>

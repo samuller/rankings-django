@@ -1,0 +1,173 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<script type="text/javascript">
+$(function () { 
+
+	var histOptions = {
+			chart: {
+					renderTo: 'graph-skill-over-time',
+			},
+			scrollbar: {
+        		enabled: true
+    		},
+			title: {
+					text: 'Skill progression'
+			},
+			xAxis: {
+				title: {
+					text: 'Matches played'
+				},
+				range: 30,
+				categories: []
+			},
+			yAxis: {
+				title: {
+					text: 'Skill level'
+				},
+				min: 0,
+				plotLines: [{
+					value: 0,
+					width: 1,
+					color: '#808080'
+				}],
+			},
+			tooltip : {
+				//valueDecimals: 2,
+//				headerFormat: '<span style="font-size: 10px">Game #{point.key}</span><br/>',
+				formatter: function() {
+					return '<span style="font-size: 10px">'+this.point.x+': Match #'+this.point.id+'</span><br/>'+
+					'<span style="color:'+this.series.color+'">'+this.series.name+'</span>: <b>'+Math.round(this.point.y * 100) / 100+'</b><br/>';
+				}
+			},
+			legend: {
+				enabled: false,
+				layout: 'vertical',
+				align: 'right',
+				verticalAlign: 'middle',
+				borderWidth: 0
+			},
+			plotOptions: {
+				series: {
+					pointStart: 1,
+					point: {
+						events: {
+							click: function() {
+								window.location = "matches.php?id="+this.id;
+								/*hs.htmlExpand(null, {
+								//	maincontentText: this+"sd"
+								});*/
+							}
+						}
+					}
+				}
+			},
+			series: []
+	};
+
+$.getJSON('{{ player_id }}/history', function (data) {
+	var series = {
+		name: '{{ player_info.name }}',
+		data: data.skill_history
+	};
+	histOptions.series.push(series);
+
+	// create chart
+	var chart = new Highcharts.Chart(histOptions);
+});
+
+$(function () {
+	$('#graph-current-skill').highcharts({
+	chart: {
+		type: 'areaspline'
+	},
+	plotOptions: {
+		areaspline: {
+			marker: {
+				enabled: false
+			}
+		}
+	},
+	title: {
+		text: 'Current skill estimate'
+	},
+	xAxis: {
+		title: {
+			text: 'Skill level'
+		},
+		min: 0,
+		max: 50,
+		plotLines: [{
+			label: {text: 'Skill value'},
+			color: '#808080',
+			dashStyle: 'longdashdot',
+			value: '{{ player_info.skill }}',
+			width: '1',
+		}]
+	},
+	yAxis: {
+		title: {
+			text: 'Likelihood of actual skill (%)'
+		},
+		plotLines: [{
+			value: 0,
+			width: 1,
+			color: '#808080'
+		}]
+	},
+	tooltip: {
+		valueSuffix: '%',
+		valueDecimals: 2
+	},
+	legend: {
+		enabled: false,
+		layout: 'vertical',
+		align: 'right',
+		verticalAlign: 'middle',
+		borderWidth: 0
+	},
+	series: [{
+		name: 'Probability',
+		data: (function () {
+			var mu = {{ player_info.mu }}; // 25
+			var sigma = {{ player_info.sigma }}; // 8.333
+			var n = 100;
+			var x_range = [0,50];
+			var step = (x_range[1]-x_range[0])/n;
+			var data = [];
+			for(var x = x_range[0];x < x_range[1];x += step) {
+				var y = 1/(sigma*Math.sqrt(2*Math.PI))*
+							Math.pow(Math.E,-Math.pow(x-mu,2)/(2*sigma*sigma));
+				data.push([x, 100*y]);
+			}
+			return data;
+		})()
+	}]
+});
+
+});
+
+});
+</script>
+
+<div class="row">
+	<div class="large-12 columns text-center">
+		<div class="panel"><h3>{{ player_info.name }}<br/><small>({{ player_info.email }})</small></h3></div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="large-12 columns text-center">
+		<div id="graph-skill-over-time" style="width:100%; height:400px;"></div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="large-12 columns text-center">
+		<div id="graph-current-skill" style="width:100%; height:400px;"></div>
+	</div>
+</div>
+
+<br />
+
+{% endblock %}

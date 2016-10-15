@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="row">
+	<div class="large-12 columns text-center">
+		<div class="panel"><h3>About</h3></div>
+		<div class="section-container auto" data-section data-options="deep_linking: true">
+		  <section class="active">
+		    <p class="title" data-section-title><a href="#trueskill">Trueskill</a></p>
+		    <div class="content" data-section-content data-slug="trueskill">
+				<p>These rankings are based on the <a href="http://research.microsoft.com/en-us/projects/trueskill/">Trueskill™</a> algorithm that was developed by Microsoft Research. The system represents skill as a Normal distribution which is updated after every game according to Bayesian probability.</p>
+				<br /><img style="WIDTH: 228px; HEIGHT: 200px" src="{{ url_for('static', filename='skilldia.jpg') }}"><br />
+				<p>By representing skill as a Normal distribution it is therefore described by two values, μ and σ which respectively represent the player's average skill and the degree of uncertainty in the player's skill. After each game result the uncertainty will decrease, although it will never become zero as  to allow for player skills that change over time. For ranking purposes the two values are combined into a single 'conservative skill estimate' (by using μ-3*σ) which represents a 99% confidence that a player has a skill higher than the given value.</p>
+				<p>In Trueskill each game type needs to define a few crucial parameters that specify how games vary in skill level and how player progression and skill values are represented. These parameters are as follows:</p>
+				<ul class="pricing-table">
+					<li class="title"><div class="row">
+						<div class="small-2 columns">Parameter</div>
+						<div class="small-2 columns">Default Value</div>
+						<div class="small-8 columns">Meaning</div>
+						</div></li>
+						<li class="bullet-item"><div class="row">
+						<div class="small-2 columns">Skill value</div>
+						<div class="small-2 columns">0 to 50</div>
+						<div class="small-8 columns">The skill value is defined to vary within this range so that values are more comfortable for people to work with (as opposed to values such as 0.008746 or 783,139).</div>
+						</div></li>
+						<li class="bullet-item"><div class="row">
+						<div class="small-2 columns">Initial mean (𝛍<span style="vertical-align: bottom; font-size: 0.4em;">O</span>)</div>
+						<div class="small-2 columns">25</div>
+						<div class="small-8 columns">The mean of an average player and which is also assigned as the initial mean value to all new players.</div>
+						</div></li>
+						<li class="bullet-item"><div class="row">
+						<div class="small-2 columns">Initial standard deviation (𝛔<span style="vertical-align: bottom; font-size: 0.4em;">O</span>)</div>
+						<div class="small-2 columns"><sup>25</sup>&frasl;<sub>3</sub> = 8.333...</div>
+						<div class="small-8 columns">The standard deviation of a completely new player about which no information is yet known.</div>
+						</div></li>
+						<li class="bullet-item"><div class="row">
+						<div class="small-2 columns">Dynamics factor (𝛕)</div>
+						<div class="small-2 columns"><sup>25</sup>&frasl;<sub>300</sub> = 0.08333...</div>
+						<div class="small-8 columns">A variable added to a player's standard deviation before every game to account for the fact that player's skills change over time.</div>
+						</div></li>
+						<li class="bullet-item"><div class="row">
+						<div class="small-2 columns">Skill chain (𝛃)</div>
+						<div class="small-2 columns"><sup>25</sup>&frasl;<sub>6</sub> = 4.1667...</div>
+						<div class="small-8 columns">Defines the level of skill of a game. The skill chain defines the skill difference between the lowest and highest possible skill levels that can be achieved.</div>
+						</div></li>
+						<li class="bullet-item"><div class="row">
+						<div class="small-2 columns">Draw probability (𝛆)</div>
+						<div class="small-2 columns">10%</div>
+						<div class="small-8 columns">The chance of a draw occuring. Even for games where draws are technically impossible, this value is still needed for calculations such as finding match set-ups that are likely to be very close to drawing.</div>
+						</div></li>
+				</ul>
+		    </div>
+		  </section>
+ 		  {% for activity in activities %}
+		  {% if activity.about != "" %}
+		  <section>
+		    <p class="title" data-section-title><a href="#{{ activity.url }}">{{ activity.name }}</a></p>
+		    <div class="content" data-section-content data-slug="{{ activity.url }}">
+		    {{ activity.about|safe }}
+		    </div>
+		  </section>
+		  {% endif %}
+		  {% endfor %}
+		  <section>
+		    <p class="title" data-section-title><a href="#website">Website</a></p>
+		    <div class="content" data-section-content data-slug="website">
+				<h5>Credits</h5>
+				<p>This site was created using <a href="http://foundation.zurb.com/">Zurb Foundation 4</a> for the interface, <a href="http://www.highcharts.com/">Highcharts</a> for the graphs and the <a href="https://github.com/moserware/Skills">Skills</a> library for calculating the skill algorithm.</p>
+		    </div>
+		  </section>
+		</div>
+
+	</div>
+</div>
+
+{% endblock %}

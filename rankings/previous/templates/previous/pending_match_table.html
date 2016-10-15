@@ -1,0 +1,45 @@
+<div class="row">
+	<div class="large-12 columns">
+		<h3 class="title">Pending match results</h3>
+		<p>Reported matches which are still pending validation.</p>
+		<ul class="pricing-table">
+		<li class="title"><div class="row">
+		<div class="large-3 columns">Date</div>
+		<div class="large-3 columns">Team 1</div>
+		<div class="large-3 columns">Team 2</div>
+		<div class="large-3 columns">Submittor</div>
+		</div></li>
+		{% if pending_matches|count > 0 %}
+		    {% for match in pending_matches %}
+		<li class="bullet-item"><div class="row">
+			<div class="large-3 columns">
+			    {% if match.id in deletable_match_ids %}
+			    <span title="You have 5 minutes in which you can delete your own submissions"><img id="delete-{{ match.id }}" src="{{ url_for('static', filename='delete-icon.png') }}" class="left" data-id="{{ match.id }}" data-expire="{{ session['delete-expiry-match-['+match.id|string+']'] }}" onclick="App.Rankings.Submit.undoPrevious({{ match.id }})" style="height: 1em; cursor: pointer;" /></span>
+			    {% endif %}
+			    <span title="{{ match.date }}">{{ match.relative_date }}</span>
+			</div>
+			<div class="large-3 columns">
+			    {% if match.team1_rank == 1 %}
+				<span data-tooltip class="has-tip" title="Winner!">{{ match.team1 }}</span>
+				{% else %}
+				{{ match.team1 }}
+				{% endif %}
+			</div>
+			<div class="large-3 columns">
+			    {% if match.team2_rank == 1 %}
+				<span data-tooltip class="has-tip" title="Winner!">{{ match.team2 }}</span>
+				{% else %}
+				{{ match.team2 }}
+				{% endif %}
+			</div>
+			<div class="large-3 columns">{{ match.submittor }}</div>
+		</div></li>
+		    {% endfor %}
+		{% else %}
+		<li class="bullet-item"><div class="row">
+			<div class="large-12 columns">No pending matches.</div> 
+		</div></li>
+		{% endif %}
+		</ul>
+	</div>
+</div>

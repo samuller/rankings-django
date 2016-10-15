@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="row">
+	<div class="large-12 columns text-center">
+		<div class="panel"><h3>{{ activity.name }}</h3></div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="large-12 columns">
+		<h3 class="title">All players</h3>
+		<p>The current rankings according to the validated match history.</p>
+		{% include 'player_table.html' %}
+	</div>
+</div>
+
+<div id="modalSubmitMatch" class="reveal-modal small">
+	{% include 'form_newmatch.html' %}
+	<a class="close-reveal-modal">&#215;</a>
+</div>
+{% endblock %}
