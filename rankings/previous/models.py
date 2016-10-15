@@ -24,6 +24,9 @@ class Activity(models.Model):
         managed = False
         db_table = 'activity'
 
+    def __str__(self):
+        return self.name
+
 
 class AdhocTeam(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
@@ -34,6 +37,9 @@ class AdhocTeam(models.Model):
         managed = False
         db_table = 'adhoc_team'
 
+    def __str__(self):
+        return "Team ranked %s @ %s" % (self.ranking, self.result)
+
 
 class Player(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
@@ -43,6 +49,9 @@ class Player(models.Model):
     class Meta:
         managed = False
         db_table = 'player'
+
+    def __str__(self):
+        return self.name
 
 
 class Ranking(models.Model):
@@ -57,6 +66,9 @@ class Ranking(models.Model):
         db_table = 'ranking'
         unique_together = (('player', 'activity'),)
 
+    def __str__(self):
+        return "%s @ %s: (%s, %s)" % (self.player, self.activity, self.mu, self.sigma)
+
 
 class Result(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
@@ -68,6 +80,9 @@ class Result(models.Model):
     class Meta:
         managed = False
         db_table = 'result'
+
+    def __str__(self):
+        return "Match of %s @ %s (Submitter: %s)" % (self.activity, self.datetime, self.submittor)
 
 
 class ResultSet(models.Model):
@@ -100,6 +115,9 @@ class SkillHistory(models.Model):
         db_table = 'skill_history'
         unique_together = (('player', 'result'),)
 
+    def __str__(self):
+        return "[%s] %s @ %s: (%s, %s)" % (self.result, self.player, self.activity_id, self.mu, self.sigma)
+
 
 class SkillType(models.Model):
     id = models.TextField(primary_key=True)
@@ -115,6 +133,12 @@ class SkillType(models.Model):
         managed = False
         db_table = 'skill_type'
 
+    def __str__(self):
+        return "Range: %s-%s, Initial: %s,%s, Skill chain: %s, Draw: %s, Dynamics: %s" % (
+            self.min_skill_range, self.max_skill_range,
+            self.initial_mean, self.initial_std_dev,
+            self.skill_chain, self.draw_chance, self.dynamics_factor)
+
 
 class TeamMember(models.Model):
     team = models.ForeignKey(AdhocTeam, models.DO_NOTHING, primary_key=True)
@@ -125,3 +149,6 @@ class TeamMember(models.Model):
         managed = False
         db_table = 'team_member'
         unique_together = (('player', 'team'),)
+
+    def __str__(self):
+        return "Member of %s was %s" % (self.team, self.player)
