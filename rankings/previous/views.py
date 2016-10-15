@@ -15,15 +15,18 @@ def validate_all_matches(request):
 
 
 def activity_summary(request, activity_url):
-    return HttpResponse("")
+    context = {}
+    return render(request, 'activity_summary.html', context)
 
 
 def list_players(request, activity_url):
-    return HttpResponse("")
+    context = {}
+    return render(request, 'list_players.html', context)
 
 
 def player_info(request, activity_url, player_id):
-    return HttpResponse("")
+    context = {}
+    return render(request, 'player.html', context)
 
 
 def player_history(request, activity_url, player_id):
@@ -31,7 +34,8 @@ def player_history(request, activity_url, player_id):
 
 
 def list_matches(request, activity_url):
-    return HttpResponse("")
+    context = {}
+    return render(request, 'list_matches.html', context)
 
 
 def update(request, activity_url):

@@ -6,7 +6,7 @@ urlpatterns = [
     url(r'^$', views.main_page),
     url(r'^about$', views.about, name='about'),
     url(r'^api/validate_all$', views.validate_all_matches),
-    url(r'^(?P<activity_url>.+)/$', views.activity_summary, name='activity_summary'),
+    # url(r'^(?P<activity_url>.+)/$', views.activity_summary, name='activity_summary'),
     url(r'^(?P<activity_url>.+)/players$', views.list_players),
     url(r'^(?P<activity_url>.+)/player/(?P<player_id>[0-9]+)$', views.player_info),
     url(r'^(?P<activity_url>.+)/player/(?P<player_id>[0-9]+)/history$', views.player_history),
