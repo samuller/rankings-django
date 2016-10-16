@@ -3,7 +3,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.main_page),
+    url(r'^$', views.main_page, name='home'),
     url(r'^about$', views.about, name='about'),
     url(r'^api/validate_all$', views.validate_all_matches),
     url(r'^(?P<activity_url>.+)/$', views.activity_summary, name='activity_summary'),

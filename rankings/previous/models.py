@@ -24,6 +24,11 @@ class Activity(models.Model):
         managed = False
         db_table = 'activity'
 
+    def to_dict_with_url(self):
+        result = self.__dict__
+        result["url"] = result["id"]
+        return result
+
     def __str__(self):
         return self.name
 
@@ -50,6 +55,15 @@ class Player(models.Model):
         managed = False
         db_table = 'player'
 
+    def to_dict_with_skill(self, activity_id):
+        ranks = Ranking.objects.filter(player=self,activity_id=activity_id)
+        print(ranks)
+        result = self.__dict__
+        result["skill"] = 0
+        if len(ranks) > 0:
+            result["skill"] = ranks[0].calc_skill()
+        return result
+
     def __str__(self):
         return self.name
 
@@ -65,6 +79,13 @@ class Ranking(models.Model):
         managed = False
         db_table = 'ranking'
         unique_together = (('player', 'activity'),)
+
+    def calc_skill(self):
+        min_range = 0 # skill_type.min_skill_range
+        max_range = 50 # skill_type.max_skill_range
+
+        skill = max(min_range, min(self.mu - 3 * self.sigma, max_range))
+        return skill
 
     def __str__(self):
         return "%s @ %s: (%s, %s)" % (self.player, self.activity, self.mu, self.sigma)

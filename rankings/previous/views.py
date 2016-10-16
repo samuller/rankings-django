@@ -1,12 +1,15 @@
-from django.shortcuts import render
 from django.http import HttpResponse
-from django.template import loader
+from django.shortcuts import render, redirect
+
+from .models import *
+
 
 # Create your views here.
 
 
 def main_page(request):
-    context = {}
+    activities = [activity.to_dict_with_url() for activity in Activity.objects.all()]
+    context = {'player_ids': [], 'activities': activities}
     return render(request, 'main_page.html', context)
 
 
@@ -15,7 +18,20 @@ def validate_all_matches(request):
 
 
 def activity_summary(request, activity_url):
-    context = {}
+    activities = [a.to_dict_with_url() for a in Activity.objects.all()]
+    activity = next((a for a in activities if a["url"] == activity_url), None)
+    if activity is None:
+        return redirect('home')
+
+    context = {
+        'activities': activities,
+        'activity': activity,
+        'players': [p.__dict__ for p in Player.objects.all()],
+        'active_players': [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all()],
+        'matches': [],
+        'pending_matches': [],
+        'deletable_match_ids': [],
+    }
     return render(request, 'activity_summary.html', context)
 
 
