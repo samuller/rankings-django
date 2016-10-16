@@ -27,11 +27,15 @@ def activity_summary(request, activity_url):
     players = []
     for player in Player.objects.all():
         players.append([player.id, player.name])
+
+    all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all()]
+    all_players.sort(key=lambda p: p["skill"] , reverse=True)
+    top_players = all_players[:5]
     context = {
         'activities': activities,
         'activity': activity,
-        'players': [p.__dict__ for p in Player.objects.all()],
-        'active_players': [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all()],
+        'players': all_players,
+        'active_players': [p for p in top_players],
         'matches': [m.__dict__ for m in Result.objects.all()],
         'pending_matches': [m.to_dict_with_teams() for m in Result.objects.filter(validated=0)],
         'deletable_match_ids': [],
