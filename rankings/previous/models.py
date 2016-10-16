@@ -60,8 +60,12 @@ class Player(models.Model):
         ranks = Ranking.objects.filter(player=self,activity_id=activity_id)
         result = self.__dict__
         result["skill"] = 0
+        result["mu"] = 0
+        result["sigma"] = 0
         if len(ranks) > 0:
             result["skill"] = ranks[0].calc_skill()
+            result["mu"] = ranks[0].mu
+            result["sigma"] = ranks[0].sigma
         return result
 
     def __str__(self):
@@ -149,6 +153,13 @@ class SkillHistory(models.Model):
         managed = False
         db_table = 'skill_history'
         unique_together = (('player', 'result'),)
+
+    def calc_skill(self):
+        min_range = 0 # skill_type.min_skill_range
+        max_range = 50 # skill_type.max_skill_range
+
+        skill = max(min_range, min(self.mu - 3 * self.sigma, max_range))
+        return skill
 
     def __str__(self):
         return "[%s] %s @ %s: (%s, %s)" % (self.result, self.player, self.activity_id, self.mu, self.sigma)

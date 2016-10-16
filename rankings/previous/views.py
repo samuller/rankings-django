@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+import json
 
 from .models import *
 
@@ -36,17 +37,44 @@ def activity_summary(request, activity_url):
 
 
 def list_players(request, activity_url):
-    context = {}
+    activities = [a.to_dict_with_url() for a in Activity.objects.all()]
+    activity = next((a for a in activities if a["url"] == activity_url), None)
+    if activity is None:
+        return redirect('home')
+
+    context = {
+        'activities': activities,
+        'activity': activity,
+        'players': [p.__dict__ for p in Player.objects.all()],
+        'active_players': [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all()],
+    }
     return render(request, 'list_players.html', context)
 
 
 def player_info(request, activity_url, player_id):
-    context = {}
+    activities = [a.to_dict_with_url() for a in Activity.objects.all()]
+    activity = next((a for a in activities if a["url"] == activity_url), None)
+    if activity is None:
+        return redirect('home')
+
+    player = Player.objects.filter(id=player_id)[0]
+    context = {
+        'activities': activities,
+        'activity': activity,
+        'player_info': player.to_dict_with_skill(activity_url),
+        'player_id': player_id,
+    }
     return render(request, 'player.html', context)
 
 
 def player_history(request, activity_url, player_id):
-    return HttpResponse("")
+    activities = [a.to_dict_with_url() for a in Activity.objects.all()]
+    activity = next((a for a in activities if a["url"] == activity_url), None)
+    if activity is None:
+        return HttpResponse(json.dumps({'skill_history': []}))
+
+    history = SkillHistory.objects.filter(player_id=player_id, activity_id=activity_url)
+    return HttpResponse(json.dumps({'skill_history': [h.calc_skill() for h in history]}))
 
 
 def list_matches(request, activity_url):

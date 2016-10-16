@@ -18,12 +18,12 @@
   <script type="text/javascript">
   App.Rankings = {};
   {% if activity is defined %}
-  App.Rankings.current_activity = {{ activity|tojson }};
+  App.Rankings.current_activity = {{ activity|tojson|safe }};
   {% else %}
   App.Rankings.current_activity = {};
   {% endif %}
   {% if player_ids is defined %}
-  App.Rankings.player_ids = {{ player_ids|tojson }};
+  App.Rankings.player_ids = {{ player_ids|tojson|safe }};
   {% else %}
   App.Rankings.player_ids = [];
   {% endif %}
