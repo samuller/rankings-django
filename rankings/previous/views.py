@@ -28,8 +28,8 @@ def activity_summary(request, activity_url):
         'activity': activity,
         'players': [p.__dict__ for p in Player.objects.all()],
         'active_players': [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all()],
-        'matches': [],
-        'pending_matches': [],
+        'matches': [m.__dict__ for m in Result.objects.all()],
+        'pending_matches': [m.to_dict_with_teams() for m in Result.objects.filter(validated=0)],
         'deletable_match_ids': [],
     }
     return render(request, 'activity_summary.html', context)

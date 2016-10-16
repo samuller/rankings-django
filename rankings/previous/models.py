@@ -8,6 +8,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+import datetime
 
 
 class Activity(models.Model):
@@ -57,7 +58,6 @@ class Player(models.Model):
 
     def to_dict_with_skill(self, activity_id):
         ranks = Ranking.objects.filter(player=self,activity_id=activity_id)
-        print(ranks)
         result = self.__dict__
         result["skill"] = 0
         if len(ranks) > 0:
@@ -101,6 +101,20 @@ class Result(models.Model):
     class Meta:
         managed = False
         db_table = 'result'
+
+    def to_dict_with_teams(self):
+        result = self.__dict__
+        result["relative_date"] = datetime.datetime.fromtimestamp(self.datetime)
+        result["date"] = datetime.datetime.fromtimestamp(self.datetime)
+        teams = AdhocTeam.objects.filter(result=self)
+        cnt = 0
+        for team in teams:
+            members = TeamMember.objects.filter(team=team)
+            result["team%s" % (cnt+1)] = " & ".join([str(m.player) for m in members])
+            result["team%s_rank" % (cnt + 1)] = team.ranking
+            cnt += 1
+
+        return result
 
     def __str__(self):
         return "Match of %s @ %s (Submitter: %s)" % (self.activity, self.datetime, self.submittor)
