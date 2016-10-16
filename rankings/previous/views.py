@@ -24,6 +24,9 @@ def activity_summary(request, activity_url):
     if activity is None:
         return redirect('home')
 
+    players = []
+    for player in Player.objects.all():
+        players.append([player.id, player.name])
     context = {
         'activities': activities,
         'activity': activity,
@@ -32,6 +35,7 @@ def activity_summary(request, activity_url):
         'matches': [m.__dict__ for m in Result.objects.all()],
         'pending_matches': [m.to_dict_with_teams() for m in Result.objects.filter(validated=0)],
         'deletable_match_ids': [],
+        'player_ids': players
     }
     return render(request, 'activity_summary.html', context)
 
@@ -78,7 +82,21 @@ def player_history(request, activity_url, player_id):
 
 
 def list_matches(request, activity_url):
-    context = {}
+    activities = [a.to_dict_with_url() for a in Activity.objects.all()]
+    activity = next((a for a in activities if a["url"] == activity_url), None)
+    if activity is None:
+        return HttpResponse(json.dumps({'skill_history': []}))
+
+    players = []
+    for player in Player.objects.all():
+        players.append([player.id, player.name])
+    context = {
+        'activities': activities,
+        'activity': activity,
+        'player_ids': players,
+        'matches': [m.to_dict_with_teams() for m in Result.objects.all()[:50]],
+        'pending_matches': [m.to_dict_with_teams() for m in Result.objects.filter(validated=0)],
+    }
     return render(request, 'list_matches.html', context)
 
 
@@ -99,6 +117,9 @@ def submit_match(request, activity_url):
 
 
 def about(request):
-    context = {}
+    activities = [a.to_dict_with_url() for a in Activity.objects.all()]
+    context = {
+        'activities': activities
+    }
     return render(request, 'about.html', context)
 
