@@ -17,8 +17,8 @@ def to_json(value):
 def url_for(endpoint, **values):
     if(endpoint == 'static'):
         return staticfiles_storage.url(values.get("filename"))
-    # return reverse(endpoint)
-    return endpoint
+    return reverse(endpoint, kwargs=values)
+    # return endpoint
 
 
 def environment(**options):
