@@ -1,9 +1,11 @@
+import json
+import time
+
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-import json
+from trueskill import Rating, rate
 
 from .models import *
-
 
 # Create your views here.
 
@@ -105,7 +107,15 @@ def list_matches(request, activity_url):
 
 
 def update(request, activity_url):
-    return HttpResponse("")
+    activities = [a.to_dict_with_url() for a in Activity.objects.all()]
+    activity = next((a for a in activities if a["url"] == activity_url), None)
+    if activity is None:
+        return HttpResponse("Activity not found.")
+
+    start = time.time()
+    batch_update_player_skills(activity["id"])
+    end = time.time()
+    return HttpResponse("Update completed in %.2fs" % (end - start))
 
 
 def get_players(request, activity_url):
@@ -127,3 +137,56 @@ def about(request):
     }
     return render(request, 'about.html', context)
 
+
+def batch_update_player_skills(activity_id):
+    activity = Activity.objects.filter(id=activity_id)
+
+    # Clear skill history that will be reconstructed
+    SkillHistory.objects.filter(activity_id=activity_id).delete()
+
+    # Setup initial ratings for each player
+    start_mu = 25
+    start_sigma = 25 / 3.0
+    ratings = {p.id: Rating(start_mu, start_sigma) for p in Player.objects.all()}
+
+    # Process each match to calculate rating progress and determine final rankings
+    for result in Result.objects.filter(activity=activity):
+        teams = AdhocTeam.objects.filter(result=result)
+
+        team1 = teams[0]
+        team2 = teams[1]
+        team1_members = TeamMember.objects.filter(team=team1)
+        team2_members = TeamMember.objects.filter(team=team2)
+        team1_ratings = [ratings[member.player.id] for member in team1_members]
+        team2_ratings = [ratings[member.player.id] for member in team2_members]
+
+        if team1.ranking == 1 and team2.ranking == 2:
+            (team1_ratings, team2_ratings) = rate([team1_ratings, team2_ratings], ranks=[1, 2])
+        elif team1.ranking == 2 and team2.ranking == 1:
+            (team1_ratings, team2_ratings) = rate([team1_ratings, team2_ratings], ranks=[2, 1])
+        else:
+            assert False, "Could not process match %s: unknown winning team" % (result.id)
+
+        # Update current ratings and save them to SkillHistory
+        for idx, member in enumerate(team1_members):
+            ratings[member.player.id] = team1_ratings[idx]
+            history = SkillHistory(activity_id=activity_id, result=result,
+                         player=member.player,
+                         mu=team1_ratings[idx].mu, sigma=team1_ratings[idx].sigma)
+            history.save()
+        for idx, member in enumerate(team2_members):
+            ratings[member.player.id] = team2_ratings[idx]
+            history = SkillHistory(activity_id=activity_id, result=result,
+                                   player=member.player,
+                                   mu=team2_ratings[idx].mu, sigma=team2_ratings[idx].sigma)
+            history.save()
+
+    # Save calculated rankings
+    Ranking.objects.filter(activity_id=activity_id).delete()
+    for player_id in ratings:
+        rating = ratings[player_id]
+        print("%s: %s" % (player_id, rating))
+        ranking = Ranking(activity_id=activity_id, player_id=player_id,
+                          mu=rating.mu, sigma=rating.sigma)
+        ranking.save()
+        print(ranking)

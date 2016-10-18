@@ -73,14 +73,14 @@ class Player(models.Model):
 
 
 class Ranking(models.Model):
-    activity = models.ForeignKey(Activity, models.DO_NOTHING, primary_key=True)
-    player = models.ForeignKey(Player, models.DO_NOTHING, primary_key=True)
+    activity = models.ForeignKey(Activity, models.DO_NOTHING)
+    player = models.ForeignKey(Player, models.DO_NOTHING)
     active = models.IntegerField(blank=True, null=True)
     mu = models.FloatField(blank=True, null=True)
     sigma = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ranking'
         unique_together = (('player', 'activity'),)
 
@@ -197,4 +197,4 @@ class TeamMember(models.Model):
         unique_together = (('player', 'team'),)
 
     def __str__(self):
-        return "Member of %s was %s" % (self.team, self.player)
+        return "@s was member of %s" % (self.player, self.team)
