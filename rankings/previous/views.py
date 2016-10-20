@@ -153,40 +153,33 @@ def batch_update_player_skills(activity_id):
     for result in Result.objects.filter(activity=activity):
         teams = AdhocTeam.objects.filter(result=result)
 
-        team1 = teams[0]
-        team2 = teams[1]
-        team1_members = TeamMember.objects.filter(team=team1)
-        team2_members = TeamMember.objects.filter(team=team2)
-        team1_ratings = [ratings[member.player.id] for member in team1_members]
-        team2_ratings = [ratings[member.player.id] for member in team2_members]
+        team_ratings = []
+        for team in teams:
+            team_members = TeamMember.objects.filter(team=team)
+            team_ratings.append([ratings[member.player.id] for member in team_members])
 
-        if team1.ranking == 1 and team2.ranking == 2:
-            (team1_ratings, team2_ratings) = rate([team1_ratings, team2_ratings], ranks=[1, 2])
-        elif team1.ranking == 2 and team2.ranking == 1:
-            (team1_ratings, team2_ratings) = rate([team1_ratings, team2_ratings], ranks=[2, 1])
+        if teams[0].ranking == 1 and teams[1].ranking == 2:
+            team_ratings = rate([team_ratings[0], team_ratings[1]], ranks=[1, 2])
+        elif teams[0].ranking == 2 and teams[1].ranking == 1:
+            team_ratings = rate([team_ratings[0], team_ratings[1]], ranks=[2, 1])
         else:
             assert False, "Could not process match %s: unknown winning team" % (result.id)
 
         # Update current ratings and save them to SkillHistory
-        for idx, member in enumerate(team1_members):
-            ratings[member.player.id] = team1_ratings[idx]
-            history = SkillHistory(activity_id=activity_id, result=result,
-                         player=member.player,
-                         mu=team1_ratings[idx].mu, sigma=team1_ratings[idx].sigma)
-            history.save()
-        for idx, member in enumerate(team2_members):
-            ratings[member.player.id] = team2_ratings[idx]
-            history = SkillHistory(activity_id=activity_id, result=result,
-                                   player=member.player,
-                                   mu=team2_ratings[idx].mu, sigma=team2_ratings[idx].sigma)
-            history.save()
+        for idx_team, team in enumerate(teams):
+            team_members = TeamMember.objects.filter(team=team)
+            for idx_member, member in enumerate(team_members):
+                ratings[member.player.id] = team_ratings[idx_team][idx_member]
+                history = SkillHistory(activity_id=activity_id, result=result,
+                                       player=member.player,
+                                       mu=team_ratings[idx_team][idx_member].mu,
+                                       sigma=team_ratings[idx_team][idx_member].sigma)
+                history.save()
 
     # Save calculated rankings
     Ranking.objects.filter(activity_id=activity_id).delete()
     for player_id in ratings:
         rating = ratings[player_id]
-        print("%s: %s" % (player_id, rating))
         ranking = Ranking(activity_id=activity_id, player_id=player_id,
                           mu=rating.mu, sigma=rating.sigma)
         ranking.save()
-        print(ranking)
