@@ -158,12 +158,7 @@ def batch_update_player_skills(activity_id):
             team_members = TeamMember.objects.filter(team=team)
             team_ratings.append([ratings[member.player.id] for member in team_members])
 
-        if teams[0].ranking == 1 and teams[1].ranking == 2:
-            team_ratings = rate([team_ratings[0], team_ratings[1]], ranks=[1, 2])
-        elif teams[0].ranking == 2 and teams[1].ranking == 1:
-            team_ratings = rate([team_ratings[0], team_ratings[1]], ranks=[2, 1])
-        else:
-            assert False, "Could not process match %s: unknown winning team" % (result.id)
+        team_ratings = rate(team_ratings, ranks=[team.ranking for team in teams])
 
         # Update current ratings and save them to SkillHistory
         for idx_team, team in enumerate(teams):
