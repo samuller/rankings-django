@@ -104,7 +104,7 @@ class Migration(migrations.Migration):
                 ('player', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='previous.Player')),
             ],
             options={
-                'managed': True,
+                'managed': False,
                 'db_table': 'ranking',
             },
         ),

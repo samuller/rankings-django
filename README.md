@@ -20,3 +20,7 @@ And start a development server:
 
     python manage.py runserver
 
+For admin access, create a user:
+
+    python manage.py createsuperuser
+
