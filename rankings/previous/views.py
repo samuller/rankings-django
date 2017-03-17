@@ -3,9 +3,11 @@ import time
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 from trueskill import Rating, rate
 
 from .models import *
+
 
 # Create your views here.
 
@@ -126,10 +128,9 @@ def get_players(request, activity_url):
 def validate_match(request, activity_url):
     return HttpResponse("")
 
-
+@csrf_exempt
 def submit_match(request, activity_url):
-    return HttpResponse("")
-
+    return HttpResponse(json.dumps({'valid': 1}))
 
 def about(request):
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
