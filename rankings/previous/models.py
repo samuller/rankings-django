@@ -11,6 +11,8 @@ from django.db import models
 import datetime
 
 
+MANAGED = False
+
 class Activity(models.Model):
     id = models.TextField(primary_key=True)
     name = models.TextField(blank=True, null=True)
@@ -22,7 +24,7 @@ class Activity(models.Model):
     about = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = MANAGED
         db_table = 'activity'
 
     def to_dict_with_url(self):
@@ -42,7 +44,7 @@ class Result(models.Model):
     submittor = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = MANAGED
         db_table = 'result'
 
     def to_dict_with_teams(self):
@@ -69,7 +71,7 @@ class AdhocTeam(models.Model):
     ranking = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = MANAGED
         db_table = 'adhoc_team'
 
     def __str__(self):
@@ -82,7 +84,7 @@ class Player(models.Model):
     email = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = MANAGED
         db_table = 'player'
 
     def to_dict_with_skill(self, activity_id):
@@ -109,7 +111,7 @@ class Ranking(models.Model):
     sigma = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = MANAGED
         db_table = 'ranking'
         unique_together = (('player', 'activity'),)
 
@@ -128,29 +130,29 @@ class ResultSet(models.Model):
     # id = models.IntegerField(primary_key=True)  # AutoField?
 
     class Meta:
-        managed = False
+        managed = MANAGED
         db_table = 'result_set'
 
 
 class ResultSetMember(models.Model):
-    result_set = models.ForeignKey(ResultSet, models.DO_NOTHING, primary_key=True)
-    result = models.ForeignKey(Player, models.DO_NOTHING, primary_key=True)
+    result_set = models.ForeignKey(ResultSet, models.DO_NOTHING)
+    result = models.ForeignKey(Player, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = MANAGED
         db_table = 'result_set_member'
         unique_together = (('result_set', 'result'),)
 
 
 class SkillHistory(models.Model):
-    result = models.ForeignKey(Result, models.DO_NOTHING, primary_key=True)
-    player = models.ForeignKey(Player, models.DO_NOTHING, primary_key=True)
+    result = models.ForeignKey(Result, models.DO_NOTHING)
+    player = models.ForeignKey(Player, models.DO_NOTHING)
     activity_id = models.TextField(blank=True, null=True)
     mu = models.FloatField(blank=True, null=True)
     sigma = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = MANAGED
         db_table = 'skill_history'
         unique_together = (('player', 'result'),)
 
@@ -167,16 +169,16 @@ class SkillHistory(models.Model):
 
 class SkillType(models.Model):
     id = models.TextField(primary_key=True)
-    min_skill_range = models.FloatField()
-    max_skill_range = models.FloatField()
-    initial_mean = models.FloatField()
-    initial_std_dev = models.FloatField()
-    dynamics_factor = models.FloatField()
-    skill_chain = models.FloatField()
-    draw_chance = models.FloatField()
+    min_skill_range = models.FloatField(default=0)
+    max_skill_range = models.FloatField(default=50)
+    initial_mean = models.FloatField(default=25)
+    initial_std_dev = models.FloatField(default=25/3)
+    dynamics_factor = models.FloatField(default=25/300)
+    skill_chain = models.FloatField(default=25/6)
+    draw_chance = models.FloatField(default=0.1)
 
     class Meta:
-        managed = False
+        managed = MANAGED
         db_table = 'skill_type'
 
     def __str__(self):
@@ -187,12 +189,12 @@ class SkillType(models.Model):
 
 
 class TeamMember(models.Model):
-    team = models.ForeignKey(AdhocTeam, models.DO_NOTHING, primary_key=True)
-    player = models.ForeignKey(Player, models.DO_NOTHING, primary_key=True)
+    team = models.ForeignKey(AdhocTeam, models.DO_NOTHING)
+    player = models.ForeignKey(Player, models.DO_NOTHING)
     validated = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = MANAGED
         db_table = 'team_member'
         unique_together = (('player', 'team'),)
 
