@@ -80,13 +80,13 @@ class Ranking(models.Model):
     sigma = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'ranking'
         unique_together = (('player', 'activity'),)
 
     def calc_skill(self):
-        min_range = 0 # skill_type.min_skill_range
-        max_range = 50 # skill_type.max_skill_range
+        min_range = 0  # skill_type.min_skill_range
+        max_range = 50  # skill_type.max_skill_range
 
         skill = max(min_range, min(self.mu - 3 * self.sigma, max_range))
         return skill
@@ -197,4 +197,4 @@ class TeamMember(models.Model):
         unique_together = (('player', 'team'),)
 
     def __str__(self):
-        return "@s was member of %s" % (self.player, self.team)
+        return "%s was member of %s" % (self.player, self.team)

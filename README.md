@@ -14,10 +14,9 @@ Then install required modules:
 
 Setup the database:
 
-	python manage.py migrate
+    python manage.py migrate
 
 And start a development server:
 
-	python manage.py runserver
-
+    python manage.py runserver
 
