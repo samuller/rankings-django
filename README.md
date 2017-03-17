@@ -24,3 +24,8 @@ For admin access, create a user:
 
     python manage.py createsuperuser
 
+
+## Code structure
+
+The `previous` app is the initial conversion of the old Flask application while using the same templates and database
+with a minimum of changes. All other modules are part of the newer django rewrite which is still in progress.

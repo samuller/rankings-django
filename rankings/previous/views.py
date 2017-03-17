@@ -81,8 +81,7 @@ def player_info(request, activity_url, player_id):
 
 
 def player_history(request, activity_url, player_id):
-    activities = [a.to_dict_with_url() for a in Activity.objects.all()]
-    activity = next((a for a in activities if a["url"] == activity_url), None)
+    activity = Activity.objects.get(id=activity_url)
     if activity is None:
         return HttpResponse(json.dumps({'skill_history': []}))
 
@@ -110,13 +109,12 @@ def list_matches(request, activity_url):
 
 
 def update(request, activity_url):
-    activities = [a.to_dict_with_url() for a in Activity.objects.all()]
-    activity = next((a for a in activities if a["url"] == activity_url), None)
+    activity = Activity.objects.get(id=activity_url)
     if activity is None:
         return HttpResponse("Activity not found.")
 
     start = time.time()
-    batch_update_player_skills(activity["id"])
+    batch_update_player_skills(activity.id)
     end = time.time()
     return HttpResponse("Update completed in %.2fs" % (end - start))
 
@@ -128,9 +126,54 @@ def get_players(request, activity_url):
 def validate_match(request, activity_url):
     return HttpResponse("")
 
+
+
+
 @csrf_exempt
 def submit_match(request, activity_url):
-    return HttpResponse(json.dumps({'valid': 1}))
+
+    def gen_valid_reason_response(valid, reason):
+        return HttpResponse(json.dumps({'valid': valid, 'reason': reason}))
+
+    activity = Activity.objects.get(id=activity_url)
+    if activity is None:
+        return gen_valid_reason_response(False, 'Activity not found')
+
+    if request.method != "POST":
+        return gen_valid_reason_response(False, 'Only POST supported')
+
+    json_data = json.loads(request.body.decode('utf-8'))
+
+    teams_per_match = json_data['teams']
+    all_teams = [team for match_teams in teams_per_match for team in match_teams]
+    winning_teams = json_data["wins"]
+
+    # Look for the first empty team (else set to None)
+    invalid_team = next((team for team in all_teams if len(team) == 0), None)
+    if invalid_team is not None:
+        return gen_valid_reason_response(False, 'Invalid teams')
+
+    # Look for the first negative player id (else set to None)
+    invalid_player = next((player for team in all_teams for player in team if player < 0), None)
+    if invalid_player is not None:
+        return gen_valid_reason_response(False, 'Invalid player ids')
+
+    activity = Activity.objects.get(id=activity_url)
+    result_ids = record_matches(
+            activity,
+            teams_per_match,
+            winning_teams,
+            submittor=request.META['REMOTE_ADDR'])
+    # ip = request.environ['REMOTE_ADDR']
+    # set_deletable_matches(result_ids)
+
+    # JSON object returned should identify whether submission succeeded and
+    # help locate any issues in the form
+    if result_ids is None:
+        return gen_valid_reason_response(False, 'Submission failed')
+    else:
+        return gen_valid_reason_response(True, '')
+
 
 def about(request):
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
@@ -180,3 +223,55 @@ def batch_update_player_skills(activity_id):
         ranking = Ranking(activity_id=activity_id, player_id=player_id,
                           mu=rating.mu, sigma=rating.sigma)
         ranking.save()
+
+
+# Logic for saving matches
+def record_matches(activity, teams_per_match, winning_team_per_match, submittor, submission_time=None):
+    assert len(teams_per_match) == len(winning_team_per_match)
+    results = []
+    for i in range(len(teams_per_match)):
+        winning_team = winning_team_per_match[i]
+        team = teams_per_match[i]
+        result_id = record_match(activity, team, int(winning_team), submittor, submission_time)
+        if result_id is None:
+            # TODO: invalidate/rollback whole list of matches!
+            return None
+        results.append(result_id)
+    return results
+
+
+def record_match(activity, teams, winning_team, submittor, submission_time=None):
+    # TODO: support any number of teams (2+)
+    if winning_team == 1:
+        rankings = [1, 2]
+    elif winning_team == 2:
+        rankings = [2, 1]
+    else:
+        assert False, "Winner incorrectly identified: %s" % winning_team
+
+    if submission_time is None:
+        submission_time = int(time.time())
+
+    result = Result(activity=activity, datetime=submission_time, submittor=submittor)
+    result.save()
+    for i, team in enumerate(teams):
+        if len(team) == 0:
+            result.validated = False
+            result.save()
+            return None
+
+        adhoc_team = AdhocTeam(result=result, ranking=rankings[i])
+        adhoc_team.save()
+        for player_id in team:
+            # exit on invalid player
+            if player_id < 0:
+                result.validated = False
+                result.save()
+                return None
+            player = Player.objects.get(id=player_id)
+
+            member = TeamMember(team=adhoc_team, player=player)
+            member.save()
+
+    return result.id
+

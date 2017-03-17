@@ -34,9 +34,38 @@ class Activity(models.Model):
         return self.name
 
 
+class Result(models.Model):
+    # id = models.IntegerField(primary_key=True)  # AutoField?
+    activity = models.ForeignKey(Activity, models.DO_NOTHING, blank=True, null=True)
+    datetime = models.IntegerField(blank=True, null=True)
+    validated = models.IntegerField(blank=True, null=True)
+    submittor = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'result'
+
+    def to_dict_with_teams(self):
+        result = self.__dict__
+        result["relative_date"] = datetime.datetime.fromtimestamp(self.datetime)
+        result["date"] = datetime.datetime.fromtimestamp(self.datetime)
+        teams = AdhocTeam.objects.filter(result=self)
+        cnt = 0
+        for team in teams:
+            members = TeamMember.objects.filter(team=team)
+            result["team%s" % (cnt+1)] = " & ".join([str(m.player) for m in members])
+            result["team%s_rank" % (cnt + 1)] = team.ranking
+            cnt += 1
+
+        return result
+
+    def __str__(self):
+        return "Match of %s @ %s (Submitter: %s)" % (self.activity, self.datetime, self.submittor)
+
+
 class AdhocTeam(models.Model):
-    id = models.IntegerField(primary_key=True)  # AutoField?
-    result = models.ForeignKey('Result', models.DO_NOTHING, blank=True, null=True)
+    # id = models.IntegerField(primary_key=True)  # AutoField?
+    result = models.ForeignKey(Result, models.DO_NOTHING, blank=True, null=True)
     ranking = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -48,7 +77,7 @@ class AdhocTeam(models.Model):
 
 
 class Player(models.Model):
-    id = models.IntegerField(primary_key=True)  # AutoField?
+    # id = models.IntegerField(primary_key=True)  # AutoField?
     name = models.TextField()
     email = models.TextField(blank=True, null=True)
 
@@ -95,37 +124,8 @@ class Ranking(models.Model):
         return "%s @ %s: (%s, %s)" % (self.player, self.activity, self.mu, self.sigma)
 
 
-class Result(models.Model):
-    id = models.IntegerField(primary_key=True)  # AutoField?
-    activity = models.ForeignKey(Activity, models.DO_NOTHING, blank=True, null=True)
-    datetime = models.IntegerField(blank=True, null=True)
-    validated = models.IntegerField(blank=True, null=True)
-    submittor = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'result'
-
-    def to_dict_with_teams(self):
-        result = self.__dict__
-        result["relative_date"] = datetime.datetime.fromtimestamp(self.datetime)
-        result["date"] = datetime.datetime.fromtimestamp(self.datetime)
-        teams = AdhocTeam.objects.filter(result=self)
-        cnt = 0
-        for team in teams:
-            members = TeamMember.objects.filter(team=team)
-            result["team%s" % (cnt+1)] = " & ".join([str(m.player) for m in members])
-            result["team%s_rank" % (cnt + 1)] = team.ranking
-            cnt += 1
-
-        return result
-
-    def __str__(self):
-        return "Match of %s @ %s (Submitter: %s)" % (self.activity, self.datetime, self.submittor)
-
-
 class ResultSet(models.Model):
-    id = models.IntegerField(primary_key=True)  # AutoField?
+    # id = models.IntegerField(primary_key=True)  # AutoField?
 
     class Meta:
         managed = False
