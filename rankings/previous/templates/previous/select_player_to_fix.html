@@ -1,24 +1,26 @@
+<form action="{{ url('fix_player') }}" method="post">
 <h2>Fix submitted match results</h2>
 
 <p>Select player to fix: </p>
 {% for player_choice in current_players %}
-<input type="radio" name="group1" value="{{ player_choice.id }}"> {{ player_choice.name }}<br>
+<input type="radio" name="prev_player_id" value="{{ player_choice.id }}"> {{ player_choice.name }}<br>
 {% endfor %} 
 
 <p>Select correct player: </p>
-<select id="player-id" autocomplete="off">
+<select name="new_player_id" autocomplete="off">
   {% for player_option in all_players %}
     <option value="{{ player_option.id }}">{{ player_option.name }}</option>
   {% endfor %}
 </select>
 
-<p>
-Matches that will be fixed:
+<p>Matches that will be fixed:</p>
 <ul>
-{% for match in matches %}
-<li>{{ match }}</li>
-{% endfor %}
+  {% for match in matches %}
+    <li>{{ match }}</li>
+  {% endfor %}
 </ul>
-</p>
 
-<p><button>Fix now</button></p>
+<input type="hidden" name="result_ids" readonly value="{{ result_ids }}"> 
+<p><input type="submit" value="Fix now"></p>
+
+</form>
