@@ -1,0 +1,24 @@
+<h2>Fix submitted match results</h2>
+
+<p>Select player to fix: </p>
+{% for player_choice in current_players %}
+<input type="radio" name="group1" value="{{ player_choice.id }}"> {{ player_choice.name }}<br>
+{% endfor %} 
+
+<p>Select correct player: </p>
+<select id="player-id" autocomplete="off">
+  {% for player_option in all_players %}
+    <option value="{{ player_option.id }}">{{ player_option.name }}</option>
+  {% endfor %}
+</select>
+
+<p>
+Matches that will be fixed:
+<ul>
+{% for match in matches %}
+<li>{{ match }}</li>
+{% endfor %}
+</ul>
+</p>
+
+<p><button>Fix now</button></p>

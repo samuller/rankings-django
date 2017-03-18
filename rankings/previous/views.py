@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from trueskill import Rating, rate
+from django.contrib.auth.decorators import user_passes_test
 
 from .models import *
 
@@ -70,7 +71,7 @@ def player_info(request, activity_url, player_id):
     if activity is None:
         return redirect('home')
 
-    player = Player.objects.filter(id=player_id)[0]
+    player = Player.objects.get(id=player_id)
     context = {
         'activities': activities,
         'activity': activity,
@@ -121,12 +122,6 @@ def update(request, activity_url):
 
 def get_players(request, activity_url):
     return HttpResponse("")
-
-
-def validate_match(request, activity_url):
-    return HttpResponse("")
-
-
 
 
 @csrf_exempt
@@ -182,9 +177,40 @@ def about(request):
     }
     return render(request, 'about.html', context)
 
+@user_passes_test(lambda u: u.is_superuser)
+def replace_player_in_submissions(request):
+    if request.method != "POST":
+        return  # HttpResponse("")
+
+    result_ids = request.POST.getlist("result_ids[]")
+    prev_player_id = request.POST["prev_player_id"]
+    new_player_id = request.POST["new_player_id"]
+
+    team_members = TeamMember.objects.filter(team__in=
+      AdhocTeam.objects.filter(result__in=result_ids))
+    players = set([m.player for m in team_members])
+    (team_members
+      .filter(player=Player.objects.get(id=prev_player_id))
+      .update(player=Player.objects.get(id=new_player_id))
+    )
+    #return HttpResponse(str(players), content_type='text/plain')
+
+@user_passes_test(lambda u: u.is_superuser)
+def select_player_to_replace_in_submissions(request, result_ids_str):
+    result_ids = [int(val) for val in result_ids_str.split(",")]
+
+    team_members = TeamMember.objects.filter(team__in=
+      AdhocTeam.objects.filter(result__in=result_ids))
+    players = set([m.player for m in team_members])
+    context = {
+      'matches': [res.summary_str() for res in Result.objects.filter(id__in=result_ids)],
+      'current_players': [val for val in 
+          Player.objects.filter(id__in=team_members.values('player')).values('id', 'name')],
+      'all_players': Player.objects.all().values('id', 'name')}
+    return render(request, 'select_player_to_fix.html', context)
 
 def batch_update_player_skills(activity_id):
-    activity = Activity.objects.filter(id=activity_id)
+    activity = Activity.objects.get(id=activity_id)
 
     # Clear skill history that will be reconstructed
     SkillHistory.objects.filter(activity_id=activity_id).delete()
@@ -225,7 +251,7 @@ def batch_update_player_skills(activity_id):
         ranking.save()
 
 
-# Logic for saving matches
+# Logic for saving matches (directly ported from previous framework)
 def record_matches(activity, teams_per_match, winning_team_per_match, submittor, submission_time=None):
     assert len(teams_per_match) == len(winning_team_per_match)
     results = []

@@ -10,10 +10,15 @@ from __future__ import unicode_literals
 from django.db import models
 import datetime
 
+from .utils import cardinalToOrdinal
+
 
 MANAGED = False
 
 class Activity(models.Model):
+    """
+    A type of activity for which new match results can be recorded.
+    """
     id = models.TextField(primary_key=True)
     name = models.TextField(blank=True, null=True)
     skill_type = models.ForeignKey('SkillType', models.DO_NOTHING, db_column='skill_type', blank=True, null=True)
@@ -47,6 +52,28 @@ class Result(models.Model):
         managed = MANAGED
         db_table = 'result'
 
+    def summary_str_2(self):
+        """
+        A string summarising the game result.
+        """
+        summary = self.to_dict_with_teams()
+        
+        verb = "played"
+        if summary['team1_rank'] < summary['team2_rank']:
+          verb = "won"
+        if summary['team1_rank'] > summary['team2_rank']:
+          verb = "lost"
+        if summary['team1_rank'] == summary['team2_rank']:
+          verb = "tied"
+        
+        return ("[%s] ID: %s, %s %s vs. %s" % 
+            (summary['activity_id'], summary['id'], summary['team1'], verb, summary['team2']))
+
+    def summary_str(self):
+        result_str = ", ".join(["%s: %s" % (cardinalToOrdinal(team.ranking), team.members_str())
+          for team in AdhocTeam.objects.filter(result=self)])
+        return ("[%s] %s result: %s" % (self.id, self.activity.id, result_str))
+
     def to_dict_with_teams(self):
         result = self.__dict__
         result["relative_date"] = datetime.datetime.fromtimestamp(self.datetime)
@@ -54,12 +81,14 @@ class Result(models.Model):
         teams = AdhocTeam.objects.filter(result=self)
         cnt = 0
         for team in teams:
-            members = TeamMember.objects.filter(team=team)
-            result["team%s" % (cnt+1)] = " & ".join([str(m.player) for m in members])
+            result["team%s" % (cnt+1)] = team.members_str()
             result["team%s_rank" % (cnt + 1)] = team.ranking
             cnt += 1
 
         return result
+
+    def get_ranked_teams(self):
+        return [team for team in AdhocTeam.objects.filter(result=self).order_by('ranking')]
 
     def __str__(self):
         return "Match of %s @ %s (Submitter: %s)" % (self.activity, self.datetime, self.submittor)
@@ -73,6 +102,14 @@ class AdhocTeam(models.Model):
     class Meta:
         managed = MANAGED
         db_table = 'adhoc_team'
+
+    def members_str(self):
+        members = [str(m.player) for m in TeamMember.objects.filter(team=self)]
+        if len(members) == 0:
+          return ""
+        if len(members) == 1:
+          return members[0]
+        return ", ".join(members[:-1]) + " & " + members[-1]
 
     def __str__(self):
         return "Team ranked %s @ %s" % (self.ranking, self.result)
