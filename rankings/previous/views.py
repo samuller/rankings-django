@@ -108,8 +108,13 @@ def list_matches(request, activity_url):
     }
     return render(request, 'list_matches.html', context)
 
-
+@user_passes_test(lambda u: u.is_superuser)
 def update(request, activity_url):
+    """
+    Fully clears and recalculates all rankings.
+    
+    Requires admin rights as it increases server load.
+    """
     activity = Activity.objects.get(id=activity_url)
     if activity is None:
         return HttpResponse("Activity not found.")

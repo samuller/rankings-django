@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^(?P<activity_url>.+)/player/(?P<player_id>[0-9]+)$', views.player_info, name='player_info'),
     url(r'^(?P<activity_url>.+)/player/(?P<player_id>[0-9]+)/history$', views.player_history),
     url(r'^(?P<activity_url>.+)/matches$', views.list_matches, name='list_matches'),
-    url(r'^(?P<activity_url>.+)/update$', views.update),
+    url(r'^(?P<activity_url>.+)/update$', views.update, name='update_rankings'),
     url(r'^(?P<activity_url>.+)/api/get_players$', views.get_players),
     url(r'^(?P<activity_url>.+)/api/add_matches$', views.submit_match),
     ]
