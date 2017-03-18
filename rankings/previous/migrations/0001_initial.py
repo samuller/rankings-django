@@ -5,6 +5,23 @@ from __future__ import unicode_literals
 from django.db import migrations, models
 
 
+def insert_default_skill_type(apps, schema_editor):
+  SkillType = apps.get_model("previous", "SkillType")
+  db_alias = schema_editor.connection.alias
+  SkillType.objects.using(db_alias).create(
+      id='default', min_skill_range=0, max_skill_range=50,
+      initial_mean=25, initial_std_dev=25/3.0,
+      dynamics_factor=25/300.0, skill_chain=25/6.0,
+      draw_chance=0.1
+  )
+
+
+def delete_default_skill_type(apps, schema_editor):
+    SkillType = apps.get_model("previous", "SkillType")
+    db_alias = schema_editor.connection.alias
+    SkillType.objects.using(db_alias).get(id="default").delete()
+
+
 class Migration(migrations.Migration):
 
     initial = True
@@ -139,4 +156,5 @@ class Migration(migrations.Migration):
                 'db_table': 'team_member',
             },
         ),
+        migrations.RunPython(insert_default_skill_type, delete_default_skill_type),
     ]

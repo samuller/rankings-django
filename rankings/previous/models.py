@@ -22,10 +22,10 @@ class Activity(models.Model):
     id = models.TextField(primary_key=True)
     name = models.TextField(blank=True, null=True)
     skill_type = models.ForeignKey('SkillType', models.DO_NOTHING, db_column='skill_type', blank=True, null=True)
-    min_teams_per_match = models.IntegerField()
+    min_teams_per_match = models.IntegerField(default=2)
     max_teams_per_match = models.IntegerField(blank=True, null=True)
-    min_players_per_team = models.IntegerField()
-    max_players_per_team = models.IntegerField(blank=True, null=True)
+    min_players_per_team = models.IntegerField(default=1)
+    max_players_per_team = models.IntegerField(blank=True, null=True, default=1)
     about = models.TextField(blank=True, null=True)
 
     class Meta:
@@ -209,9 +209,9 @@ class SkillType(models.Model):
     min_skill_range = models.FloatField(default=0)
     max_skill_range = models.FloatField(default=50)
     initial_mean = models.FloatField(default=25)
-    initial_std_dev = models.FloatField(default=25/3)
-    dynamics_factor = models.FloatField(default=25/300)
-    skill_chain = models.FloatField(default=25/6)
+    initial_std_dev = models.FloatField(default=25/3.0)
+    dynamics_factor = models.FloatField(default=25/300.0)
+    skill_chain = models.FloatField(default=25/6.0)
     draw_chance = models.FloatField(default=0.1)
 
     class Meta:
