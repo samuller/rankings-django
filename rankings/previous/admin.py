@@ -24,7 +24,7 @@ class PlayerAdmin(admin.ModelAdmin):
 class RankingAdmin(admin.ModelAdmin):
     list_display = ('__str__',)
 
-class ResultAdmin(admin.ModelAdmin):
+class MatchAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'result_summary', 'validation')
     list_filter = ('validated',)
     # date_hierarchy = 'datetime'
@@ -57,7 +57,7 @@ admin.site.register(Activity, ActivityAdmin)
 admin.site.register(AdhocTeam)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Ranking, RankingAdmin)
-admin.site.register(Result, ResultAdmin)
+admin.site.register(Match, MatchAdmin)
 admin.site.register(ResultSet)
 admin.site.register(ResultSetMember)
 admin.site.register(SkillHistory)

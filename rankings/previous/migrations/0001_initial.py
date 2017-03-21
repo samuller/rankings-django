@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 
+from ..models import MANAGED
+
 
 def insert_default_skill_type(apps, schema_editor):
   SkillType = apps.get_model("previous", "SkillType")
@@ -42,7 +44,7 @@ class Migration(migrations.Migration):
                 ('about', models.TextField(blank=True, null=True)),
             ],
             options={
-                'managed': False,
+                'managed': MANAGED,
                 'db_table': 'activity',
             },
         ),
@@ -53,7 +55,7 @@ class Migration(migrations.Migration):
                 ('ranking', models.IntegerField(blank=True, null=True)),
             ],
             options={
-                'managed': False,
+                'managed': MANAGED,
                 'db_table': 'adhoc_team',
             },
         ),
@@ -65,7 +67,7 @@ class Migration(migrations.Migration):
                 ('email', models.TextField(blank=True, null=True)),
             ],
             options={
-                'managed': False,
+                'managed': MANAGED,
                 'db_table': 'player',
             },
         ),
@@ -78,7 +80,7 @@ class Migration(migrations.Migration):
                 ('sigma', models.FloatField(blank=True, null=True)),
             ],
             options={
-                'managed': False,
+                'managed': MANAGED,
                 'db_table': 'ranking',
             },
         ),
@@ -91,7 +93,7 @@ class Migration(migrations.Migration):
                 ('submittor', models.TextField(blank=True, null=True)),
             ],
             options={
-                'managed': False,
+                'managed': MANAGED,
                 'db_table': 'result',
             },
         ),
@@ -101,7 +103,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
             ],
             options={
-                'managed': False,
+                'managed': MANAGED,
                 'db_table': 'result_set',
             },
         ),
@@ -111,7 +113,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
             ],
             options={
-                'managed': False,
+                'managed': MANAGED,
                 'db_table': 'result_set_member',
             },
         ),
@@ -124,7 +126,7 @@ class Migration(migrations.Migration):
                 ('sigma', models.FloatField(blank=True, null=True)),
             ],
             options={
-                'managed': False,
+                'managed': MANAGED,
                 'db_table': 'skill_history',
             },
         ),
@@ -141,7 +143,7 @@ class Migration(migrations.Migration):
                 ('draw_chance', models.FloatField(default=0.1)),
             ],
             options={
-                'managed': False,
+                'managed': MANAGED,
                 'db_table': 'skill_type',
             },
         ),
@@ -152,7 +154,7 @@ class Migration(migrations.Migration):
                 ('validated', models.IntegerField(blank=True, null=True)),
             ],
             options={
-                'managed': False,
+                'managed': MANAGED,
                 'db_table': 'team_member',
             },
         ),

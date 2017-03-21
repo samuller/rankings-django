@@ -41,7 +41,7 @@ class Activity(models.Model):
         return self.name
 
 
-class Result(models.Model):
+class Match(models.Model):
     # id = models.IntegerField(primary_key=True)  # AutoField?
     activity = models.ForeignKey(Activity, models.DO_NOTHING, blank=True, null=True)
     datetime = models.IntegerField(blank=True, null=True)
@@ -49,8 +49,8 @@ class Result(models.Model):
     submittor = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = MANAGED
-        db_table = 'result'
+        managed = True
+        db_table = 'match'
 
     def summary_str_2(self):
         """
@@ -96,7 +96,7 @@ class Result(models.Model):
 
 class AdhocTeam(models.Model):
     # id = models.IntegerField(primary_key=True)  # AutoField?
-    result = models.ForeignKey(Result, models.DO_NOTHING, blank=True, null=True)
+    result = models.ForeignKey(Match, models.DO_NOTHING, blank=True, null=True)
     ranking = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -182,7 +182,7 @@ class ResultSetMember(models.Model):
 
 
 class SkillHistory(models.Model):
-    result = models.ForeignKey(Result, models.DO_NOTHING)
+    result = models.ForeignKey(Match, models.DO_NOTHING)
     player = models.ForeignKey(Player, models.DO_NOTHING)
     activity_id = models.TextField(blank=True, null=True)
     mu = models.FloatField(blank=True, null=True)

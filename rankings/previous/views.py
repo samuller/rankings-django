@@ -41,9 +41,9 @@ def activity_summary(request, activity_url):
         'activity': activity,
         'players': all_players,
         'active_players': [p for p in top_players],
-        'matches': [m.__dict__ for m in Result.objects.all()],
+        'matches': [m.__dict__ for m in Match.objects.all()],
         'pending_matches': [m.to_dict_with_teams() for m in
-                            Result.objects.filter(validated=None, activity=activity_url)],
+                            Match.objects.filter(validated=None, activity=activity_url)],
         'deletable_match_ids': [],
         'player_ids': players
     }
@@ -103,8 +103,8 @@ def list_matches(request, activity_url):
         'activities': activities,
         'activity': activity,
         'player_ids': players,
-        'matches': [m.to_dict_with_teams() for m in Result.objects.all()[:50]],
-        'pending_matches': [m.to_dict_with_teams() for m in Result.objects.filter(validated=0)],
+        'matches': [m.to_dict_with_teams() for m in Match.objects.all()[:50]],
+        'pending_matches': [m.to_dict_with_teams() for m in Match.objects.filter(validated=0)],
     }
     return render(request, 'list_matches.html', context)
 
@@ -212,7 +212,7 @@ def select_player_to_replace_in_submissions(request, result_ids_str):
     players = set([m.player for m in team_members])
     context = {
       'result_ids': ",".join([str(id) for id in result_ids]),
-      'matches': [res.summary_str() for res in Result.objects.filter(id__in=result_ids)],
+      'matches': [res.summary_str() for res in Match.objects.filter(id__in=result_ids)],
       'current_players': [val for val in 
           Player.objects.filter(id__in=team_members.values('player')).values('id', 'name')],
       'all_players': Player.objects.all().values('id', 'name')}
@@ -230,7 +230,7 @@ def batch_update_player_skills(activity_id):
     ratings = {p.id: Rating(start_mu, start_sigma) for p in Player.objects.all()}
 
     # Process each match to calculate rating progress and determine final rankings
-    for result in Result.objects.filter(activity=activity):
+    for result in Match.objects.filter(activity=activity):
         teams = AdhocTeam.objects.filter(result=result)
 
         team_ratings = []
@@ -287,7 +287,7 @@ def record_match(activity, teams, winning_team, submittor, submission_time=None)
     if submission_time is None:
         submission_time = int(time.time())
 
-    result = Result(activity=activity, datetime=submission_time, submittor=submittor)
+    result = Match(activity=activity, datetime=submission_time, submittor=submittor)
     result.save()
     for i, team in enumerate(teams):
         if len(team) == 0:
