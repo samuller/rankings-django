@@ -41,16 +41,22 @@ class Activity(models.Model):
         return self.name
 
 
-class Match(models.Model):
-    # id = models.IntegerField(primary_key=True)  # AutoField?
-    activity = models.ForeignKey(Activity, models.DO_NOTHING, blank=True, null=True)
+class SubmittedData(models.Model):
     datetime = models.IntegerField(blank=True, null=True)
-    validated = models.IntegerField(blank=True, null=True)
     submittor = models.TextField(blank=True, null=True)
 
     class Meta:
+        abstract = True
+
+
+class GameSession(SubmittedData):
+    # id = models.IntegerField(primary_key=True)  # AutoField?
+    activity = models.ForeignKey(Activity, models.DO_NOTHING)
+    validated = models.IntegerField(blank=True, null=True)
+
+    class Meta:
         managed = True
-        db_table = 'match'
+        db_table = 'gamesession'
 
     def summary_str_2(self):
         """
@@ -91,12 +97,20 @@ class Match(models.Model):
         return [team for team in AdhocTeam.objects.filter(result=self).order_by('ranking')]
 
     def __str__(self):
-        return "Match of %s @ %s (Submitter: %s)" % (self.activity, self.datetime, self.submittor)
+        return "GameSession of %s @ %s (Submitter: %s)" % (self.activity, self.datetime, self.submittor)
+
+
+class Game(SubmittedData):
+    session = models.ForeignKey(GameSession, models.DO_NOTHING)
+
+
+class Result(SubmittedData):
+    game = models.ForeignKey(Game, models.DO_NOTHING)
 
 
 class AdhocTeam(models.Model):
     # id = models.IntegerField(primary_key=True)  # AutoField?
-    result = models.ForeignKey(Match, models.DO_NOTHING, blank=True, null=True)
+    result = models.ForeignKey(GameSession, models.DO_NOTHING, blank=True, null=True)
     ranking = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -182,7 +196,7 @@ class ResultSetMember(models.Model):
 
 
 class SkillHistory(models.Model):
-    result = models.ForeignKey(Match, models.DO_NOTHING)
+    result = models.ForeignKey(Result, models.DO_NOTHING)
     player = models.ForeignKey(Player, models.DO_NOTHING)
     activity_id = models.TextField(blank=True, null=True)
     mu = models.FloatField(blank=True, null=True)

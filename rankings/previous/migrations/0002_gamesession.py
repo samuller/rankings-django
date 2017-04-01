@@ -13,20 +13,20 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameModel(
-            'Result', 'Match'
+            'Result', 'GameSession'
         ),
         migrations.AlterModelOptions(
-            name='match',
+            name='gamesession',
             options={'managed': True},
         ),
         migrations.AlterModelTable(
-            name='match',
-            table='match',
+            name='gamesession',
+            table='gamesession',
         ),
-        migrations.AddField(
-            model_name='match',
-            name='activity',
-            field=models.ForeignKey(blank=True, null=True, on_delete=models.deletion.DO_NOTHING,  
-            to='previous.Activity'),
-        ),
+#        migrations.AddField(
+#            model_name='gamesession',
+#            name='activity',
+#            field=models.ForeignKey(on_delete=models.deletion.DO_NOTHING,  
+#            to='previous.Activity'),
+#        ),
     ]

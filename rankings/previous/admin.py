@@ -24,7 +24,7 @@ class PlayerAdmin(admin.ModelAdmin):
 class RankingAdmin(admin.ModelAdmin):
     list_display = ('__str__',)
 
-class MatchAdmin(admin.ModelAdmin):
+class GameSessionAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'result_summary', 'validation')
     list_filter = ('validated',)
     # date_hierarchy = 'datetime'
@@ -40,11 +40,11 @@ class MatchAdmin(admin.ModelAdmin):
     
     def validate_matches(self, request, queryset):
       queryset.update(validated=True)
-      self.message_user(request, "Matches validated")
+      self.message_user(request, "GameSessions validated")
 
     def invalidate_matches(self, request, queryset):
       queryset.update(validated=False)
-      self.message_user(request, "Matches invalidated")
+      self.message_user(request, "GameSessions invalidated")
 
     def fix_incorrect_player(self, request, queryset):
       result_ids = ",".join([str(val[0]) for val in queryset.values_list('id')])
@@ -57,7 +57,7 @@ admin.site.register(Activity, ActivityAdmin)
 admin.site.register(AdhocTeam)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Ranking, RankingAdmin)
-admin.site.register(Match, MatchAdmin)
+admin.site.register(GameSession, GameSessionAdmin)
 admin.site.register(ResultSet)
 admin.site.register(ResultSetMember)
 admin.site.register(SkillHistory)
