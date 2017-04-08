@@ -43,7 +43,7 @@ def activity_summary(request, activity_url):
         'active_players': [p for p in top_players],
         'matches': [m.__dict__ for m in GameSession.objects.all()[:50]],
         'pending_matches': [m.to_dict_with_teams() for m in
-                            GameSession.objects.filter(activity=activity_url, validated=None)
+                            Game.objects.filter(session__activity=activity_url, session__validated=None)
                             ],
         'deletable_match_ids': [],
         'player_ids': players
@@ -105,11 +105,12 @@ def list_matches(request, activity_url):
         'activity': activity,
         'player_ids': players,
         'matches': [m.to_dict_with_teams() for m in
-                    GameSession.objects.filter(activity__id=activity_url)[:50]],
+                    Game.objects.filter(session__activity__id=activity_url)[:50]],
         'pending_matches': [m.to_dict_with_teams() for m in
-                            GameSession.objects.filter(activity__id=activity_url, validated=None)],
+                            Game.objects.filter(session__activity__id=activity_url, session__validated=None)],
     }
     return render(request, 'list_matches.html', context)
+
 
 @user_passes_test(lambda u: u.is_superuser)
 def update(request, activity_url):
@@ -185,6 +186,7 @@ def about(request):
     }
     return render(request, 'about.html', context)
 
+
 @csrf_exempt
 @user_passes_test(lambda u: u.is_superuser)
 def replace_player_in_submissions(request):
@@ -206,6 +208,7 @@ def replace_player_in_submissions(request):
     return HttpResponse("Successfully changed %s submissions" % (count_changed,),
       content_type='text/plain')
 
+
 @user_passes_test(lambda u: u.is_superuser)
 def select_player_to_replace_in_submissions(request, result_ids_str):
     result_ids = [int(val) for val in result_ids_str.split(",")]
@@ -220,6 +223,7 @@ def select_player_to_replace_in_submissions(request, result_ids_str):
           Player.objects.filter(id__in=team_members.values('player')).values('id', 'name')],
       'all_players': Player.objects.all().values('id', 'name')}
     return render(request, 'select_player_to_fix.html', context)
+
 
 def batch_update_player_skills(activity_id):
     activity = Activity.objects.get(id=activity_id)

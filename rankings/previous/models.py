@@ -69,41 +69,6 @@ class GameSession(SubmittedData):
         managed = True
         db_table = 'gamesession'
 
-    def summary_str_2(self):
-        """
-        A string summarising the game result.
-        """
-        summary = self.to_dict_with_teams()
-        
-        verb = "played"
-        if summary['team1_rank'] < summary['team2_rank']:
-          verb = "won"
-        if summary['team1_rank'] > summary['team2_rank']:
-          verb = "lost"
-        if summary['team1_rank'] == summary['team2_rank']:
-          verb = "tied"
-        
-        return ("[%s] ID: %s, %s %s vs. %s" % 
-            (summary['activity_id'], summary['id'], summary['team1'], verb, summary['team2']))
-
-    def summary_str(self):
-        result_str = ", ".join(["%s: %s" % (cardinalToOrdinal(team.ranking), team.members_str())
-          for team in AdhocTeam.objects.filter(result=self)])
-        return ("[%s] %s result: %s" % (self.id, self.activity.id, result_str))
-
-    def to_dict_with_teams(self):
-        result = self.__dict__
-        result["relative_date"] = datetime.datetime.fromtimestamp(self.datetime)
-        result["date"] = datetime.datetime.fromtimestamp(self.datetime)
-        teams = AdhocTeam.objects.filter(result=self)
-        cnt = 0
-        for team in teams:
-            result["team%s" % (cnt+1)] = team.members_str()
-            result["team%s_rank" % (cnt + 1)] = team.ranking
-            cnt += 1
-
-        return result
-
     def get_ranked_teams(self):
         return [team for team in AdhocTeam.objects.filter(result=self).order_by('ranking')]
 
@@ -138,6 +103,42 @@ A single game played within a session.
 class Game(SubmittedData):
     session = models.ForeignKey(GameSession, models.DO_NOTHING)
     position = models.IntegerField(default=0)
+
+    def summary_str_2(self):
+        """
+        A string summarising the game result.
+        """
+        summary = self.to_dict_with_teams()
+        
+        verb = "played"
+        if summary['team1_rank'] < summary['team2_rank']:
+          verb = "won"
+        if summary['team1_rank'] > summary['team2_rank']:
+          verb = "lost"
+        if summary['team1_rank'] == summary['team2_rank']:
+          verb = "tied"
+        
+        return ("[%s] ID: %s, %s %s vs. %s" % 
+            (summary['activity_id'], summary['id'], summary['team1'], verb, summary['team2']))
+
+    def summary_str(self):
+        result_str = ", ".join(["%s: %s" % (cardinalToOrdinal(team.ranking), team.members_str())
+          for team in AdhocTeam.objects.filter(result=self)])
+        return ("[%s] %s result: %s" % (self.id, self.activity.id, result_str))
+
+    def to_dict_with_teams(self):
+        result = self.__dict__
+        result["relative_date"] = datetime.datetime.fromtimestamp(self.datetime)
+        result["date"] = datetime.datetime.fromtimestamp(self.datetime)
+        teams = AdhocTeam.objects.filter(session=self.session)
+        cnt = 0
+        for team in teams:
+            result["team%s" % (cnt+1)] = team.members_str()
+            team_result = Result.objects.get(game=self, team=team)
+            result["team%s_rank" % (cnt + 1)] = team_result.ranking
+            cnt += 1
+
+        return result
 
 
 """
