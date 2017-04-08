@@ -49,7 +49,7 @@ class GameSessionAdmin(admin.ModelAdmin):
     def fix_incorrect_player(self, request, queryset):
       result_ids = ",".join([str(val[0]) for val in queryset.values_list('id')])
       return HttpResponseRedirect(reverse('select_fix_player',
-        kwargs={'result_ids_str': result_ids}))
+        kwargs={'session_ids_str': result_ids}))
 
 
 # Register your models here.
@@ -58,6 +58,8 @@ admin.site.register(AdhocTeam)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Ranking, RankingAdmin)
 admin.site.register(GameSession, GameSessionAdmin)
+admin.site.register(Game)
+admin.site.register(Result)
 admin.site.register(SkillHistory)
 admin.site.register(SkillType)
 admin.site.register(TeamMember)

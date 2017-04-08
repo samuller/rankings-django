@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^about$', views.about, name='about'),
     url(r'^api/fix_player$', views.replace_player_in_submissions, name='fix_player'),
     url(r'^api/validate_all$', views.validate_all_matches),
-    url(r'^select_player_to_fix/(?P<result_ids_str>.*)$', views.select_player_to_replace_in_submissions, name='select_fix_player'),
+    url(r'^select_player_to_fix/(?P<session_ids_str>.*)$', views.select_player_to_replace_in_submissions, name='select_fix_player'),
     url(r'^(?P<activity_url>.+)/$', views.activity_summary, name='activity_summary'),
     url(r'^(?P<activity_url>.+)/players$', views.list_players, name='list_players'),
     url(r'^(?P<activity_url>.+)/player/(?P<player_id>[0-9]+)$', views.player_info, name='player_info'),

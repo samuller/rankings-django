@@ -72,8 +72,16 @@ class GameSession(SubmittedData):
     def get_ranked_teams(self):
         return [team for team in AdhocTeam.objects.filter(result=self).order_by('ranking')]
 
+    def summary_str(self):
+        result_str = ", ".join(["%s: %s" % (
+          cardinalToOrdinal(Result.objects.get(team=team).ranking),
+           team.members_str())
+          for team in AdhocTeam.objects.filter(session=self)])
+        return ("[%s] %s result: %s" % (self.id, self.activity.id, result_str))
+
     def __str__(self):
-        return "GameSession of %s @ %s (Submitter: %s)" % (self.activity, self.datetime, self.submittor)
+        return "Game of %s @ %s (Submitter: %s)" % \
+                  (self.activity, self.datetime, self.submittor)
 
 
 """
@@ -95,7 +103,7 @@ class AdhocTeam(models.Model):
         return ", ".join(members[:-1]) + " & " + members[-1]
 
     def __str__(self):
-        return "Team ranked %s @ %s" % (self.ranking, self.result)
+        return "Team %s" % (self.id)
 
 """
 A single game played within a session.
@@ -121,11 +129,6 @@ class Game(SubmittedData):
         return ("[%s] ID: %s, %s %s vs. %s" % 
             (summary['activity_id'], summary['id'], summary['team1'], verb, summary['team2']))
 
-    def summary_str(self):
-        result_str = ", ".join(["%s: %s" % (cardinalToOrdinal(team.ranking), team.members_str())
-          for team in AdhocTeam.objects.filter(result=self)])
-        return ("[%s] %s result: %s" % (self.id, self.activity.id, result_str))
-
     def to_dict_with_teams(self):
         result = self.__dict__
         result["relative_date"] = datetime.datetime.fromtimestamp(self.datetime)
@@ -140,6 +143,10 @@ class Game(SubmittedData):
 
         return result
 
+    def __str__(self):
+        return "Game of %s @ %s (Submitter: %s)" % \
+                  (self.session.activity, self.session.datetime, self.session.submittor)
+
 
 """
 The ranking result of a specific team in a given game.
@@ -149,6 +156,8 @@ class Result(SubmittedData):
     team = models.ForeignKey(AdhocTeam, models.DO_NOTHING, related_name='+')
     ranking = models.IntegerField(blank=True, null=True)
 
+    def __str__(self):
+        return "%s ranked %s @ (%s)" % (self.team, self.ranking, self.game)
 
 """
 A person who forms part of teams to play in games.
@@ -227,7 +236,8 @@ class SkillHistory(models.Model):
         return skill
 
     def __str__(self):
-        return "[%s] %s @ %s: (%s, %s)" % (self.result, self.player, self.activity_id, self.mu, self.sigma)
+        return "[Game %s] %s @ %s: (%s, %s)" % (self.result.game.id, self.player,
+          self.activity_id, self.mu, self.sigma)
 
 
 """
@@ -269,3 +279,4 @@ class TeamMember(models.Model):
 
     def __str__(self):
         return "%s was member of %s" % (self.player, self.team)
+

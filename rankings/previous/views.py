@@ -193,12 +193,12 @@ def replace_player_in_submissions(request):
     if request.method != "POST":
         return HttpResponse("Not POST!", content_type='text/plain')
 
-    result_ids = [int(id) for id in request.POST.get("result_ids").split(",")]
+    session_ids = [int(id) for id in request.POST.get("session_ids").split(",")]
     prev_player_id = request.POST["prev_player_id"]
     new_player_id = request.POST["new_player_id"]
 
     team_members = TeamMember.objects.filter(team__in=
-      AdhocTeam.objects.filter(result__in=result_ids))
+      AdhocTeam.objects.filter(session__in=session_ids))
     players = set([m.player for m in team_members])
 
     count_changed = (team_members
@@ -210,15 +210,15 @@ def replace_player_in_submissions(request):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def select_player_to_replace_in_submissions(request, result_ids_str):
-    result_ids = [int(val) for val in result_ids_str.split(",")]
+def select_player_to_replace_in_submissions(request, session_ids_str):
+    session_ids = [int(val) for val in session_ids_str.split(",")]
 
     team_members = TeamMember.objects.filter(team__in=
-      AdhocTeam.objects.filter(result__in=result_ids))
+      AdhocTeam.objects.filter(session__in=session_ids))
     players = set([m.player for m in team_members])
     context = {
-      'result_ids': ",".join([str(id) for id in result_ids]),
-      'matches': [res.summary_str() for res in GameSession.objects.filter(id__in=result_ids)],
+      'session_ids': ",".join([str(id) for id in session_ids]),
+      'matches': [res.summary_str() for res in GameSession.objects.filter(id__in=session_ids)],
       'current_players': [val for val in 
           Player.objects.filter(id__in=team_members.values('player')).values('id', 'name')],
       'all_players': Player.objects.all().values('id', 'name')}
@@ -237,26 +237,28 @@ def batch_update_player_skills(activity_id):
     ratings = {p.id: Rating(start_mu, start_sigma) for p in Player.objects.all()}
 
     # Process each match to calculate rating progress and determine final rankings
-    for result in GameSession.objects.filter(activity=activity):
-        teams = AdhocTeam.objects.filter(result=result)
+    for session in GameSession.objects.filter(activity=activity):
+        teams = AdhocTeam.objects.filter(session=session)
 
-        team_ratings = []
-        for team in teams:
-            team_members = TeamMember.objects.filter(team=team)
-            team_ratings.append([ratings[member.player.id] for member in team_members])
+        for game in Game.objects.filter(session=session):
+            team_ratings = []
+            for team in teams:
+                team_members = TeamMember.objects.filter(team=team)
+                team_ratings.append([ratings[member.player.id] for member in team_members])
 
-        team_ratings = rate(team_ratings, ranks=[team.ranking for team in teams])
+            results = [Result.objects.get(game=game, team=team) for team in teams]
+            team_ratings = rate(team_ratings, ranks=[result.ranking for result in results])
 
-        # Update current ratings and save them to SkillHistory
-        for idx_team, team in enumerate(teams):
-            team_members = TeamMember.objects.filter(team=team)
-            for idx_member, member in enumerate(team_members):
-                ratings[member.player.id] = team_ratings[idx_team][idx_member]
-                history = SkillHistory(activity_id=activity_id, result=result,
-                                       player=member.player,
-                                       mu=team_ratings[idx_team][idx_member].mu,
-                                       sigma=team_ratings[idx_team][idx_member].sigma)
-                history.save()
+            # Update current ratings and save them to SkillHistory
+            for idx_team, team in enumerate(teams):
+                team_members = TeamMember.objects.filter(team=team)
+                for idx_member, member in enumerate(team_members):
+                    ratings[member.player.id] = team_ratings[idx_team][idx_member]
+                    history = SkillHistory(activity_id=activity_id, result=results[idx_team],
+                                           player=member.player,
+                                           mu=team_ratings[idx_team][idx_member].mu,
+                                           sigma=team_ratings[idx_team][idx_member].sigma)
+                    history.save()
 
     # Save calculated rankings
     Ranking.objects.filter(activity_id=activity_id).delete()
@@ -267,14 +269,20 @@ def batch_update_player_skills(activity_id):
         ranking.save()
 
 
-# Logic for saving matches (directly ported from previous framework)
+# Logic for saving matches
 def record_matches(activity, teams_per_match, winning_team_per_match, submittor, submission_time=None):
     assert len(teams_per_match) == len(winning_team_per_match)
     results = []
+
     for i in range(len(teams_per_match)):
+        if submission_time is None:
+            submission_time = int(time.time())
+        session = GameSession(activity=activity, datetime=submission_time, submittor=submittor)
+        session.save()
+
         winning_team = winning_team_per_match[i]
         team = teams_per_match[i]
-        result_id = record_match(activity, team, int(winning_team), submittor, submission_time)
+        result_id = record_match(session, team, int(winning_team))
         if result_id is None:
             # TODO: invalidate/rollback whole list of matches!
             return None
@@ -282,7 +290,7 @@ def record_matches(activity, teams_per_match, winning_team_per_match, submittor,
     return results
 
 
-def record_match(activity, teams, winning_team, submittor, submission_time=None):
+def record_match(session, teams, winning_team):
     # TODO: support any number of teams (2+)
     if winning_team == 1:
         rankings = [1, 2]
@@ -291,29 +299,40 @@ def record_match(activity, teams, winning_team, submittor, submission_time=None)
     else:
         assert False, "Winner incorrectly identified: %s" % winning_team
 
-    if submission_time is None:
-        submission_time = int(time.time())
+    submit_time = int(time.time())
+    game = Game.objects.create(
+        datetime=submit_time,
+        submittor=session.submittor,
+        session=session,
+        position=0
+    )
 
-    result = GameSession(activity=activity, datetime=submission_time, submittor=submittor)
-    result.save()
     for i, team in enumerate(teams):
         if len(team) == 0:
-            result.validated = False
-            result.save()
+            session.validated = False
+            session.save()
             return None
 
-        adhoc_team = AdhocTeam(result=result, ranking=rankings[i])
+        adhoc_team = AdhocTeam(session=session)
         adhoc_team.save()
+
+        result = Result.objects.create(
+            datetime=submit_time,
+            submittor=session.submittor,
+            game=game, team=adhoc_team,
+            ranking=rankings[i]
+        )
+
         for player_id in team:
             # exit on invalid player
             if player_id < 0:
-                result.validated = False
-                result.save()
+                session.validated = False
+                session.save()
                 return None
             player = Player.objects.get(id=player_id)
 
             member = TeamMember(team=adhoc_team, player=player)
             member.save()
 
-    return result.id
+    return session.id
 
