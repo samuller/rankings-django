@@ -49,11 +49,6 @@ class Migration(migrations.Migration):
             name='session',
             field=models.IntegerField(null=True),
         ),
-        migrations.AddField(
-            model_name='gamesession',
-            name='activity',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='previous.Activity'),
-        ),
         migrations.AlterField(
             model_name='result',
             name='team',

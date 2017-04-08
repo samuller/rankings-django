@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from django.db import migrations, models
 
 from ..models import MANAGED
+import django.db.models.deletion
 
 
 def insert_default_skill_type(apps, schema_editor):
@@ -91,6 +92,7 @@ class Migration(migrations.Migration):
             name='Result',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('activity', models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='previous.Activity')),
                 ('datetime', models.IntegerField(blank=True, null=True)),
                 ('validated', models.IntegerField(blank=True, null=True)),
                 ('submittor', models.TextField(blank=True, null=True)),
