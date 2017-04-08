@@ -25,12 +25,18 @@ def move_team_ranking_to_result(apps, schema_editor):
         
         if session is None:
             continue
-        game = Game.objects.using(db_alias).create(
-            datetime=session.datetime,
-            submittor=session.submittor,
-            session=session,
-            position=0
-        )
+        games = Game.objects.filter(session=session)
+        if len(games) > 1:
+          raise Exception("More games in session than expected")
+        if len(games) == 1:
+          game = games[0]
+        if len(games) == 0:
+          game = Game.objects.using(db_alias).create(
+              datetime=session.datetime,
+              submittor=session.submittor,
+              session=session,
+              position=0
+          )
         Result.objects.using(db_alias).create(
             datetime=session.datetime,
             submittor=session.submittor,
