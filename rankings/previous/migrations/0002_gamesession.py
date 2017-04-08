@@ -23,10 +23,4 @@ class Migration(migrations.Migration):
             name='gamesession',
             table='gamesession',
         ),
-#        migrations.AddField(
-#            model_name='gamesession',
-#            name='activity',
-#            field=models.ForeignKey(on_delete=models.deletion.DO_NOTHING,  
-#            to='previous.Activity'),
-#        ),
     ]

@@ -55,6 +55,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('ranking', models.IntegerField(blank=True, null=True)),
+                ('result_id', models.IntegerField(null=True)),
             ],
             options={
                 'managed': MANAGED,
@@ -97,26 +98,6 @@ class Migration(migrations.Migration):
             options={
                 'managed': MANAGED,
                 'db_table': 'result',
-            },
-        ),
-        migrations.CreateModel(
-            name='ResultSet',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-            ],
-            options={
-                'managed': MANAGED,
-                'db_table': 'result_set',
-            },
-        ),
-        migrations.CreateModel(
-            name='ResultSetMember',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-            ],
-            options={
-                'managed': MANAGED,
-                'db_table': 'result_set_member',
             },
         ),
         migrations.CreateModel(

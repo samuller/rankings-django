@@ -43,7 +43,8 @@ def activity_summary(request, activity_url):
         'active_players': [p for p in top_players],
         'matches': [m.__dict__ for m in GameSession.objects.all()[:50]],
         'pending_matches': [m.to_dict_with_teams() for m in
-                            GameSession.objects.filter(activity=activity_url, validated=None)],
+                            GameSession.objects.filter(activity=activity_url, validated=None)
+                            ],
         'deletable_match_ids': [],
         'player_ids': players
     }

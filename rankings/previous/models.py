@@ -15,6 +15,10 @@ from .utils import cardinalToOrdinal
 
 MANAGED = False
 
+
+"""
+A type of game.
+"""
 class Activity(models.Model):
     """
     A type of activity for which new match results can be recorded.
@@ -41,6 +45,9 @@ class Activity(models.Model):
         return self.name
 
 
+"""
+An abstract class for objects for recording how data was submitted.
+"""
 class SubmittedData(models.Model):
     datetime = models.IntegerField(blank=True, null=True)
     submittor = models.TextField(blank=True, null=True)
@@ -49,9 +56,13 @@ class SubmittedData(models.Model):
         abstract = True
 
 
+"""
+A session of games played with the same players, at the same location, within a certain
+period of time (see Game).
+"""
 class GameSession(SubmittedData):
     # id = models.IntegerField(primary_key=True)  # AutoField?
-    activity = models.ForeignKey(Activity, models.DO_NOTHING)
+    activity = models.ForeignKey(Activity, models.DO_NOTHING, null=True)
     validated = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -100,21 +111,14 @@ class GameSession(SubmittedData):
         return "GameSession of %s @ %s (Submitter: %s)" % (self.activity, self.datetime, self.submittor)
 
 
-class Game(SubmittedData):
-    session = models.ForeignKey(GameSession, models.DO_NOTHING)
-
-
-class Result(SubmittedData):
-    game = models.ForeignKey(Game, models.DO_NOTHING)
-
-
+"""
+A group of players that formed a team for a session (see TeamMember).
+"""
 class AdhocTeam(models.Model):
-    # id = models.IntegerField(primary_key=True)  # AutoField?
-    result = models.ForeignKey(GameSession, models.DO_NOTHING, blank=True, null=True)
-    ranking = models.IntegerField(blank=True, null=True)
+    session = models.ForeignKey(GameSession, models.DO_NOTHING, null=True)
 
     class Meta:
-        managed = MANAGED
+        managed = True
         db_table = 'adhoc_team'
 
     def members_str(self):
@@ -128,7 +132,26 @@ class AdhocTeam(models.Model):
     def __str__(self):
         return "Team ranked %s @ %s" % (self.ranking, self.result)
 
+"""
+A single game played within a session.
+"""
+class Game(SubmittedData):
+    session = models.ForeignKey(GameSession, models.DO_NOTHING)
+    position = models.IntegerField(default=0)
 
+
+"""
+The ranking result of a specific team in a given game.
+"""
+class Result(SubmittedData):
+    game = models.ForeignKey(Game, models.DO_NOTHING)
+    team = models.ForeignKey(AdhocTeam, models.DO_NOTHING, related_name='+')
+    ranking = models.IntegerField(blank=True, null=True)
+
+
+"""
+A person who forms part of teams to play in games.
+"""
 class Player(models.Model):
     # id = models.IntegerField(primary_key=True)  # AutoField?
     name = models.TextField()
@@ -154,6 +177,9 @@ class Player(models.Model):
         return self.name
 
 
+"""
+A person's current skill ranking for a given activity.
+"""
 class Ranking(models.Model):
     activity = models.ForeignKey(Activity, models.DO_NOTHING)
     player = models.ForeignKey(Player, models.DO_NOTHING)
@@ -177,24 +203,9 @@ class Ranking(models.Model):
         return "%s @ %s: (%s, %s)" % (self.player, self.activity, self.mu, self.sigma)
 
 
-class ResultSet(models.Model):
-    # id = models.IntegerField(primary_key=True)  # AutoField?
-
-    class Meta:
-        managed = MANAGED
-        db_table = 'result_set'
-
-
-class ResultSetMember(models.Model):
-    result_set = models.ForeignKey(ResultSet, models.DO_NOTHING)
-    result = models.ForeignKey(Player, models.DO_NOTHING)
-
-    class Meta:
-        managed = MANAGED
-        db_table = 'result_set_member'
-        unique_together = (('result_set', 'result'),)
-
-
+"""
+A person's historical skill ranking directly after a given game's result.
+"""
 class SkillHistory(models.Model):
     result = models.ForeignKey(Result, models.DO_NOTHING)
     player = models.ForeignKey(Player, models.DO_NOTHING)
@@ -218,6 +229,9 @@ class SkillHistory(models.Model):
         return "[%s] %s @ %s: (%s, %s)" % (self.result, self.player, self.activity_id, self.mu, self.sigma)
 
 
+"""
+A description for the type of skill level that an activity can have.
+"""
 class SkillType(models.Model):
     id = models.TextField(primary_key=True)
     min_skill_range = models.FloatField(default=0)
@@ -239,6 +253,9 @@ class SkillType(models.Model):
             self.skill_chain, self.draw_chance, self.dynamics_factor)
 
 
+"""
+A member of an AdhocTeam.
+"""
 class TeamMember(models.Model):
     team = models.ForeignKey(AdhocTeam, models.DO_NOTHING)
     player = models.ForeignKey(Player, models.DO_NOTHING)
