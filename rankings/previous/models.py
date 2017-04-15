@@ -13,7 +13,7 @@ import datetime
 from .utils import cardinalToOrdinal
 
 
-MANAGED = False
+MANAGED = True
 
 
 """

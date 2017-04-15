@@ -44,10 +44,11 @@ class Migration(migrations.Migration):
                 ('max_teams_per_match', models.IntegerField(blank=True, null=True)),
                 ('min_players_per_team', models.IntegerField()),
                 ('max_players_per_team', models.IntegerField(blank=True, null=True)),
+                ('skill_type', models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='previous.SkillType')),
                 ('about', models.TextField(blank=True, null=True)),
             ],
             options={
-                'managed': MANAGED,
+                'managed': False,
                 'db_table': 'activity',
             },
         ),
@@ -59,7 +60,7 @@ class Migration(migrations.Migration):
                 ('result_id', models.IntegerField(null=True)),
             ],
             options={
-                'managed': MANAGED,
+                'managed': False,
                 'db_table': 'adhoc_team',
             },
         ),
@@ -71,7 +72,7 @@ class Migration(migrations.Migration):
                 ('email', models.TextField(blank=True, null=True)),
             ],
             options={
-                'managed': MANAGED,
+                'managed': False,
                 'db_table': 'player',
             },
         ),
@@ -79,12 +80,14 @@ class Migration(migrations.Migration):
             name='Ranking',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('activity', models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='previous.Activity')),
+                ('player', models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='previous.Player')),
                 ('active', models.IntegerField(blank=True, null=True)),
                 ('mu', models.FloatField(blank=True, null=True)),
                 ('sigma', models.FloatField(blank=True, null=True)),
             ],
             options={
-                'managed': MANAGED,
+                'managed': False,
                 'db_table': 'ranking',
             },
         ),
@@ -98,7 +101,7 @@ class Migration(migrations.Migration):
                 ('submittor', models.TextField(blank=True, null=True)),
             ],
             options={
-                'managed': MANAGED,
+                'managed': False,
                 'db_table': 'result',
             },
         ),
@@ -107,11 +110,13 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('activity_id', models.TextField(blank=True, null=True)),
+                ('player', models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='previous.Player')),
+                ('result', models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='previous.Result')),
                 ('mu', models.FloatField(blank=True, null=True)),
                 ('sigma', models.FloatField(blank=True, null=True)),
             ],
             options={
-                'managed': MANAGED,
+                'managed': False,
                 'db_table': 'skill_history',
             },
         ),
@@ -128,7 +133,7 @@ class Migration(migrations.Migration):
                 ('draw_chance', models.FloatField(default=0.1)),
             ],
             options={
-                'managed': MANAGED,
+                'managed': False,
                 'db_table': 'skill_type',
             },
         ),
@@ -136,12 +141,13 @@ class Migration(migrations.Migration):
             name='TeamMember',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('player', models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='previous.Player')),
                 ('validated', models.IntegerField(blank=True, null=True)),
             ],
             options={
-                'managed': MANAGED,
+                'managed': False,
                 'db_table': 'team_member',
             },
         ),
-        migrations.RunPython(insert_default_skill_type, delete_default_skill_type),
+        #migrations.RunPython(insert_default_skill_type, delete_default_skill_type),
     ]

@@ -52,6 +52,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='result',
             name='team',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='previous.AdhocTeam'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='previous.AdhocTeam'),
         ),
     ]
