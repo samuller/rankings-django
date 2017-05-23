@@ -135,6 +135,10 @@ def get_players(request, activity_url):
 
 @csrf_exempt
 def submit_match(request, activity_url):
+    submittor = request.META['REMOTE_ADDR']
+    # Detect nginx ip forwarding
+    if 'HTTP_X_REAL_IP' in request.META:
+        submittor = request.META['HTTP_X_REAL_IP']
 
     def gen_valid_reason_response(valid, reason):
         return HttpResponse(json.dumps({'valid': valid, 'reason': reason}))
@@ -167,7 +171,7 @@ def submit_match(request, activity_url):
             activity,
             teams_per_match,
             winning_teams,
-            submittor=request.META['REMOTE_ADDR'])
+            submittor=submittor)
     # ip = request.environ['REMOTE_ADDR']
     # set_deletable_matches(result_ids)
 
