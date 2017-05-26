@@ -62,7 +62,7 @@ def list_players(request, activity_url):
         'activities': activities,
         'activity': activity,
         'players': [p.__dict__ for p in Player.objects.all()],
-        'active_players': [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all()],
+        'active_players': [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all().order_by('name')],
     }
     return render(request, 'list_players.html', context)
 
@@ -252,7 +252,7 @@ def select_player_to_replace_in_submissions(request, session_ids_str):
     context = {
       'session_ids': ",".join([str(id) for id in session_ids]),
       'matches': [res.summary_str() for res in GameSession.objects.filter(id__in=session_ids)],
-      'current_players': [val for val in 
+      'current_players': [val for val in
           Player.objects.filter(id__in=team_members.values('player')).values('id', 'name')],
       'all_players': Player.objects.all().values('id', 'name')}
     return render(request, 'select_player_to_fix.html', context)
@@ -270,7 +270,7 @@ def batch_update_player_skills(activity_id):
     ratings = {p.id: Rating(start_mu, start_sigma) for p in Player.objects.all()}
 
     # Process each match to calculate rating progress and determine final rankings
-    for session in GameSession.objects.filter(activity=activity):
+    for session in GameSession.objects.filter(activity=activity, validated=1):
         teams = AdhocTeam.objects.filter(session=session)
 
         for game in Game.objects.filter(session=session):
