@@ -89,10 +89,13 @@ def player_history(request, activity_url, player_id):
         return HttpResponse(json.dumps({'skill_history': []}))
 
     history = SkillHistory.objects.filter(player_id=player_id, activity_id=activity_url)
-    return HttpResponse(json.dumps({'skill_history': [h.calc_skill() for h in history]}))
+    return HttpResponse(json.dumps({
+        'skill_history': [
+            {'y': h.calc_skill(), 'id': h.result.game.id} for h in history],
+    }))
 
 
-def list_matches(request, activity_url):
+def list_matches(request, activity_url, match_id=None):
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
@@ -101,12 +104,18 @@ def list_matches(request, activity_url):
     players = []
     for player in Player.objects.all():
         players.append([player.id, player.name])
+
+    if match_id is None:
+        matches = [m.to_dict_with_teams() for m in
+                   Game.objects.filter(session__activity__id=activity_url).order_by('-id')[:50]]
+    else:
+        matches = [Game.objects.get(id=match_id).to_dict_with_teams()]
+
     context = {
         'activities': activities,
         'activity': activity,
         'player_ids': players,
-        'matches': [m.to_dict_with_teams() for m in
-                    Game.objects.filter(session__activity__id=activity_url).order_by('-id')[:50]],
+        'matches': matches,
         'pending_matches': [m.to_dict_with_teams() for m in
                             Game.objects.filter(session__activity__id=activity_url, session__validated=None)],
     }
