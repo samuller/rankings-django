@@ -41,9 +41,10 @@ def activity_summary(request, activity_url):
         'activity': activity,
         'players': all_players,
         'active_players': [p for p in top_players],
-        'matches': [m.__dict__ for m in GameSession.objects.all()[:50]],
+        'matches': [m.__dict__ for m in GameSession.objects.all().order_by('-id')[:50]],
         'pending_matches': [m.to_dict_with_teams() for m in
                             Game.objects.filter(session__activity=activity_url, session__validated=None)
+                            .order_by('-id')
                             ],
         'deletable_match_ids': [],
         'player_ids': players
@@ -105,7 +106,7 @@ def list_matches(request, activity_url):
         'activity': activity,
         'player_ids': players,
         'matches': [m.to_dict_with_teams() for m in
-                    Game.objects.filter(session__activity__id=activity_url)[:50]],
+                    Game.objects.filter(session__activity__id=activity_url).order_by('-id')[:50]],
         'pending_matches': [m.to_dict_with_teams() for m in
                             Game.objects.filter(session__activity__id=activity_url, session__validated=None)],
     }
