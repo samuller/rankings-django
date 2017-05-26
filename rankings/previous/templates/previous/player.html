@@ -53,7 +53,7 @@ $(function () {
 					point: {
 						events: {
 							click: function() {
-								window.location = "{{ url_for('list_match', activity_url=activity.url) }}/"+this.id;
+								window.location = "{{ url_for('list_match', activity_url=activity.url) }}"+this.id;
 								/*hs.htmlExpand(null, {
 								//	maincontentText: this+"sd"
 								});*/
