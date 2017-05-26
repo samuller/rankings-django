@@ -6,7 +6,9 @@
 	</div>
 </div>
 
+{% if current_page == 1 %}
 {% include 'pending_match_table.html' %}
+{% endif %}
 
 {% include 'match_table.html' %}
 
