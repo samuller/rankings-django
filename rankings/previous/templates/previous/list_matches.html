@@ -16,6 +16,35 @@
 	</div>
 </div>
 
+{% if list_pages|length > 1 %}
+<div class="pagination-centered">
+  <ul class="pagination">
+  	{% if current_page != 1 %}
+    <li class="arrow unavailable"><a href="{{ url_for('list_matches', activity_url=activity.url, page=current_page-1) }}">&laquo;</a></li>
+	{% endif %}
+    {% for page in list_pages %}
+	  {% if page < 0 %}
+	  <li class="unavailable"><a href="">&hellip;</a></li>
+	  {% elif page == current_page %}
+	  <li class="current"><a href="{{ url_for('list_matches', activity_url=activity.url, page=page) }}">{{ page }}</a></li>
+	  {% else %}
+	  <li><a href="{{ url_for('list_matches', activity_url=activity.url, page=page) }}">{{ page }}</a></li>
+	  {% endif %}
+	{% endfor %}
+    <!--<li class="current"><a href="">1</a></li>
+    <li><a href="{{ url_for('list_matches', activity_url=activity.url, page=2) }}">2</a></li>
+    <li><a href="">3</a></li>
+    <li><a href="">4</a></li>
+    <li class="unavailable"><a href="">&hellip;</a></li>
+    <li><a href="">12</a></li>
+    <li><a href="">13</a></li>-->
+	{% if current_page < total_pages %}
+    <li class="arrow"><a href="{{ url_for('list_matches', activity_url=activity.url, page=current_page+1) }}">&raquo;</a></li>
+  	{% endif %}
+  </ul>
+</div>
+{% endif %}
+
 <div id="modalSubmitMatch" class="reveal-modal small">
 	{% include 'form_newmatch.html' %}
 	<a class="close-reveal-modal">&#215;</a>

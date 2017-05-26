@@ -95,7 +95,9 @@ def player_history(request, activity_url, player_id):
     }))
 
 
-def list_matches(request, activity_url, match_id=None):
+def list_matches(request, activity_url, page=1, match_id=None):
+    page = max(int(page), 1)
+    results_per_page = 50
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
@@ -106,18 +108,35 @@ def list_matches(request, activity_url, match_id=None):
         players.append([player.id, player.name])
 
     if match_id is None:
+        start = (int(page)-1) * results_per_page
+        end = int(page) * results_per_page
         matches = [m.to_dict_with_teams() for m in
-                   Game.objects.filter(session__activity__id=activity_url).order_by('-id')[:50]]
+                   Game.objects.filter(session__activity__id=activity_url, session__validated=1)
+                       .order_by('-id')[start:end]]
     else:
         matches = [Game.objects.get(id=match_id).to_dict_with_teams()]
 
+    total_pages = 1 + (Game.objects.filter(session__activity__id=activity_url, session__validated=1).count() //
+                       results_per_page)
+
+    list_pages = [val for val in range(1, total_pages + 1) if val <= 1 or val > (total_pages - 1) or abs(page - val) < 3]
+    gaps_idx = [idx for idx in range(1, len(list_pages)) if list_pages[idx] - list_pages[idx-1] > 1]
+    for idx in reversed(gaps_idx):
+        list_pages.insert(idx, -1)
+
+    pending_matches = [m.to_dict_with_teams() for m in
+                       Game.objects
+                           .filter(session__activity__id=activity_url, session__validated=None)
+                           .order_by('-id')]
     context = {
         'activities': activities,
         'activity': activity,
         'player_ids': players,
         'matches': matches,
-        'pending_matches': [m.to_dict_with_teams() for m in
-                            Game.objects.filter(session__activity__id=activity_url, session__validated=None)],
+        'current_page': page,
+        'total_pages': total_pages,
+        'list_pages': list_pages,
+        'pending_matches': pending_matches,
     }
     return render(request, 'list_matches.html', context)
 
