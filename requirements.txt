@@ -1,3 +1,4 @@
 Django==1.10.1
 trueskill==0.4.4
 Jinja2==2.8
+django-mass-edit==3.0
