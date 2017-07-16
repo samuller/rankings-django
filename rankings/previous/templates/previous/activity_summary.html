@@ -20,12 +20,17 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="large-12 columns">
+		<a class="button expand" href="#" data-reveal-id="modalSubmitMatch">Add new match result</a>
+	</div>
+</div>
+
 {% include 'pending_match_table.html' %}
 
 <div class="row">
 	<div class="large-12 columns">
 		<p><a href="{{ url_for('list_matches', activity_url=activity.url) }}">All matches...</a></p>
-		<a class="button expand" href="#" data-reveal-id="modalSubmitMatch">Add new match result</a>
 	</div>
 </div>
 
