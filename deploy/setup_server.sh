@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e  # Fail on first error
+
 # Remove pre-installed software from Ubuntu Server
 sudo apt-get remove apache2* rpcbind bind9
 
@@ -25,4 +28,8 @@ sudo apt-get install nginx
 # Globally install gunicorn
 sudo pip install gunicorn
 
-ssh-keygen
+# Setup user ssh keys
+ssh-keygen -t rsa -N ''
+
+# Start server
+# ./start_nginx.sh
