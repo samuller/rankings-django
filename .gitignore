@@ -1,6 +1,6 @@
 # Project specific
 rankings/db.sqlite3
-
+rankings/rankings/secret_key.py
 
 # https://github.com/github/gitignore/blob/master/Python.gitignore
 
