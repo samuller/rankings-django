@@ -18,21 +18,22 @@ def generate_secret_key(filename):
     chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
     key = get_random_string(50, chars)
     with open(filename, 'w') as file_handle:
-        file_handle.write('SECRET_KEY=\'{}\'\n'.format(key))
+        file_handle.write('SECRET_KEY = \'{}\'\n'.format(key))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
+# This current settings directory
+SETTINGS_DIR = os.path.abspath(os.path.dirname(__file__))
 
 try:
     from .secret_key import SECRET_KEY
 except ImportError:
-    SETTINGS_DIR = os.path.abspath(os.path.dirname(__file__))
     generate_secret_key(os.path.join(SETTINGS_DIR, 'secret_key.py'))
     from .secret_key import SECRET_KEY
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
