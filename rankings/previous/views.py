@@ -83,12 +83,15 @@ def player_info(request, activity_url, player_id):
     return render(request, 'player.html', context)
 
 
-def player_history(request, activity_url, player_id):
+def player_history(request, activity_url, player_id, max_len=500):
     activity = Activity.objects.get(id=activity_url)
     if activity is None:
         return HttpResponse(json.dumps({'skill_history': []}))
 
-    history = SkillHistory.objects.filter(player_id=player_id, activity_id=activity_url)
+    history = SkillHistory.objects.filter(player_id=player_id, activity_id=activity_url)\
+        .order_by('result__datetime')
+    # Limit history to last few points
+    history = history[max(len(history)-max_len, 0):]
     return HttpResponse(json.dumps({
         'skill_history': [
             {'y': h.calc_skill(), 'id': h.result.game.id} for h in history],
