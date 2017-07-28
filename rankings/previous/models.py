@@ -3,7 +3,6 @@
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
 
@@ -11,9 +10,6 @@ from django.db import models
 import datetime
 
 from .utils import cardinalToOrdinal
-
-
-MANAGED = True
 
 
 """
@@ -33,7 +29,6 @@ class Activity(models.Model):
     about = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = MANAGED
         db_table = 'activity'
 
     def to_dict_with_url(self):
@@ -66,7 +61,6 @@ class GameSession(SubmittedData):
     validated = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = True
         db_table = 'gamesession'
 
     def get_ranked_teams(self):
@@ -91,7 +85,6 @@ class AdhocTeam(models.Model):
     session = models.ForeignKey(GameSession, models.DO_NOTHING, null=True)
 
     class Meta:
-        managed = True
         db_table = 'adhoc_team'
 
     def members_str(self):
@@ -168,7 +161,6 @@ class Player(models.Model):
     email = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = MANAGED
         db_table = 'player'
 
     def to_dict_with_skill(self, activity_id):
@@ -198,7 +190,6 @@ class Ranking(models.Model):
     sigma = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = MANAGED
         db_table = 'ranking'
         unique_together = (('player', 'activity'),)
 
@@ -224,7 +215,6 @@ class SkillHistory(models.Model):
     sigma = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = MANAGED
         db_table = 'skill_history'
         unique_together = (('player', 'result'),)
 
@@ -254,7 +244,6 @@ class SkillType(models.Model):
     draw_chance = models.FloatField(default=0.1)
 
     class Meta:
-        managed = MANAGED
         db_table = 'skill_type'
 
     def __str__(self):
@@ -273,7 +262,6 @@ class TeamMember(models.Model):
     validated = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = MANAGED
         db_table = 'team_member'
         unique_together = (('player', 'team'),)
 
