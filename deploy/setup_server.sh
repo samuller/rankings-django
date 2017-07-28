@@ -24,3 +24,5 @@ sudo apt-get install nginx
 
 # Globally install gunicorn
 sudo pip install gunicorn
+
+ssh-keygen
