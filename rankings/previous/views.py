@@ -183,6 +183,9 @@ def submit_match(request, activity_url):
     if 'HTTP_X_REAL_IP' in request.META:
         submittor = request.META['HTTP_X_REAL_IP']
     try:
+        # getfqdn() won't throw exception, but then we can't differentiate when it
+        # works, and we might generate e.g. "127.0.0.1 (127.0.0.1)"
+        # addr = socket.getfqdn(submittor)
         addr = socket.gethostbyaddr(submittor)
         submittor = "{} ({})".format(addr[0], submittor)
     except:
