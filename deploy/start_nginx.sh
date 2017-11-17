@@ -1,10 +1,7 @@
 #!/bin/bash
 set -e  # Fail on first error
 
-. .env/bin/activate
-cd rankings
-python manage.py collectstatic
-cd ..
+# ./prepare_repo.sh
 
 # Copy current config
 sudo cp nginx.conf /etc/nginx/sites-enabled/rankings.conf
