@@ -5,5 +5,6 @@ set -e  # Fail on first error
 pip install -r requirements.txt
 
 cd rankings
+python manage.py migrate
 python manage.py collectstatic
 cd ..
