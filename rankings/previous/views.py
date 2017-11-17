@@ -209,7 +209,7 @@ def submit_match(request, activity_url):
 
     # Look for the first empty team (else set to None)
     invalid_team = next((team for team in all_teams if len(team) == 0), None)
-    if invalid_team is not None:
+    if len(all_teams) == 0 or invalid_team is not None:
         return gen_valid_reason_response(False, 'Invalid teams')
 
     # Look for the first negative player id (else set to None)

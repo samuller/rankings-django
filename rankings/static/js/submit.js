@@ -69,6 +69,7 @@ App.Rankings.Submit = {
     */
     getSelectedTeams: function () {
         var maxTeams = App.Rankings.current_activity.max_teams_per_match;
+        maxTeams = maxTeams ? maxTeams : 2;
         var maxPlayersPerTeam = App.Rankings.current_activity.max_players_per_team;
         // create team setup based on current activity and selected players
         var teams = [];
