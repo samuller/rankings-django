@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'massadmin',
-    'matches.apps.MatchesConfig',
     'previous.apps.PreviousConfig'
 ]
 
