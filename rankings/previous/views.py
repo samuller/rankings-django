@@ -33,10 +33,10 @@ def activity_summary(request, activity_url):
     for player in Player.objects.filter(active=True):
         active_players_ids.append([player.id, player.name])
 
-    active_time_ago = time.mktime((datetime.datetime.now() - datetime.timedelta(days=6*30)).timetuple())
-    active_players_query = Player.objects.filter(
-        active=True, teammember__team__session__datetime__gt=active_time_ago).distinct()
-    all_players = [p.to_dict_with_skill(activity["id"]) for p in active_players_query]
+    # active_time_ago = time.mktime((datetime.datetime.now() - datetime.timedelta(days=6*30)).timetuple())
+    # active_players_query = Player.objects.filter(
+    #     active=True, teammember__team__session__datetime__gt=active_time_ago).distinct()
+    all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.filter(active=True)]
     all_players.sort(key=lambda pl: pl["skill"], reverse=True)
 
     top_players = all_players[:5]
