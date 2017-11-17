@@ -2,8 +2,10 @@
 	<div class="small-12 large-4 large-centered columns">
 		<ul class="pricing-table">
 			<li class="title"><div class="row">
-			<div class="small-9 columns">Name</div>
-			<div class="small-3 columns"><span data-tooltip class="has-tip" title="Skill values range from 0 to 50.">Skill</span></div>
+			<div class="small-9 columns">
+				<a href="{{ url_for('list_players', activity_url=activity.url, sort_by='name') }}">Name</a></div>
+			<div class="small-3 columns">
+				<a href="{{ url_for('list_players', activity_url=activity.url, sort_by='skill') }}">Skill</a></div>
 			</div></li>
 			{% if active_players|count > 0 %}
 				{% for player in active_players %}

@@ -16,7 +16,13 @@
 
 <div class="row">
 	<div class="small-12 large-4 large-centered columns">
-		<p><a href="{{ url_for('list_players', activity_url=activity.url) }}">All players...</a><p/>
+		<p><a href="{{ url_for('list_players', activity_url=activity.url, sort_by='name') }}">All players...</a><p/>
+	</div>
+</div>
+
+<div class="row">
+	<div class="large-12 columns">
+		<a class="button expand" href="#" data-reveal-id="modalSubmitMatch">Add new match result</a>
 	</div>
 </div>
 
@@ -25,7 +31,6 @@
 <div class="row">
 	<div class="large-12 columns">
 		<p><a href="{{ url_for('list_matches', activity_url=activity.url) }}">All matches...</a></p>
-		<a class="button expand" href="#" data-reveal-id="modalSubmitMatch">Add new match result</a>
 	</div>
 </div>
 

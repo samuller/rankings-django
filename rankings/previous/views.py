@@ -52,17 +52,23 @@ def activity_summary(request, activity_url):
     return render(request, 'activity_summary.html', context)
 
 
-def list_players(request, activity_url):
+def list_players(request, activity_url, sort_by):
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
         return redirect('home')
 
+    if sort_by == "skill":
+        all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all()]
+        all_players.sort(key=lambda pl: pl["skill"], reverse=True)
+    else:
+        all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all().order_by(sort_by)]
+
     context = {
         'activities': activities,
         'activity': activity,
         'players': [p.__dict__ for p in Player.objects.all()],
-        'active_players': [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all().order_by('name')],
+        'active_players': all_players,
     }
     return render(request, 'list_players.html', context)
 

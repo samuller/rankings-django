@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^select_player_to_fix/(?P<session_ids_str>.*)$',
         views.select_player_to_replace_in_submissions, name='select_fix_player'),
     url(r'^(?P<activity_url>.+)/$', views.activity_summary, name='activity_summary'),
-    url(r'^(?P<activity_url>.+)/players$', views.list_players, name='list_players'),
+    url(r'^(?P<activity_url>.+)/players/(?P<sort_by>.+)$', views.list_players, name='list_players'),
     url(r'^(?P<activity_url>.+)/player/(?P<player_id>[0-9]+)$', views.player_info, name='player_info'),
     url(r'^(?P<activity_url>.+)/player/(?P<player_id>[0-9]+)/history$', views.player_history),
     url(r'^(?P<activity_url>.+)/matches$', views.list_matches, name='list_matches'),
