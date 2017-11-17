@@ -29,12 +29,16 @@ def activity_summary(request, activity_url):
     if activity is None:
         return redirect('home')
 
-    active_players = []
+    active_players_ids = []
     for player in Player.objects.filter(active=True):
-        active_players.append([player.id, player.name])
+        active_players_ids.append([player.id, player.name])
 
-    all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.filter(active=True)]
+    active_time_ago = time.mktime((datetime.datetime.now() - datetime.timedelta(days=6*30)).timetuple())
+    active_players_query = Player.objects.filter(
+        active=True, teammember__team__session__datetime__gt=active_time_ago).distinct()
+    all_players = [p.to_dict_with_skill(activity["id"]) for p in active_players_query]
     all_players.sort(key=lambda pl: pl["skill"], reverse=True)
+
     top_players = all_players[:5]
     context = {
         'activities': activities,
@@ -47,7 +51,7 @@ def activity_summary(request, activity_url):
                             .order_by('-id')
                             ],
         'deletable_match_ids': [],
-        'player_ids': active_players
+        'player_ids': active_players_ids
     }
     return render(request, 'activity_summary.html', context)
 
