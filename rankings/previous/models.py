@@ -159,6 +159,7 @@ class Player(models.Model):
     # id = models.IntegerField(primary_key=True)  # AutoField?
     name = models.TextField()
     email = models.TextField(blank=True, null=True)
+    active = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'player'

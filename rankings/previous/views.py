@@ -29,11 +29,11 @@ def activity_summary(request, activity_url):
     if activity is None:
         return redirect('home')
 
-    players = []
-    for player in Player.objects.all():
-        players.append([player.id, player.name])
+    active_players = []
+    for player in Player.objects.filter(active=True):
+        active_players.append([player.id, player.name])
 
-    all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all()]
+    all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.filter(active=True)]
     all_players.sort(key=lambda pl: pl["skill"], reverse=True)
     top_players = all_players[:5]
     context = {
@@ -47,7 +47,7 @@ def activity_summary(request, activity_url):
                             .order_by('-id')
                             ],
         'deletable_match_ids': [],
-        'player_ids': players
+        'player_ids': active_players
     }
     return render(request, 'activity_summary.html', context)
 
@@ -59,15 +59,15 @@ def list_players(request, activity_url, sort_by):
         return redirect('home')
 
     if sort_by == "skill":
-        all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all()]
+        all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.filter(active=True)]
         all_players.sort(key=lambda pl: pl["skill"], reverse=True)
     else:
-        all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.all().order_by(sort_by)]
+        all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.filter(active=True).order_by(sort_by)]
 
     context = {
         'activities': activities,
         'activity': activity,
-        'players': [p.__dict__ for p in Player.objects.all()],
+        'players': [p.__dict__ for p in Player.objects.filter(active=True)],
         'active_players': all_players,
     }
     return render(request, 'list_players.html', context)
@@ -113,7 +113,7 @@ def list_matches(request, activity_url, page=1, match_id=None):
         return HttpResponse(json.dumps({'skill_history': []}))
 
     players = []
-    for player in Player.objects.all():
+    for player in Player.objects.filter(active=True):
         players.append([player.id, player.name])
 
     if match_id is None:
