@@ -19,7 +19,7 @@ class ActivityAdmin(admin.ModelAdmin):
         kwargs={'activity_url': queryset.first().id}))
 
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email')
+    list_display = ('name', 'email', 'active')
 
 class RankingAdmin(admin.ModelAdmin):
     list_display = ('__str__',)
