@@ -1,0 +1,28 @@
+[
+  {
+    "model": "previous.activity",
+    "pk": "table_tennis",
+    "fields": {
+      "name": "Table Tennis",
+      "skill_type": "default",
+      "min_teams_per_match": 2,
+      "max_teams_per_match": null,
+      "min_players_per_team": 1,
+      "max_players_per_team": 2,
+      "about": "<p>The official game of Mount Olympus. The only rules are:</p>\r\n\t\t\t\t<ul style=\"display:table; margin:0 auto; text-align:left;\">\r\n\t\t\t\t\t<li>you can't obstruct the ball while serving</li>\r\n\t\t\t\t\t<li>death is optional</li>\r\n\t\t\t\t</ul><br/>\r\n\t\t\t\tThese rules are all subject to change."
+    }
+  },
+  {
+    "model": "previous.skilltype",
+    "pk": "default",
+    "fields": {
+      "min_skill_range": 0,
+      "max_skill_range": 50,
+      "initial_mean": 25,
+      "initial_std_dev": 8.333333333333334,
+      "dynamics_factor": 0.08333333333333333,
+      "skill_chain": 4.166666666666667,
+      "draw_chance": 0.1
+    }
+  }
+]

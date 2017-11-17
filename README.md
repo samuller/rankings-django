@@ -25,6 +25,11 @@ And start a development server:
 
     python manage.py runserver
 
+You can also add test data:
+
+    python manage.py loaddata game.json
+    python manage.py loaddata players.json
+
 
 ## Code structure
 
