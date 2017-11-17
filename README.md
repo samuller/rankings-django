@@ -14,15 +14,16 @@ Then install required modules:
 
 Setup the database:
 
+    cd rankings
     python manage.py migrate
-
-And start a development server:
-
-    python manage.py runserver
 
 For admin access, create a user:
 
     python manage.py createsuperuser
+
+And start a development server:
+
+    python manage.py runserver
 
 
 ## Code structure
