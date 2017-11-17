@@ -1,5 +1,6 @@
 import json
 import time
+import socket
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -181,6 +182,11 @@ def submit_match(request, activity_url):
     # Detect nginx ip forwarding
     if 'HTTP_X_REAL_IP' in request.META:
         submittor = request.META['HTTP_X_REAL_IP']
+    try:
+        addr = socket.gethostbyaddr(submittor)
+        submittor = "{} ({})".format(addr[0], submittor)
+    except:
+        pass
 
     def gen_valid_reason_response(valid, reason):
         return HttpResponse(json.dumps({'valid': valid, 'reason': reason}))
