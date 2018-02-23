@@ -178,18 +178,7 @@ def get_players(request, activity_url):
 
 @csrf_exempt
 def submit_match(request, activity_url):
-    submittor = request.META['REMOTE_ADDR']
-    # Detect nginx ip forwarding
-    if 'HTTP_X_REAL_IP' in request.META:
-        submittor = request.META['HTTP_X_REAL_IP']
-    try:
-        # getfqdn() won't throw exception, but then we can't differentiate when it
-        # works, and we might generate e.g. "127.0.0.1 (127.0.0.1)"
-        # addr = socket.getfqdn(submittor)
-        addr = socket.gethostbyaddr(submittor)
-        submittor = "{} ({})".format(addr[0], submittor)
-    except:
-        pass
+    submittor = identify_request_source(request)
 
     def gen_valid_reason_response(valid, reason):
         return HttpResponse(json.dumps({'valid': valid, 'reason': reason}))
@@ -391,3 +380,27 @@ def record_match(session, teams, winning_team):
 
     return session.id
 
+
+def show_id(request):
+    id = identify_request_source(request)
+    return HttpResponse(id, content_type='text/plain')
+
+
+def identify_request_source(request):
+    """
+    Generate a string that identifies the source of the request.
+    """
+    id = request.META['REMOTE_ADDR']
+    # Detect nginx ip forwarding
+    if 'HTTP_X_REAL_IP' in request.META:
+        id = request.META['HTTP_X_REAL_IP']
+    try:
+        # getfqdn() won't throw exception, but then we can't differentiate when it
+        # works, and we might generate e.g. "127.0.0.1 (127.0.0.1)"
+        # addr = socket.getfqdn(submittor)
+        addr = socket.gethostbyaddr(submittor)
+        id = "{} ({})".format(addr[0], submittor)
+    except:
+        pass
+
+    return id

@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.main_page, name='home'),
     url(r'^about$', views.about, name='about'),
+    url(r'^api/id$', views.show_id),
     url(r'^api/fix_player$', views.replace_player_in_submissions, name='fix_player'),
     url(r'^api/validate_all$', views.validate_all_matches),
     url(r'^select_player_to_fix/(?P<session_ids_str>.*)$',
