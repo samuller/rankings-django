@@ -398,8 +398,8 @@ def identify_request_source(request):
         # getfqdn() won't throw exception, but then we can't differentiate when it
         # works, and we might generate e.g. "127.0.0.1 (127.0.0.1)"
         # addr = socket.getfqdn(submittor)
-        addr = socket.gethostbyaddr(submittor)
-        id = "{} ({})".format(addr[0], submittor)
+        addr = socket.gethostbyaddr(id)
+        id = "{} ({})".format(addr[0], id)
     except:
         pass
 
