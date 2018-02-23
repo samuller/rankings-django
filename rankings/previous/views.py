@@ -177,11 +177,35 @@ def get_players(request, activity_url):
 
 
 @csrf_exempt
-def submit_match(request, activity_url):
+def undo_submit(request, activity_url):
     submittor = identify_request_source(request)
 
-    def gen_valid_reason_response(valid, reason):
-        return HttpResponse(json.dumps({'valid': valid, 'reason': reason}))
+    activity = Activity.objects.get(id=activity_url)
+    if activity is None:
+        return gen_valid_reason_response(False, 'Activity not found')
+
+    if request.method != "POST":
+        return gen_valid_reason_response(False, 'Only POST supported')
+
+    json_data = json.loads(request.body.decode('utf-8'))
+    try:
+        game = Game.objects.get(id=json_data['match-id'])
+    except Game.DoesNotExist:
+        return gen_valid_reason_response(False, 'Match not found: {}'.format(json_data['match-id']))
+
+    if game.session.submittor != submittor:
+        return gen_valid_reason_response(False, 'Only the original submittor can delete their submission')
+
+    return gen_valid_reason_response(False, 'Not yet implemented')
+
+
+def gen_valid_reason_response(valid, reason):
+    return HttpResponse(json.dumps({'valid': valid, 'reason': reason}))
+
+
+@csrf_exempt
+def submit_match(request, activity_url):
+    submittor = identify_request_source(request)
 
     activity = Activity.objects.get(id=activity_url)
     if activity is None:

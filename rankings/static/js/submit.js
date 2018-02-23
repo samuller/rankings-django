@@ -141,7 +141,7 @@ App.Rankings.Submit = {
     },
 
     undoPrevious: function(matchId) {
-        var url = "/"+App.Rankings.current_activity["url"] + "/api/undo_add_matches";
+        var url = "/"+App.Rankings.current_activity["url"] + "/api/undo_submission";
 
         var choice = confirm("Are you sure you want to delete this match?");
         if (choice == false) {
@@ -160,7 +160,11 @@ App.Rankings.Submit = {
                 if(response.valid == 1) {
                     location.reload(false);
                 } else {
-                    alert("Deletion failed.\n");
+                    if(reason in response){
+                        alert("Deletion failed: " + response.reason + ".\n");
+                    } else {
+                        alert("Deletion failed.\n");
+                    }
                 }
             },
             error: function( response ) {
