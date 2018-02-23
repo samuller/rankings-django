@@ -399,7 +399,7 @@ def identify_request_source(request):
         # works, and we might generate e.g. "127.0.0.1 (127.0.0.1)"
         # addr = socket.getfqdn(submittor)
         addr = socket.gethostbyaddr(id)
-        id = "{} ({})".format(addr[0], id)
+        id = "{} ({})".format(id, addr[0])
     except:
         pass
 
