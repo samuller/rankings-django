@@ -188,10 +188,11 @@ def undo_submit(request, activity_url):
         return gen_valid_reason_response(False, 'Only POST supported')
 
     json_data = json.loads(request.body.decode('utf-8'))
+    match_id = json_data['match-id']
     try:
-        game = Game.objects.get(id=json_data['match-id'])
+        game = Game.objects.get(id=match_id)
     except Game.DoesNotExist:
-        return gen_valid_reason_response(False, 'Match not found: {}'.format(json_data['match-id']))
+        return gen_valid_reason_response(False, 'Match not found: {}'.format(match_id))
 
     if game.session.submittor != submittor:
         return gen_valid_reason_response(False, 'Only the original submittor can delete their submission')
@@ -200,7 +201,9 @@ def undo_submit(request, activity_url):
     if datetime.datetime.now() >= expiry_time:
         return gen_valid_reason_response(False, 'Submission undo period has expired. It can no longer be altered.')
 
-    return gen_valid_reason_response(False, 'Not yet implemented')
+    game.delete()
+
+    return gen_valid_reason_response(True, 'Match {} deleted'.format(match_id))
 
 
 def gen_valid_reason_response(valid, reason):
