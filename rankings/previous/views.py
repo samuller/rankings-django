@@ -156,7 +156,7 @@ def list_matches(request, activity_url, page=1, match_id=None):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def update(request, activity_url):
+def update(request, activity_url, year=None):
     """
     Fully clears and recalculates all rankings.
     
@@ -166,8 +166,12 @@ def update(request, activity_url):
     if activity is None:
         return HttpResponse("Activity not found.")
 
+    from_date = None
+    if year is not None:
+        from_date = (int(year), 1, 1)
+
     start = time.time()
-    batch_update_player_skills(activity.id)
+    batch_update_player_skills(activity.id, from_date)
     end = time.time()
     return HttpResponse("Update completed in %.2fs" % (end - start))
 
@@ -300,7 +304,7 @@ def select_player_to_replace_in_submissions(request, session_ids_str):
     return render(request, 'select_player_to_fix.html', context)
 
 
-def batch_update_player_skills(activity_id):
+def batch_update_player_skills(activity_id, after_date=None):
     activity = Activity.objects.get(id=activity_id)
 
     # Clear skill history that will be reconstructed
@@ -311,8 +315,20 @@ def batch_update_player_skills(activity_id):
     start_sigma = 25 / 3.0
     ratings = {p.id: Rating(start_mu, start_sigma) for p in Player.objects.all()}
 
+    # We can filter to only consider matches after a given date
+    if after_date is None:
+        earliest_date = GameSession.objects.filter(activity=activity, validated=1) \
+            .earliest('datetime').datetime
+        after_date = earliest_date
+    else:
+        after_date = list(after_date)
+        after_date.extend([0,0,0,0,0,0])
+        after_date = tuple(after_date)
+        after_date = int(time.mktime(after_date))
+
     # Process each match to calculate rating progress and determine final rankings
-    for session in GameSession.objects.filter(activity=activity, validated=1):
+    for session in GameSession.objects.filter(
+            activity=activity, validated=1, datetime__gte=after_date):
         teams = AdhocTeam.objects.filter(session=session)
 
         for game in Game.objects.filter(session=session):

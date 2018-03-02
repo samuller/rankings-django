@@ -19,7 +19,8 @@ urlpatterns = [
     url(r'^(?P<activity_url>.+)/match/$', views.list_matches, name='list_match'),
     url(r'^(?P<activity_url>.+)/match/(?P<match_id>[0-9]+)$', views.list_matches, name='list_match'),
     url(r'^(?P<activity_url>.+)/update$', views.update, name='update_rankings'),
+    url(r'^(?P<activity_url>.+)/update/(?P<year>[0-9]+)$', views.update, name='update_rankings'),
     url(r'^(?P<activity_url>.+)/api/get_players$', views.get_players),
     url(r'^(?P<activity_url>.+)/api/add_matches$', views.submit_match),
     url(r'^(?P<activity_url>.+)/api/undo_submission$', views.undo_submit),
-    ]
+]

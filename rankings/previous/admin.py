@@ -1,3 +1,4 @@
+import datetime
 from django.contrib import admin
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
@@ -7,16 +8,25 @@ from .models import *
 
 class ActivityAdmin(admin.ModelAdmin):
     list_display = ('__str__',)
-    actions = ['update_skill_rankings']
-    
+    actions = ['update_skill_rankings', 'update_skill_rankings_for_current_calendar_year']
+  
     def update_skill_rankings(self, request, queryset):
       if queryset.count() > 1:
         self.message_user(request, "Can not update more than one activity at once.",
           level=messages.constants.WARNING)
         return
-      
+
       return HttpResponseRedirect(reverse('update_rankings',
         kwargs={'activity_url': queryset.first().id}))
+
+    def update_skill_rankings_for_current_calendar_year(self, request, queryset):
+      if queryset.count() > 1:
+        self.message_user(request, "Can not update more than one activity at once.",
+          level=messages.constants.WARNING)
+        return
+
+      return HttpResponseRedirect(reverse('update_rankings',
+        kwargs={'activity_url': queryset.first().id, 'year': datetime.datetime.now().year}))
 
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'active')
