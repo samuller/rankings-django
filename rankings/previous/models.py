@@ -21,6 +21,7 @@ class Activity(models.Model):
     """
     id = models.TextField(primary_key=True)
     name = models.TextField(blank=True, null=True)
+    active = models.BooleanField(default=True)
     skill_type = models.ForeignKey('SkillType', models.DO_NOTHING, db_column='skill_type', blank=True, null=True)
     min_teams_per_match = models.IntegerField(default=2)
     max_teams_per_match = models.IntegerField(blank=True, null=True)

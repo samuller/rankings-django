@@ -15,7 +15,7 @@ from .models import *
 
 
 def main_page(request):
-    activities = [activity.to_dict_with_url() for activity in Activity.objects.all()]
+    activities = [activity.to_dict_with_url() for activity in Activity.objects.filter(active=True)]
     context = {'player_ids': [], 'activities': activities}
     return render(request, 'main_page.html', context)
 
@@ -259,7 +259,7 @@ def submit_match(request, activity_url):
 
 
 def about(request):
-    activities = [a.to_dict_with_url() for a in Activity.objects.all()]
+    activities = [a.to_dict_with_url() for a in Activity.objects.filter(active=True)]
     context = {
         'activities': activities
     }
