@@ -25,10 +25,10 @@ def validate_all_matches(request):
 
 
 def activity_summary(request, activity_url):
-    activities = [a.to_dict_with_url() for a in Activity.objects.all()]
-    activity = next((a for a in activities if a["url"] == activity_url), None)
-    if activity is None:
+    activity = Activity.objects.filter(id=activity_url)
+    if len(activity) != 1:
         return redirect('home')
+    activity = activity[0].to_dict_with_url()
 
     active_players_ids = []
     for player in Player.objects.filter(active=True):
@@ -42,7 +42,7 @@ def activity_summary(request, activity_url):
 
     top_players = all_players[:5]
     context = {
-        'activities': activities,
+        'activities': [a.to_dict_with_url() for a in Activity.objects.filter(active=True)],
         'activity': activity,
         'players': all_players,
         'active_players': [p for p in top_players],
