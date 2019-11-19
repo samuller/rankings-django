@@ -115,6 +115,8 @@ App.Rankings.Submit = {
             return;
         }
 
+        // disable all submit buttons
+        $('.submit-match').prop('disabled', true);
         // submit match results
         $.ajax({
             type: "POST",
@@ -137,6 +139,10 @@ App.Rankings.Submit = {
             error: function( response ) {
                 alert("Failed with status code "+response.status+".");
             },
+            complete: function( response ) {
+                // re-enable all submit buttons
+                $('.submit-match').prop('disabled', false);
+            }
         });
     },
 
@@ -229,10 +235,7 @@ App.Rankings.MultiMatches = {
      * Submits matches for games where the same teams played 1 or more games.
      */
     submit: function (wins) {
-        var url = "/"+App.Rankings.current_activity["url"] + "/api/add_matches";
-
         var matchTeams = App.Rankings.Submit.getSelectedTeams();
-
         var numOfGames = wins.length;
         // create an array of the same value multiple times
         var teams = Array.apply(null, Array(numOfGames)).map(function() { return matchTeams; });
