@@ -1,4 +1,7 @@
-## Installation
+
+## Development
+
+### Installation
 
 For development perform the following commands from the root directory.
 
@@ -29,6 +32,18 @@ You can also add test data:
 
     python manage.py loaddata game.json
     python manage.py loaddata players.json
+
+
+### In Devcontainer
+
+In case you don't want the thousands of library files to be installed on your local system, you can install them in the Devcontainer docker image with the following:
+
+```console
+sudo mkdir /workspace/.env
+virtualenv -p python3 /workspace/.env
+. /workspace/.env/bin/activate
+pip install -r requirements.txt
+```
 
 
 ## Code structure
