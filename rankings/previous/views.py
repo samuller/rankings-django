@@ -25,7 +25,7 @@ def validate_all_matches(request):
 
 
 def activity_summary(request, activity_url):
-    activity = Activity.objects.filter(id=activity_url)
+    activity = Activity.objects.filter(url=activity_url)
     if len(activity) != 1:
         return redirect('home')
     activity = activity[0].to_dict_with_url()
@@ -48,7 +48,7 @@ def activity_summary(request, activity_url):
         'active_players': [p for p in top_players],
         'matches': [m.__dict__ for m in GameSession.objects.all().order_by('-id')[:50]],
         'pending_matches': [m.to_dict_with_teams() for m in
-                            Game.objects.filter(session__activity=activity_url, session__validated=None)
+                            Game.objects.filter(session__activity=activity["id"], session__validated=None)
                             .order_by('-id')
                             ],
         'deletable_match_ids': [],
@@ -88,18 +88,18 @@ def player_info(request, activity_url, player_id):
     context = {
         'activities': activities,
         'activity': activity,
-        'player_info': player.to_dict_with_skill(activity_url),
+        'player_info': player.to_dict_with_skill(activity["id"]),
         'player_id': player_id,
     }
     return render(request, 'player.html', context)
 
 
 def player_history(request, activity_url, player_id, max_len=500):
-    activity = Activity.objects.get(id=activity_url)
+    activity = Activity.objects.get(url=activity_url)
     if activity is None:
         return HttpResponse(json.dumps({'skill_history': []}))
 
-    history = SkillHistory.objects.filter(player_id=player_id, activity_id=activity_url)\
+    history = SkillHistory.objects.filter(player_id=player_id, activity_id=activity.id)\
         .order_by('result__datetime')
     # Limit history to last few points
     history = history[max(len(history)-max_len, 0):]
@@ -125,12 +125,12 @@ def list_matches(request, activity_url, page=1, match_id=None):
         start = (int(page)-1) * results_per_page
         end = int(page) * results_per_page
         matches = [m.to_dict_with_teams() for m in
-                   Game.objects.filter(session__activity__id=activity_url, session__validated=1)
+                   Game.objects.filter(session__activity__id=activity["id"], session__validated=1)
                        .order_by('-id')[start:end]]
     else:
         matches = [Game.objects.get(id=match_id).to_dict_with_teams()]
 
-    total_pages = 1 + (Game.objects.filter(session__activity__id=activity_url, session__validated=1).count() //
+    total_pages = 1 + (Game.objects.filter(session__activity__id=activity["id"], session__validated=1).count() //
                        results_per_page)
 
     list_pages = [val for val in range(1, total_pages + 1) if val <= 1 or val > (total_pages - 1) or abs(page - val) < 3]
@@ -140,7 +140,7 @@ def list_matches(request, activity_url, page=1, match_id=None):
 
     pending_matches = [m.to_dict_with_teams() for m in
                        Game.objects
-                           .filter(session__activity__id=activity_url, session__validated=None)
+                           .filter(session__activity__id=activity["id"], session__validated=None)
                            .order_by('-id')]
     context = {
         'activities': activities,
@@ -162,7 +162,7 @@ def update(request, activity_url, year=None):
     
     Requires admin rights as it increases server load.
     """
-    activity = Activity.objects.get(id=activity_url)
+    activity = Activity.objects.get(url=activity_url)
     if activity is None:
         return HttpResponse("Activity not found.")
 
@@ -184,7 +184,7 @@ def get_players(request, activity_url):
 def undo_submit(request, activity_url):
     submittor = identify_request_source(request)
 
-    activity = Activity.objects.get(id=activity_url)
+    activity = Activity.objects.get(url=activity_url)
     if activity is None:
         return gen_valid_reason_response(False, 'Activity not found')
 
@@ -218,7 +218,7 @@ def gen_valid_reason_response(valid, reason):
 def submit_match(request, activity_url):
     submittor = identify_request_source(request)
 
-    activity = Activity.objects.get(id=activity_url)
+    activity = Activity.objects.get(url=activity_url)
     if activity is None:
         return gen_valid_reason_response(False, 'Activity not found')
 
@@ -241,7 +241,6 @@ def submit_match(request, activity_url):
     if invalid_player is not None:
         return gen_valid_reason_response(False, 'Invalid player ids')
 
-    activity = Activity.objects.get(id=activity_url)
     result_ids = record_matches(
             activity,
             teams_per_match,

@@ -20,6 +20,7 @@ class Activity(models.Model):
     A type of activity for which new match results can be recorded.
     """
     id = models.TextField(primary_key=True)
+    url = models.TextField(unique=True, blank=False, null=False)
     name = models.TextField(blank=True, null=True)
     active = models.BooleanField(default=True)
     skill_type = models.ForeignKey('SkillType', models.DO_NOTHING, db_column='skill_type', blank=True, null=True)
@@ -34,7 +35,7 @@ class Activity(models.Model):
 
     def to_dict_with_url(self):
         result = self.__dict__
-        result["url"] = result["id"]
+        # result["url"] = result["id"]
         return result
 
     def __str__(self):
