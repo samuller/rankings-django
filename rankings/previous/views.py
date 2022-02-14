@@ -306,9 +306,6 @@ def select_player_to_replace_in_submissions(request, session_ids_str):
 def batch_update_player_skills(activity_id, after_date=None):
     activity = Activity.objects.get(id=activity_id)
 
-    # Clear skill history that will be reconstructed
-    SkillHistory.objects.filter(activity_id=activity_id).delete()
-
     # Setup initial ratings for each player
     start_mu = 25
     start_sigma = 25 / 3.0
@@ -325,12 +322,37 @@ def batch_update_player_skills(activity_id, after_date=None):
         after_date = tuple(after_date)
         after_date = int(time.mktime(after_date))
 
+    # Clear skill history that will be reconstructed
+    SkillHistory.objects.filter(activity_id=activity_id).delete()
+
     # Process each match to calculate rating progress and determine final rankings
-    for session in GameSession.objects.filter(
-            activity=activity, validated=1, datetime__gte=after_date):
+    ratings = incremental_update_player_skills(ratings, GameSession.objects.filter(
+            activity=activity, validated=1, datetime__gte=after_date))
+
+    # Save calculated rankings
+    Ranking.objects.filter(activity_id=activity_id).delete()
+    for player_id in ratings:
+        rating = ratings[player_id]
+        ranking = Ranking(activity_id=activity_id, player_id=player_id,
+                          mu=rating.mu, sigma=rating.sigma)
+        ranking.save()
+
+
+def incremental_update_player_skills(current_ratings, new_game_sessions):
+    if len(new_game_sessions) == 0:
+        return current_ratings
+
+    activity_id = new_game_sessions[0].activity.id
+    # Check that all session are from the same activity
+    for session in new_game_sessions:
+        assert session.activity.id == activity_id
+
+    ratings = current_ratings
+    # Process each match (chronologically) to calculate rating progress and determine final rankings
+    for session in new_game_sessions.order_by('datetime'):
         teams = AdhocTeam.objects.filter(session=session)
 
-        for game in Game.objects.filter(session=session):
+        for game in Game.objects.filter(session=session).order_by('datetime'):
             team_ratings = []
             for team in teams:
                 team_members = TeamMember.objects.filter(team=team)
@@ -345,18 +367,11 @@ def batch_update_player_skills(activity_id, after_date=None):
                 for idx_member, member in enumerate(team_members):
                     ratings[member.player.id] = team_ratings[idx_team][idx_member]
                     history = SkillHistory(activity_id=activity_id, result=results[idx_team],
-                                           player=member.player,
-                                           mu=team_ratings[idx_team][idx_member].mu,
-                                           sigma=team_ratings[idx_team][idx_member].sigma)
+                                            player=member.player,
+                                            mu=team_ratings[idx_team][idx_member].mu,
+                                            sigma=team_ratings[idx_team][idx_member].sigma)
                     history.save()
-
-    # Save calculated rankings
-    Ranking.objects.filter(activity_id=activity_id).delete()
-    for player_id in ratings:
-        rating = ratings[player_id]
-        ranking = Ranking(activity_id=activity_id, player_id=player_id,
-                          mu=rating.mu, sigma=rating.sigma)
-        ranking.save()
+    return ratings
 
 
 # Logic for saving matches
