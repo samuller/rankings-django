@@ -7,30 +7,30 @@ For development perform the following commands from the root directory.
 
 Setup a virtualenv (optional, but recommended):
 ```console
-    virtualenv -p python3 .env
+virtualenv -p python3 .env
 
-    . .env/bin/activate
+. .env/bin/activate
 ```
 
 Then install required modules:
 ```console
-    pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 Setup the database:
 ```console
-    cd rankings
-    python manage.py migrate
+cd rankings
+python manage.py migrate
 ```
 
 For admin access, create a user:
 ```console
-    python manage.py createsuperuser
+python manage.py createsuperuser
 ```
 
 And start a development server:
 ```console
-    python manage.py runserver
+python manage.py runserver
 ```
 
 You can also add test data:
