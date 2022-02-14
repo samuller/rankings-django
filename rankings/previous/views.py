@@ -70,7 +70,7 @@ def list_players(request, activity_url, sort_by):
         all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.filter(active=True).order_by(sort_by)]
 
     context = {
-        'activities': activities,
+        'activities': [a.to_dict_with_url() for a in Activity.objects.filter(active=True)],
         'activity': activity,
         'players': [p.__dict__ for p in Player.objects.filter(active=True)],
         'active_players': all_players,
@@ -86,7 +86,7 @@ def player_info(request, activity_url, player_id):
 
     player = Player.objects.get(id=player_id)
     context = {
-        'activities': activities,
+        'activities': [a.to_dict_with_url() for a in Activity.objects.filter(active=True)],
         'activity': activity,
         'player_info': player.to_dict_with_skill(activity["id"]),
         'player_id': player_id,
@@ -143,7 +143,7 @@ def list_matches(request, activity_url, page=1, match_id=None):
                            .filter(session__activity__id=activity["id"], session__validated=None)
                            .order_by('-id')]
     context = {
-        'activities': activities,
+        'activities': [a.to_dict_with_url() for a in Activity.objects.filter(active=True)],
         'activity': activity,
         'player_ids': players,
         'matches': matches,
