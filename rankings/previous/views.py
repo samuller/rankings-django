@@ -368,7 +368,7 @@ def incremental_update_player_skills(new_game_sessions, current_ratings=None):
     for session in new_game_sessions.order_by('datetime'):
         teams = AdhocTeam.objects.filter(session=session)
 
-        for game in Game.objects.filter(session=session).order_by('datetime'):
+        for game in Game.objects.filter(session=session).order_by('datetime', 'position'):
             team_ratings = []
             for team in teams:
                 team_members = TeamMember.objects.filter(team=team)
