@@ -303,13 +303,21 @@ def select_player_to_replace_in_submissions(request, session_ids_str):
     return render(request, 'select_player_to_fix.html', context)
 
 
-def batch_update_player_skills(activity_id, after_date=None):
-    activity = Activity.objects.get(id=activity_id)
-
-    # Setup initial ratings for each player
+def new_rating(activity):
     start_mu = 25
     start_sigma = 25 / 3.0
-    ratings = {p.id: Rating(start_mu, start_sigma) for p in Player.objects.all()}
+    return Rating(start_mu, start_sigma)
+
+
+def generate_blank_ratings(activity):
+    ratings = {p.id: new_rating(activity) for p in Player.objects.all()}
+    return ratings
+
+
+def batch_update_player_skills(activity_id, after_date=None):
+    activity = Activity.objects.get(id=activity_id)
+    # Setup initial ratings for each player
+    ratings = generate_blank_ratings(activity)
 
     # We can filter to only consider matches after a given date
     if after_date is None:
@@ -326,8 +334,8 @@ def batch_update_player_skills(activity_id, after_date=None):
     SkillHistory.objects.filter(activity_id=activity_id).delete()
 
     # Process each match to calculate rating progress and determine final rankings
-    ratings = incremental_update_player_skills(ratings, GameSession.objects.filter(
-            activity=activity, validated=1, datetime__gte=after_date))
+    ratings = incremental_update_player_skills(GameSession.objects.filter(
+            activity=activity, validated=1, datetime__gte=after_date), ratings)
 
     # Save calculated rankings
     Ranking.objects.filter(activity_id=activity_id).delete()
@@ -338,14 +346,22 @@ def batch_update_player_skills(activity_id, after_date=None):
         ranking.save()
 
 
-def incremental_update_player_skills(current_ratings, new_game_sessions):
+def incremental_update_player_skills(new_game_sessions, current_ratings=None):
     if len(new_game_sessions) == 0:
         return current_ratings
 
-    activity_id = new_game_sessions[0].activity.id
+    activity = new_game_sessions[0].activity
     # Check that all session are from the same activity
     for session in new_game_sessions:
-        assert session.activity.id == activity_id
+        assert session.activity.id == activity.id
+
+    if current_ratings is None:
+        # Generatings for everyone since some people might not have rankings already
+        current_ratings = generate_blank_ratings(activity)
+        # Set the values for everyone that already has a ranking
+        for ranking in Ranking.objects.filter(activity_id=activity.id):
+            assert ranking.player.id in current_ratings
+            current_ratings[ranking.player.id] = Rating(ranking.mu, ranking.sigma)
 
     ratings = current_ratings
     # Process each match (chronologically) to calculate rating progress and determine final rankings
@@ -366,7 +382,7 @@ def incremental_update_player_skills(current_ratings, new_game_sessions):
                 team_members = TeamMember.objects.filter(team=team)
                 for idx_member, member in enumerate(team_members):
                     ratings[member.player.id] = team_ratings[idx_team][idx_member]
-                    history = SkillHistory(activity_id=activity_id, result=results[idx_team],
+                    history = SkillHistory(activity_id=activity.id, result=results[idx_team],
                                             player=member.player,
                                             mu=team_ratings[idx_team][idx_member].mu,
                                             sigma=team_ratings[idx_team][idx_member].sigma)
