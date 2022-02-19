@@ -89,7 +89,9 @@ class GameSession(SubmittedData):
         return f"[{self.id}] {self.activity.id} result: {result_str}"
 
     def __str__(self):
-        return f"Game of {self.activity} @ {self.datetime} (Submitter: {self.submittor})"
+        return (
+            f"Game of {self.activity} @ {self.datetime} (Submitter: {self.submittor})"
+        )
 
 
 """
@@ -155,8 +157,10 @@ class Game(SubmittedData):
         return result
 
     def __str__(self):
-        return f"Game of {self.session.activity} @ {self.session.datetime}" + \
-            f" (Submitter: {self.session.submittor})"
+        return (
+            f"Game of {self.session.activity} @ {self.session.datetime}"
+            + f" (Submitter: {self.session.submittor})"
+        )
 
 
 """
@@ -254,8 +258,10 @@ class SkillHistory(models.Model):
         return skill
 
     def __str__(self):
-        return f"[Game {self.result.game.id}] {self.player} @ " + \
-            f"{self.activity_id}: ({self.mu}, {self.sigma})"
+        return (
+            f"[Game {self.result.game.id}] {self.player} @ "
+            + f"{self.activity_id}: ({self.mu}, {self.sigma})"
+        )
 
 
 """
@@ -278,10 +284,10 @@ class SkillType(models.Model):
 
     def __str__(self):
         return (
-            f"Range: {self.min_skill_range}-{self.max_skill_range}, " +
-            f"Initial: {self.initial_mean},{self.initial_std_dev}, " +
-            f"Skill chain: {self.skill_chain}, Draw: {self.draw_chance}, " +
-            f"Dynamics: {self.dynamics_factor}"
+            f"Range: {self.min_skill_range}-{self.max_skill_range}, "
+            + f"Initial: {self.initial_mean},{self.initial_std_dev}, "
+            + f"Skill chain: {self.skill_chain}, Draw: {self.draw_chance}, "
+            + f"Dynamics: {self.dynamics_factor}"
         )
 
 

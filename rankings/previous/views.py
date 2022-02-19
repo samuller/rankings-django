@@ -132,7 +132,7 @@ def player_history(request, activity_url, player_id, max_len=500):
         player_id=player_id, activity_id=activity.id
     ).order_by("result__datetime")
     # Limit history to last few points
-    history = history[max(len(history) - max_len, 0):]
+    history = history[max(len(history) - max_len, 0) :]
     return HttpResponse(
         json.dumps(
             {
