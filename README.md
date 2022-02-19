@@ -1,21 +1,26 @@
 
 ## Development
 
-### Installation
-
 For development perform the following commands from the root directory.
 
-Setup a virtualenv (optional, but recommended):
-```console
-virtualenv -p python3 .env
+### Setup virtualenv
 
-. .env/bin/activate
+[Install poetry](https://python-poetry.org/docs/#osx--linux--bashonwindows-install-instructions):
+```console
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
 ```
 
-Then install required modules:
+Install packages:
 ```console
-pip install -r requirements.txt
+poetry install
 ```
+
+Activate virtual environment:
+```console
+poetry shell
+```
+
+### Installation
 
 Setup the database:
 ```console
@@ -38,18 +43,6 @@ You can also add test data:
 python manage.py loaddata game.json
 python manage.py loaddata players.json
 ```
-
-### In Devcontainer
-
-In case you don't want the thousands of library files to be installed on your local system, you can install them in the Devcontainer docker image with the following:
-
-```console
-sudo mkdir /workspace/.env
-virtualenv -p python3 /workspace/.env
-. /workspace/.env/bin/activate
-pip install -r requirements.txt
-```
-
 
 ## Code structure
 
