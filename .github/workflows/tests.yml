@@ -1,0 +1,45 @@
+name: tests
+
+on:
+  # Run this workflow every time a new commit is pushed to repo
+  push:
+  # Also run it once weekly to check for impact due to changes in the OS,
+  # python, postgres, or any external packages/dependencies
+  schedule:
+  - cron: '7 14 * * fri'
+
+jobs:
+  run-tests:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Test with specific supported versions
+          - name: supported
+            os: ubuntu-18.04
+            python: 3.6
+            postgres: 10
+          # Test everything with latest versions
+          - name: latest
+            os: ubuntu-latest
+            python: 3.x
+            postgres: latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Install Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install poetry
+        shell: bash
+        run: |
+          curl -sL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py \
+            | python -
+      - name: Install dependencies
+        run: poetry install
+      - name: Check for flake8 issues
+        run: poetry run flake8 rankings/
