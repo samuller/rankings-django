@@ -5,7 +5,7 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 
 
-from jinja2 import Environment, filters
+from jinja2 import Environment
 
 
 def no_op(with_categories=False, category_filter=[]):
@@ -38,5 +38,5 @@ def environment(**options):
     )
     env.filters["tojson"] = to_json
     # env.filters['url_for'] = url_for
-    # filters.FILTERS['url_for'] = url_for
+    # jinja2.filters.FILTERS['url_for'] = url_for
     return env

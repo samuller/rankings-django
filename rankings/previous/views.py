@@ -1,6 +1,7 @@
 import json
 import time
 import socket
+import datetime
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -8,7 +9,17 @@ from django.views.decorators.csrf import csrf_exempt
 from trueskill import Rating, rate
 from django.contrib.auth.decorators import user_passes_test
 
-from .models import *
+from .models import (
+    Activity,
+    AdhocTeam,
+    Player,
+    Ranking,
+    Game,
+    GameSession,
+    Result,
+    SkillHistory,
+    TeamMember,
+)
 
 
 # Create your views here.
@@ -121,7 +132,7 @@ def player_history(request, activity_url, player_id, max_len=500):
         player_id=player_id, activity_id=activity.id
     ).order_by("result__datetime")
     # Limit history to last few points
-    history = history[max(len(history) - max_len, 0) :]
+    history = history[max(len(history) - max_len, 0):]
     return HttpResponse(
         json.dumps(
             {
@@ -325,7 +336,6 @@ def replace_player_in_submissions(request):
     team_members = TeamMember.objects.filter(
         team__in=AdhocTeam.objects.filter(session__in=session_ids)
     )
-    players = set([m.player for m in team_members])
 
     count_changed = team_members.filter(
         player=Player.objects.get(id=prev_player_id)
@@ -343,7 +353,6 @@ def select_player_to_replace_in_submissions(request, session_ids_str):
     team_members = TeamMember.objects.filter(
         team__in=AdhocTeam.objects.filter(session__in=session_ids)
     )
-    players = set([m.player for m in team_members])
     context = {
         "session_ids": ",".join([str(id) for id in session_ids]),
         "matches": [
@@ -516,7 +525,7 @@ def record_match(session, teams, winning_team):
         adhoc_team = AdhocTeam(session=session)
         adhoc_team.save()
 
-        result = Result.objects.create(
+        _ = Result.objects.create(
             datetime=submit_time,
             submittor=session.submittor,
             game=game,
@@ -557,7 +566,7 @@ def identify_request_source(request):
         # addr = socket.getfqdn(submittor)
         addr = socket.gethostbyaddr(id)
         id = "{} ({})".format(id, addr[0])
-    except:
+    except:  # noqa: E722
         pass
 
     return id

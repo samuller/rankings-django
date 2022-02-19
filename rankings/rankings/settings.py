@@ -32,7 +32,7 @@ try:
     from .secret_key import SECRET_KEY
 except ImportError:
     generate_secret_key(os.path.join(SETTINGS_DIR, "secret_key.py"))
-    from .secret_key import SECRET_KEY
+    from .secret_key import SECRET_KEY  # noqa: F401
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/

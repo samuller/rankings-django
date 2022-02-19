@@ -1,11 +1,24 @@
 import time
 import datetime
+
 from django.contrib import admin
 from django.contrib import messages
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .models import *
+
 from .views import incremental_update_player_skills, get_common_activity
+from .models import (
+    Activity,
+    AdhocTeam,
+    Player,
+    Ranking,
+    Game,
+    GameSession,
+    Result,
+    SkillHistory,
+    SkillType,
+    TeamMember,
+)
 
 
 class ActivityAdmin(admin.ModelAdmin):
