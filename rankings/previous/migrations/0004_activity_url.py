@@ -4,7 +4,7 @@ from django.db import migrations, models
 
 
 def set_my_defaults(apps, schema_editor):
-    Activity = apps.get_model('previous', 'Activity')
+    Activity = apps.get_model("previous", "Activity")
     for activity in Activity.objects.all().iterator():
         activity.url = activity.id
         activity.save()
@@ -13,19 +13,19 @@ def set_my_defaults(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('previous', '0003_activity_active'),
+        ("previous", "0003_activity_active"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='activity',
-            name='url',
+            model_name="activity",
+            name="url",
             field=models.TextField(null=True),
         ),
         migrations.RunPython(set_my_defaults, reverse_code=migrations.RunPython.noop),
         migrations.AlterField(
-            model_name='activity',
-            name='url',
+            model_name="activity",
+            name="url",
             field=models.TextField(null=False, unique=True),
         ),
     ]

@@ -1,4 +1,3 @@
-
 def cardinalToOrdinal(num):
     suffix = {
         1: "st",
@@ -12,5 +11,3 @@ def cardinalToOrdinal(num):
     }.get(num % 100, suffix)
 
     return str(num) + suffix
-
-
