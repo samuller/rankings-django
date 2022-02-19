@@ -43,3 +43,5 @@ jobs:
         run: poetry install
       - name: Check for flake8 issues
         run: poetry run flake8 --exclude **/*/migrations/ rankings/
+      - name: Check black formatting has been run
+        run: poetry run black --check rankings/
