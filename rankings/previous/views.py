@@ -338,14 +338,21 @@ def batch_update_player_skills(activity_id, after_date=None):
         activity=activity, validated=1, datetime__gte=after_date), ratings)
 
 
+def get_common_activity(game_sessions):
+    activity = game_sessions[0].activity
+    # Check that all session are from the same activity
+    for session in game_sessions:
+        if session.activity.id != activity.id:
+            return None
+    return activity
+
+
 def incremental_update_player_skills(new_game_sessions, current_ratings=None):
     if len(new_game_sessions) == 0:
         return current_ratings
 
-    activity = new_game_sessions[0].activity
-    # Check that all session are from the same activity
-    for session in new_game_sessions:
-        assert session.activity.id == activity.id
+    activity = get_common_activity(new_game_sessions)
+    assert activity is not None
 
     if current_ratings is None:
         # Generatings for everyone since some people might not have rankings already

@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import *
-from .views import incremental_update_player_skills
+from .views import incremental_update_player_skills, get_common_activity
 
 
 class ActivityAdmin(admin.ModelAdmin):
@@ -50,7 +50,28 @@ class GameSessionAdmin(admin.ModelAdmin):
     validation.boolean = True
     
     def validate_matches_and_update_skill(self, request, queryset):
+      # Check all session are for the same activity
+      activity = get_common_activity(queryset)
+      if activity is None:
+        messages.error(request, "All sessions have to be for the same activity")
+        return
+      # Check that sessions aren't double validated
+      if queryset.filter(validated=True).count() != 0:
+        messages.error(request, "Can't validate sessions again")
+        return
+      # Check that matches aren't skipped/out of order, else skill
+      # update will be slightly affected
+      earliest_match = queryset.order_by('datetime').first()
+      first_unvalidated = GameSession.objects \
+          .filter(activity=activity, validated=False) \
+          .order_by('datetime').first()
+      if earliest_match != first_unvalidated:
+        messages.error(request, "Can't skip unvalidated sessions - validation has to occur in order")
+        return
+
+      # Validate sessions
       queryset.update(validated=True)
+      # Update player skills
       incremental_update_player_skills(queryset)
       self.message_user(request, "GameSessions validated")
 
