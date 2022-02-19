@@ -4,13 +4,14 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import *
+from .views import incremental_update_player_skills
 
 
 class ActivityAdmin(admin.ModelAdmin):
     list_display = ('__str__',)
-    actions = ['update_skill_rankings', 'update_skill_rankings_for_current_calendar_year']
+    actions = ['recalc_skill_rankings', 'recalc_skill_rankings_for_current_calendar_year']
   
-    def update_skill_rankings(self, request, queryset):
+    def recalc_skill_rankings(self, request, queryset):
       if queryset.count() > 1:
         self.message_user(request, "Can not update more than one activity at once.",
           level=messages.constants.WARNING)
@@ -19,7 +20,7 @@ class ActivityAdmin(admin.ModelAdmin):
       return HttpResponseRedirect(reverse('update_rankings',
         kwargs={'activity_url': queryset.first().id}))
 
-    def update_skill_rankings_for_current_calendar_year(self, request, queryset):
+    def recalc_skill_rankings_for_current_calendar_year(self, request, queryset):
       if queryset.count() > 1:
         self.message_user(request, "Can not update more than one activity at once.",
           level=messages.constants.WARNING)
@@ -38,7 +39,7 @@ class GameSessionAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'result_summary', 'validation')
     list_filter = ('validated',)
     # date_hierarchy = 'datetime'
-    actions = ['validate_matches', 'invalidate_matches', 'fix_incorrect_player']
+    actions = ['validate_matches_and_update_skill', 'invalidate_matches', 'fix_incorrect_player']
 
     def result_summary(self, obj):
       return obj.summary_str()
@@ -48,8 +49,9 @@ class GameSessionAdmin(admin.ModelAdmin):
       return obj.validated
     validation.boolean = True
     
-    def validate_matches(self, request, queryset):
+    def validate_matches_and_update_skill(self, request, queryset):
       queryset.update(validated=True)
+      incremental_update_player_skills(queryset)
       self.message_user(request, "GameSessions validated")
 
     def invalidate_matches(self, request, queryset):
