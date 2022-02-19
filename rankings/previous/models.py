@@ -1,9 +1,15 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-# Feel free to rename the models, but don't rename db_table values or field names.
+#!/usr/bin/env python3
+"""
+Django ORM database models.
+
+Originally generated with `inspectdb`.
+> This is an auto-generated Django model module.
+> You'll have to do the following manually to clean this up:
+>   * Rearrange models' order
+>   * Make sure each model has one field with primary_key=True
+>   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
+> Feel free to rename the models, but don't rename db_table values or field names.
+"""
 from __future__ import unicode_literals
 
 from django.db import models
@@ -12,15 +18,8 @@ import datetime
 from .utils import cardinalToOrdinal
 
 
-"""
-A type of game.
-"""
-
-
 class Activity(models.Model):
-    """
-    A type of activity for which new match results can be recorded.
-    """
+    """A type of activity/game for which new match results can be recorded."""
 
     id = models.TextField(primary_key=True)
     url = models.TextField(unique=True, blank=False, null=False)
@@ -39,7 +38,9 @@ class Activity(models.Model):
         db_table = "activity"
 
     def to_dict_with_url(self):
+        """Convert whole object to a dictionary."""
         result = self.__dict__
+        # TODO: no longer "with_url"
         # result["url"] = result["id"]
         return result
 
@@ -47,12 +48,9 @@ class Activity(models.Model):
         return self.name
 
 
-"""
-An abstract class for objects for recording how data was submitted.
-"""
-
-
 class SubmittedData(models.Model):
+    """An abstract class for objects for recording how data was submitted."""
+
     datetime = models.IntegerField(blank=True, null=True)
     submittor = models.TextField(blank=True, null=True)
 
@@ -60,13 +58,13 @@ class SubmittedData(models.Model):
         abstract = True
 
 
-"""
-A session of games played with the same players, at the same location, within a certain
-period of time (see Game).
-"""
-
-
 class GameSession(SubmittedData):
+    """A group of games played together in one session.
+
+    More specifically, games played with the same players, at the same location, within a certain
+    period of time (see Game).
+    """
+
     # id = models.IntegerField(primary_key=True)  # AutoField?
     activity = models.ForeignKey(Activity, models.DO_NOTHING, null=True)
     validated = models.IntegerField(blank=True, null=True)
@@ -75,11 +73,13 @@ class GameSession(SubmittedData):
         db_table = "gamesession"
 
     def get_ranked_teams(self):
+        """Generate the list of teams involved in the session, orderd by their resulting ranking."""
         return [
             team for team in AdhocTeam.objects.filter(result=self).order_by("ranking")
         ]
 
     def summary_str(self):
+        """Generate string summarising game session details."""
         result_str = ", ".join(
             [
                 f"{cardinalToOrdinal(Result.objects.get(team=team).ranking)}: {team.members_str()}"
@@ -94,18 +94,16 @@ class GameSession(SubmittedData):
         )
 
 
-"""
-A group of players that formed a team for a session (see TeamMember).
-"""
-
-
 class AdhocTeam(models.Model):
+    """A group of players that formed a team for a session (see TeamMember)."""
+
     session = models.ForeignKey(GameSession, models.DO_NOTHING, null=True)
 
     class Meta:
         db_table = "adhoc_team"
 
     def members_str(self):
+        """Generate a text summary of players in team."""
         members = [str(m.player) for m in TeamMember.objects.filter(team=self)]
         if len(members) == 0:
             return ""
@@ -117,19 +115,14 @@ class AdhocTeam(models.Model):
         return f"Team {self.id}"
 
 
-"""
-A single game played within a session.
-"""
-
-
 class Game(SubmittedData):
+    """A single game played within a session."""
+
     session = models.ForeignKey(GameSession, models.DO_NOTHING)
     position = models.IntegerField(default=0)
 
     def summary_str_2(self):
-        """
-        A string summarising the game result.
-        """
+        """Generate string summarising the game result."""
         summary = self.to_dict_with_teams()
 
         verb = "played"
@@ -143,6 +136,7 @@ class Game(SubmittedData):
         return f"[{summary['activity_id']}] ID: {summary['id']}, {summary['team1']} {verb} vs. {summary['team2']}"
 
     def to_dict_with_teams(self):
+        """Get game as well as team details as a dict."""
         result = self.__dict__
         result["relative_date"] = datetime.datetime.fromtimestamp(self.datetime)
         result["date"] = datetime.datetime.fromtimestamp(self.datetime)
@@ -163,12 +157,9 @@ class Game(SubmittedData):
         )
 
 
-"""
-The ranking result of a specific team in a given game.
-"""
-
-
 class Result(SubmittedData):
+    """The ranking result of a specific team in a given game."""
+
     game = models.ForeignKey(Game, models.DO_NOTHING)
     team = models.ForeignKey(AdhocTeam, models.DO_NOTHING, related_name="+")
     ranking = models.IntegerField(blank=True, null=True)
@@ -177,12 +168,9 @@ class Result(SubmittedData):
         return f"{self.team} ranked {self.ranking} @ ({self.game})"
 
 
-"""
-A person who forms part of teams to play in games.
-"""
-
-
 class Player(models.Model):
+    """A person who forms part of teams to play in games."""
+
     # id = models.IntegerField(primary_key=True)  # AutoField?
     name = models.TextField()
     email = models.TextField(blank=True, null=True)
@@ -192,6 +180,7 @@ class Player(models.Model):
         db_table = "player"
 
     def to_dict_with_skill(self, activity_id):
+        """Get player's skill as dict containing ranking and skill probabilities."""
         ranks = Ranking.objects.filter(player=self, activity_id=activity_id)
         result = self.__dict__
         result["skill"] = 0
@@ -207,12 +196,9 @@ class Player(models.Model):
         return self.name
 
 
-"""
-A person's current skill ranking for a given activity.
-"""
-
-
 class Ranking(models.Model):
+    """A person's current skill ranking for a given activity."""
+
     activity = models.ForeignKey(Activity, models.DO_NOTHING)
     player = models.ForeignKey(Player, models.DO_NOTHING)
     active = models.IntegerField(blank=True, null=True)
@@ -224,7 +210,8 @@ class Ranking(models.Model):
         unique_together = (("player", "activity"),)
 
     def calc_skill(self):
-        min_range = 0  # skill_type.min_skill_range
+        """Calculate ranking/skill value from skill probability."""
+        min_range = 0  # TODO: skill_type.min_skill_range
         max_range = 50  # skill_type.max_skill_range
 
         skill = max(min_range, min(self.mu - 3 * self.sigma, max_range))
@@ -234,12 +221,9 @@ class Ranking(models.Model):
         return f"{self.player} @ {self.activity}: ({self.mu}, {self.sigma})"
 
 
-"""
-A person's historical skill ranking directly after a given game's result.
-"""
-
-
 class SkillHistory(models.Model):
+    """A person's historical skill ranking directly after a given game's result."""
+
     result = models.ForeignKey(Result, models.DO_NOTHING)
     player = models.ForeignKey(Player, models.DO_NOTHING)
     activity_id = models.TextField(blank=True, null=True)
@@ -251,7 +235,8 @@ class SkillHistory(models.Model):
         unique_together = (("player", "result"),)
 
     def calc_skill(self):
-        min_range = 0  # skill_type.min_skill_range
+        """Calculate ranking/skill value from skill probability."""
+        min_range = 0  # TODO: skill_type.min_skill_range
         max_range = 50  # skill_type.max_skill_range
 
         skill = max(min_range, min(self.mu - 3 * self.sigma, max_range))
@@ -264,12 +249,9 @@ class SkillHistory(models.Model):
         )
 
 
-"""
-A description for the type of skill level that an activity can have.
-"""
-
-
 class SkillType(models.Model):
+    """A description for the type of skill level that an activity can have."""
+
     id = models.TextField(primary_key=True)
     min_skill_range = models.FloatField(default=0)
     max_skill_range = models.FloatField(default=50)
@@ -291,12 +273,9 @@ class SkillType(models.Model):
         )
 
 
-"""
-A member of an AdhocTeam.
-"""
-
-
 class TeamMember(models.Model):
+    """A member of an AdhocTeam."""
+
     team = models.ForeignKey(AdhocTeam, models.DO_NOTHING)
     player = models.ForeignKey(Player, models.DO_NOTHING)
     validated = models.IntegerField(blank=True, null=True)

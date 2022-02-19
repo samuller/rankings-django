@@ -1,3 +1,4 @@
+"""Django URL patterns to redirect URL paths to specific views."""
 from django.conf.urls import url
 
 from . import views

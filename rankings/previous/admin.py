@@ -1,3 +1,4 @@
+"""Django Admin tool configuration."""
 import time
 import datetime
 
@@ -22,6 +23,8 @@ from .models import (
 
 
 class ActivityAdmin(admin.ModelAdmin):
+    """Admin view for Activities."""
+
     list_display = ("__str__",)
     actions = [
         "recalc_skill_rankings",
@@ -29,6 +32,7 @@ class ActivityAdmin(admin.ModelAdmin):
     ]
 
     def recalc_skill_rankings(self, request, queryset):
+        """Define action to completely clear and recalculate the skill rankings."""
         if queryset.count() > 1:
             self.message_user(
                 request,
@@ -42,6 +46,7 @@ class ActivityAdmin(admin.ModelAdmin):
         )
 
     def recalc_skill_rankings_for_current_calendar_year(self, request, queryset):
+        """Define action to recalculate the skill rankings, but only consider games for the current year."""
         if queryset.count() > 1:
             self.message_user(
                 request,
@@ -62,14 +67,20 @@ class ActivityAdmin(admin.ModelAdmin):
 
 
 class PlayerAdmin(admin.ModelAdmin):
+    """Admin view for Players."""
+
     list_display = ("name", "email", "active")
 
 
 class RankingAdmin(admin.ModelAdmin):
+    """Admin view for Rankings."""
+
     list_display = ("__str__",)
 
 
 class GameSessionAdmin(admin.ModelAdmin):
+    """Admin view for GameSessions."""
+
     list_display = ("__str__", "result_summary", "validation")
     list_filter = ("validated",)
     # date_hierarchy = 'datetime'
@@ -80,16 +91,19 @@ class GameSessionAdmin(admin.ModelAdmin):
     ]
 
     def result_summary(self, obj):
+        """Define display column to show a short summary of the GameSession."""
         return obj.summary_str()
 
     result_summary.short_description = "Summary"
 
     def validation(self, obj):
+        """Define display column to indicate showing validation as a boolean."""
         return obj.validated
 
     validation.boolean = True
 
     def validate_matches_and_update_skill(self, request, queryset):
+        """Define action to declare a submission to be valid and update the skill of all players involved."""
         # Check all session are for the same activity
         activity = get_common_activity(queryset)
         if activity is None:
@@ -124,10 +138,12 @@ class GameSessionAdmin(admin.ModelAdmin):
         self.message_user(request, f"GameSessions validated in {end - start:.2f}s")
 
     def invalidate_matches(self, request, queryset):
+        """Define action to set a submission as invalid."""
         queryset.update(validated=False)
         self.message_user(request, "GameSessions invalidated")
 
     def fix_incorrect_player(self, request, queryset):
+        """Define action to fix an incorrectly selected player in a GameSession submission."""
         result_ids = ",".join([str(val[0]) for val in queryset.values_list("id")])
         return HttpResponseRedirect(
             reverse("select_fix_player", kwargs={"session_ids_str": result_ids})

@@ -1,3 +1,4 @@
+"""Django views for this app."""
 import json
 import time
 import socket
@@ -22,10 +23,8 @@ from .models import (
 )
 
 
-# Create your views here.
-
-
 def main_page(request):
+    """Generate the home page that lists all current activities."""
     activities = [
         activity.to_dict_with_url() for activity in Activity.objects.filter(active=True)
     ]
@@ -34,10 +33,12 @@ def main_page(request):
 
 
 def validate_all_matches(request):
+    """TODO: Validate all outstanding matches."""
     return HttpResponse("")
 
 
 def activity_summary(request, activity_url):
+    """Generata a summary page for an activity (listing recent matches and leading players)."""
     activity = Activity.objects.filter(url=activity_url)
     if len(activity) != 1:
         return redirect("home")
@@ -77,6 +78,7 @@ def activity_summary(request, activity_url):
 
 
 def list_players(request, activity_url, sort_by):
+    """List all the players (and their skill) that are active in the given activity."""
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
@@ -106,6 +108,7 @@ def list_players(request, activity_url, sort_by):
 
 
 def player_info(request, activity_url, player_id):
+    """Generate a summary/profile page for a player in a certain activity."""
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
@@ -124,6 +127,7 @@ def player_info(request, activity_url, player_id):
 
 
 def player_history(request, activity_url, player_id, max_len=500):
+    """Get the full skill history for a given player and given activity."""
     activity = Activity.objects.get(url=activity_url)
     if activity is None:
         return HttpResponse(json.dumps({"skill_history": []}))
@@ -132,7 +136,7 @@ def player_history(request, activity_url, player_id, max_len=500):
         player_id=player_id, activity_id=activity.id
     ).order_by("result__datetime")
     # Limit history to last few points
-    history = history[max(len(history) - max_len, 0) :]
+    history = history[max(len(history) - max_len, 0) :]  # noqa: E203
     return HttpResponse(
         json.dumps(
             {
@@ -145,6 +149,7 @@ def player_history(request, activity_url, player_id, max_len=500):
 
 
 def list_matches(request, activity_url, page=1, match_id=None):
+    """List all the matches for a given activity."""
     page = max(int(page), 1)
     results_per_page = 50
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
@@ -231,11 +236,13 @@ def update(request, activity_url, year=None):
 
 
 def get_players(request, activity_url):
+    """TODO: Get all players for an activity (currently embedded in page HTML)."""
     return HttpResponse("")
 
 
 @csrf_exempt
 def undo_submit(request, activity_url):
+    """TODO: Allow a user to undo their own mistaken submission (within some constraints)."""
     submittor = identify_request_source(request)
 
     activity = Activity.objects.get(url=activity_url)
@@ -271,11 +278,13 @@ def undo_submit(request, activity_url):
 
 
 def gen_valid_reason_response(valid, reason):
+    """Help to generate a JSON message providing feedback on the submission process."""
     return HttpResponse(json.dumps({"valid": valid, "reason": reason}))
 
 
 @csrf_exempt
 def submit_match(request, activity_url):
+    """View to submit and record one or matches."""
     submittor = identify_request_source(request)
 
     activity = Activity.objects.get(url=activity_url)
@@ -318,6 +327,7 @@ def submit_match(request, activity_url):
 
 
 def about(request):
+    """Generate the 'about' page."""
     activities = [a.to_dict_with_url() for a in Activity.objects.filter(active=True)]
     context = {"activities": activities}
     return render(request, "about.html", context)
@@ -326,6 +336,7 @@ def about(request):
 @csrf_exempt
 @user_passes_test(lambda u: u.is_superuser)
 def replace_player_in_submissions(request):
+    """Correct a mistaken submission by replacing an incorrectly selected player."""
     if request.method != "POST":
         return HttpResponse("Not POST!", content_type="text/plain")
 
@@ -348,6 +359,7 @@ def replace_player_in_submissions(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def select_player_to_replace_in_submissions(request, session_ids_str):
+    """Generate a view to help select players during the fix of a mistaken submission."""
     session_ids = [int(val) for val in session_ids_str.split(",")]
 
     team_members = TeamMember.objects.filter(
@@ -370,17 +382,25 @@ def select_player_to_replace_in_submissions(request, session_ids_str):
 
 
 def new_rating(activity):
+    """Generate a starting ranking for the given activity."""
+    # TODO: use activity.skill_ranking
     start_mu = 25
     start_sigma = 25 / 3.0
     return Rating(start_mu, start_sigma)
 
 
 def generate_blank_ratings(activity):
+    """Generate an empty dictionary of rankings for all currently known players."""
     ratings = {p.id: new_rating(activity) for p in Player.objects.all()}
     return ratings
 
 
 def batch_update_player_skills(activity_id, after_date=None):
+    """Do a full/batch update of player skills for a specific activity.
+
+    This will wipe all current rankings and recalculate them and the SkillHistory's from scratch,
+    reconsidering the whole history of games played (or only those after a certain, given, date).
+    """
     activity = Activity.objects.get(id=activity_id)
     # Setup initial ratings for each player
     ratings = generate_blank_ratings(activity)
@@ -412,6 +432,7 @@ def batch_update_player_skills(activity_id, after_date=None):
 
 
 def get_common_activity(game_sessions):
+    """Get the activity in common between a list of GameSessions."""
     activity = game_sessions[0].activity
     # Check that all session are from the same activity
     for session in game_sessions:
@@ -421,6 +442,7 @@ def get_common_activity(game_sessions):
 
 
 def incremental_update_player_skills(new_game_sessions, current_ratings=None):
+    """Incrementally update player skills by considering only the given new set of games."""
     if len(new_game_sessions) == 0:
         return current_ratings
 
@@ -481,6 +503,7 @@ def incremental_update_player_skills(new_game_sessions, current_ratings=None):
 def record_matches(
     activity, teams_per_match, winning_team_per_match, submittor, submission_time=None
 ):
+    """Record multiple matches for a single activity."""
     assert len(teams_per_match) == len(winning_team_per_match)
     results = []
 
@@ -503,6 +526,7 @@ def record_matches(
 
 
 def record_match(session, teams, winning_team):
+    """Record a single match as part of the given GameSession."""
     # TODO: support any number of teams (2+)
     if winning_team == 1:
         rankings = [1, 2]
@@ -548,14 +572,13 @@ def record_match(session, teams, winning_team):
 
 
 def show_id(request):
+    """Return a string to identify the source of the client request."""
     id = identify_request_source(request)
     return HttpResponse(id, content_type="text/plain")
 
 
 def identify_request_source(request):
-    """
-    Generate a string that identifies the source of the request.
-    """
+    """Generate a string that identifies the source of the request."""
     id = request.META["REMOTE_ADDR"]
     # Detect nginx ip forwarding
     if "HTTP_X_REAL_IP" in request.META:

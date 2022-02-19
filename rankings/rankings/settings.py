@@ -14,11 +14,13 @@ import os
 
 
 def generate_secret_key(filename):
+    """Generate a file, containing a newly generated secret key."""
     from django.utils.crypto import get_random_string
 
     chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
     key = get_random_string(50, chars)
     with open(filename, "w") as file_handle:
+        file_handle.write('"""This file shouldn\'t be commited to repo."""\n')
         file_handle.write("SECRET_KEY = '{}'\n".format(key))
 
 
