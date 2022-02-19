@@ -334,16 +334,8 @@ def batch_update_player_skills(activity_id, after_date=None):
     SkillHistory.objects.filter(activity_id=activity_id).delete()
 
     # Process each match to calculate rating progress and determine final rankings
-    ratings = incremental_update_player_skills(GameSession.objects.filter(
-            activity=activity, validated=1, datetime__gte=after_date), ratings)
-
-    # Save calculated rankings
-    Ranking.objects.filter(activity_id=activity_id).delete()
-    for player_id in ratings:
-        rating = ratings[player_id]
-        ranking = Ranking(activity_id=activity_id, player_id=player_id,
-                          mu=rating.mu, sigma=rating.sigma)
-        ranking.save()
+    incremental_update_player_skills(GameSession.objects.filter(
+        activity=activity, validated=1, datetime__gte=after_date), ratings)
 
 
 def incremental_update_player_skills(new_game_sessions, current_ratings=None):
@@ -387,7 +379,12 @@ def incremental_update_player_skills(new_game_sessions, current_ratings=None):
                                             mu=team_ratings[idx_team][idx_member].mu,
                                             sigma=team_ratings[idx_team][idx_member].sigma)
                     history.save()
-    return ratings
+    # Save/update calculated rankings
+    for player_id, rating in ratings.items():
+        ranking, _ = Ranking.objects.update_or_create(
+            activity_id=activity.id, player_id=player_id,
+            defaults={"mu": rating.mu, "sigma": rating.sigma}
+        )
 
 
 # Logic for saving matches
