@@ -5,13 +5,15 @@ description = ""
 authors = ["Simon Muller <samullers@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = ">=3.6.2,<4.0"
 Django = "2.2.4"
 trueskill = "0.4.5"
 Jinja2 = "2.10.1"
 django-mass-edit = "3.2.0"
 
 [tool.poetry.dev-dependencies]
+flake8 = "^4.0.1"
+black = "^22.1.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
