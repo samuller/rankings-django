@@ -111,7 +111,7 @@ class GameSessionAdmin(admin.ModelAdmin):
             messages.error(
                 request,
                 "Can't skip unvalidated sessions - validation has to occur in order"
-                + "see: %s" % (first_unvalidated.id,),
+                + " (see: %s)" % (first_unvalidated.id,),
             )
             return
 
