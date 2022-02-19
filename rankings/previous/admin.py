@@ -1,3 +1,4 @@
+import time
 import datetime
 from django.contrib import admin
 from django.contrib import messages
@@ -70,11 +71,13 @@ class GameSessionAdmin(admin.ModelAdmin):
           + "see: %s" % (first_unvalidated.id,))
         return
 
+      start = time.time()
       # Validate sessions
       queryset.update(validated=True)
       # Update player skills
       incremental_update_player_skills(queryset)
-      self.message_user(request, "GameSessions validated")
+      end = time.time()
+      self.message_user(request, "GameSessions validated in %.2fs" % (end - start))
 
     def invalidate_matches(self, request, queryset):
       queryset.update(validated=False)
