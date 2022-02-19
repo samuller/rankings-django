@@ -63,10 +63,11 @@ class GameSessionAdmin(admin.ModelAdmin):
       # update will be slightly affected
       earliest_match = queryset.order_by('datetime').first()
       first_unvalidated = GameSession.objects \
-          .filter(activity=activity, validated=False) \
+          .filter(activity=activity, validated__isnull=True) \
           .order_by('datetime').first()
       if earliest_match != first_unvalidated:
-        messages.error(request, "Can't skip unvalidated sessions - validation has to occur in order")
+        messages.error(request, "Can't skip unvalidated sessions - validation has to occur in order"
+          + "see: %s" % (first_unvalidated.id,))
         return
 
       # Validate sessions
