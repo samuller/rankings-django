@@ -82,22 +82,14 @@ class GameSession(SubmittedData):
     def summary_str(self):
         result_str = ", ".join(
             [
-                "%s: %s"
-                % (
-                    cardinalToOrdinal(Result.objects.get(team=team).ranking),
-                    team.members_str(),
-                )
+                f"{cardinalToOrdinal(Result.objects.get(team=team).ranking)}: {team.members_str()}"
                 for team in AdhocTeam.objects.filter(session=self)
             ]
         )
-        return "[%s] %s result: %s" % (self.id, self.activity.id, result_str)
+        return f"[{self.id}] {self.activity.id} result: {result_str}"
 
     def __str__(self):
-        return "Game of %s @ %s (Submitter: %s)" % (
-            self.activity,
-            self.datetime,
-            self.submittor,
-        )
+        return f"Game of {self.activity} @ {self.datetime} (Submitter: {self.submittor})"
 
 
 """
@@ -120,7 +112,7 @@ class AdhocTeam(models.Model):
         return ", ".join(members[:-1]) + " & " + members[-1]
 
     def __str__(self):
-        return "Team %s" % (self.id)
+        return f"Team {self.id}"
 
 
 """
@@ -146,13 +138,7 @@ class Game(SubmittedData):
         if summary["team1_rank"] == summary["team2_rank"]:
             verb = "tied"
 
-        return "[%s] ID: %s, %s %s vs. %s" % (
-            summary["activity_id"],
-            summary["id"],
-            summary["team1"],
-            verb,
-            summary["team2"],
-        )
+        return f"[{summary['activity_id']}] ID: {summary['id']}, {summary['team1']} {verb} vs. {summary['team2']}"
 
     def to_dict_with_teams(self):
         result = self.__dict__
@@ -161,19 +147,16 @@ class Game(SubmittedData):
         teams = AdhocTeam.objects.filter(session=self.session)
         cnt = 0
         for team in teams:
-            result["team%s" % (cnt + 1)] = team.members_str()
+            result[f"team{cnt + 1}"] = team.members_str()
             team_result = Result.objects.get(game=self, team=team)
-            result["team%s_rank" % (cnt + 1)] = team_result.ranking
+            result[f"team{cnt + 1}_rank"] = team_result.ranking
             cnt += 1
 
         return result
 
     def __str__(self):
-        return "Game of %s @ %s (Submitter: %s)" % (
-            self.session.activity,
-            self.session.datetime,
-            self.session.submittor,
-        )
+        return f"Game of {self.session.activity} @ {self.session.datetime}" + \
+            f" (Submitter: {self.session.submittor})"
 
 
 """
@@ -187,7 +170,7 @@ class Result(SubmittedData):
     ranking = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return "%s ranked %s @ (%s)" % (self.team, self.ranking, self.game)
+        return f"{self.team} ranked {self.ranking} @ ({self.game})"
 
 
 """
@@ -244,7 +227,7 @@ class Ranking(models.Model):
         return skill
 
     def __str__(self):
-        return "%s @ %s: (%s, %s)" % (self.player, self.activity, self.mu, self.sigma)
+        return f"{self.player} @ {self.activity}: ({self.mu}, {self.sigma})"
 
 
 """
@@ -271,13 +254,8 @@ class SkillHistory(models.Model):
         return skill
 
     def __str__(self):
-        return "[Game %s] %s @ %s: (%s, %s)" % (
-            self.result.game.id,
-            self.player,
-            self.activity_id,
-            self.mu,
-            self.sigma,
-        )
+        return f"[Game {self.result.game.id}] {self.player} @ " + \
+            f"{self.activity_id}: ({self.mu}, {self.sigma})"
 
 
 """
@@ -300,16 +278,10 @@ class SkillType(models.Model):
 
     def __str__(self):
         return (
-            "Range: %s-%s, Initial: %s,%s, Skill chain: %s, Draw: %s, Dynamics: %s"
-            % (
-                self.min_skill_range,
-                self.max_skill_range,
-                self.initial_mean,
-                self.initial_std_dev,
-                self.skill_chain,
-                self.draw_chance,
-                self.dynamics_factor,
-            )
+            f"Range: {self.min_skill_range}-{self.max_skill_range}, " +
+            f"Initial: {self.initial_mean},{self.initial_std_dev}, " +
+            f"Skill chain: {self.skill_chain}, Draw: {self.draw_chance}, " +
+            f"Dynamics: {self.dynamics_factor}"
         )
 
 
@@ -328,4 +300,4 @@ class TeamMember(models.Model):
         unique_together = (("player", "team"),)
 
     def __str__(self):
-        return "%s was member of %s" % (self.player, self.team)
+        return f"{self.player} was member of {self.team}"

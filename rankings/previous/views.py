@@ -227,7 +227,7 @@ def update(request, activity_url, year=None):
     start = time.time()
     batch_update_player_skills(activity.id, from_date)
     end = time.time()
-    return HttpResponse("Update completed in %.2fs" % (end - start))
+    return HttpResponse(f"Update completed in {end - start:.2f}s")
 
 
 def get_players(request, activity_url):
@@ -250,7 +250,7 @@ def undo_submit(request, activity_url):
     try:
         game = Game.objects.get(id=match_id)
     except Game.DoesNotExist:
-        return gen_valid_reason_response(False, "Match not found: {}".format(match_id))
+        return gen_valid_reason_response(False, f"Match not found: {match_id}")
 
     if game.session.submittor != submittor:
         return gen_valid_reason_response(
@@ -267,7 +267,7 @@ def undo_submit(request, activity_url):
 
     game.delete()
 
-    return gen_valid_reason_response(True, "Match {} deleted".format(match_id))
+    return gen_valid_reason_response(True, "Match {match_id} deleted")
 
 
 def gen_valid_reason_response(valid, reason):
@@ -341,7 +341,7 @@ def replace_player_in_submissions(request):
         player=Player.objects.get(id=prev_player_id)
     ).update(player=Player.objects.get(id=new_player_id))
     return HttpResponse(
-        "Successfully changed %s submissions" % (count_changed,),
+        f"Successfully changed {count_changed} submissions",
         content_type="text/plain",
     )
 
@@ -509,7 +509,7 @@ def record_match(session, teams, winning_team):
     elif winning_team == 2:
         rankings = [2, 1]
     else:
-        assert False, "Winner incorrectly identified: %s" % winning_team
+        assert False, f"Winner incorrectly identified: {winning_team}"
 
     submit_time = int(time.time())
     game = Game.objects.create(
@@ -565,7 +565,7 @@ def identify_request_source(request):
         # works, and we might generate e.g. "127.0.0.1 (127.0.0.1)"
         # addr = socket.getfqdn(submittor)
         addr = socket.gethostbyaddr(id)
-        id = "{} ({})".format(id, addr[0])
+        id = f"{id} ({addr[0]})"
     except:  # noqa: E722
         pass
 

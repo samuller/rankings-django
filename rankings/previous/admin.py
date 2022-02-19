@@ -111,7 +111,7 @@ class GameSessionAdmin(admin.ModelAdmin):
             messages.error(
                 request,
                 "Can't skip unvalidated sessions - validation has to occur in order"
-                + " (see: %s)" % (first_unvalidated.id,),
+                + f" (see: {first_unvalidated.id})",
             )
             return
 
@@ -121,7 +121,7 @@ class GameSessionAdmin(admin.ModelAdmin):
         # Update player skills
         incremental_update_player_skills(queryset)
         end = time.time()
-        self.message_user(request, "GameSessions validated in %.2fs" % (end - start))
+        self.message_user(request, f"GameSessions validated in {end - start:.2f}s")
 
     def invalidate_matches(self, request, queryset):
         queryset.update(validated=False)
