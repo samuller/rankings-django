@@ -1,4 +1,6 @@
 
+[![Build Status](https://github.com/samuller/rankings-django/workflows/tests/badge.svg)](https://github.com/samuller/rankings-django/actions)
+
 ## Development
 
 For development perform the following commands from the root directory.
