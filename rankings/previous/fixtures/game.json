@@ -3,7 +3,9 @@
     "model": "previous.activity",
     "pk": "table_tennis",
     "fields": {
+      "url": "table_tennis",
       "name": "Table Tennis",
+      "active": true,
       "skill_type": "default",
       "min_teams_per_match": 2,
       "max_teams_per_match": null,
