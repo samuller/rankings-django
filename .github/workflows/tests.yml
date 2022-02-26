@@ -50,3 +50,5 @@ jobs:
           cd rankings && poetry run ./manage.py migrate \
             && poetry run ./manage.py loaddata game.json \
             && poetry run ./manage.py loaddata players.json
+      - name: Run Django tests
+        run: cd rankings && poetry run ./manage.py test --debug-mode
