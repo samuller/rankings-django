@@ -47,10 +47,13 @@ jobs:
         run: poetry run black --check rankings/
       - name: Test database creation, migrations & data import
         run: |
-          cd rankings && poetry run ./manage.py migrate \
+          poetry run ./manage.py migrate \
             && poetry run ./manage.py loaddata game.json \
             && poetry run ./manage.py loaddata players.json
+        working-directory: rankings
       - name: Run Django tests
-        run: cd rankings && poetry run coverage run --source='.' manage.py test --debug-mode
+        run: poetry run coverage run --source='.' manage.py test --debug-mode
+        working-directory: rankings
       - name: Print coverage report
         run: poetry run coverage report
+        working-directory: rankings
