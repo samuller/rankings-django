@@ -7,11 +7,12 @@ from .models import Activity, Player, GameSession
 
 
 class BasicDataTestCase(TestCase):
+    """Basic tests."""
 
     activity_url = "tennis"
 
     def setUp(self):
-        """Set-up test."""
+        """Test set-up."""
         self.client = Client()
         Activity.objects.create(url=self.activity_url, name=self.activity_url)
         Player.objects.create(name="Zeus", email="zeus")
