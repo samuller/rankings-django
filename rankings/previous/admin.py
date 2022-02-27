@@ -94,13 +94,13 @@ class GameSessionAdmin(admin.ModelAdmin):
         """Define display column to show a short summary of the GameSession."""
         return obj.summary_str()
 
-    result_summary.short_description = "Summary"
+    result_summary.short_description = "Summary"  # type: ignore
 
     def validation(self, obj):
         """Define display column to indicate showing validation as a boolean."""
         return obj.validated
 
-    validation.boolean = True
+    validation.boolean = True  # type: ignore
 
     def validate_matches_and_update_skill(self, request, queryset):
         """Define action to declare a submission to be valid and update the skill of all players involved."""
