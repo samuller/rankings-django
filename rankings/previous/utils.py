@@ -1,7 +1,7 @@
 """Utility functions."""
 
 
-def cardinalToOrdinal(num):
+def cardinalToOrdinal(num: int) -> str:
     """Convert a cardinal number (how many) to an ordinal number string (which position)."""
     suffix = {
         1: "st",

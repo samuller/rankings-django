@@ -13,7 +13,7 @@ import os
 from typing import List
 
 
-def generate_secret_key(filename):
+def generate_secret_key(filename: str) -> None:
     """Generate a file, containing a newly generated secret key."""
     from django.utils.crypto import get_random_string
 

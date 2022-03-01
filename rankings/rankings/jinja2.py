@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Jinja configurations."""
 import json
+from typing import Any, List, Dict
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 
@@ -8,12 +9,12 @@ from django.urls import reverse
 from jinja2 import Environment
 
 
-def no_op(with_categories=False, category_filter=[]):
+def no_op(with_categories: bool = False, category_filter: List[str] = []) -> None:
     """Define custom filter to override Flask's `get_flashed_messages`."""
     return None
 
 
-def to_json(value):
+def to_json(value: Any) -> str:
     """Define custom filter to convert data variable to JSON."""
     if isinstance(value, dict):
         # Clear ModelState left by convert django models to dict's
@@ -22,14 +23,14 @@ def to_json(value):
     return result
 
 
-def url_for(endpoint, **values):
+def url_for(endpoint: str, **values: Dict[str, Any]) -> str:
     """Define custom filter to generate URL for Django views or static files."""
     if endpoint == "static":
         return staticfiles_storage.url(values.get("filename"))
     return reverse(endpoint, kwargs=values)
 
 
-def environment(**options):
+def environment(**options: Dict[str, Any]) -> Environment:
     """Define Jinja environment configurations."""
     env = Environment(**options)
     env.globals.update(

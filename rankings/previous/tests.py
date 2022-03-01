@@ -11,14 +11,14 @@ class BasicDataTestCase(TestCase):
 
     activity_url = "tennis"
 
-    def setUp(self):
+    def setUp(self) -> None:
         """Test set-up."""
         self.client = Client()
         Activity.objects.create(url=self.activity_url, name=self.activity_url)
         Player.objects.create(name="Zeus", email="zeus")
         Player.objects.create(name="Hades", email="hades")
 
-    def test_main_page(self):
+    def test_main_page(self) -> None:
         """Test main page lists activity."""
         assert Activity.objects.filter(url=self.activity_url).count() == 1
         response = self.client.get("/")
@@ -26,7 +26,7 @@ class BasicDataTestCase(TestCase):
         act = self.activity_url
         assert f'<li><a href="/{act}">{act}</a></li>' in str(response.content)
 
-    def test_submission(self):
+    def test_submission(self) -> None:
         """Test submitting match results."""
         activity = Activity.objects.get(url=self.activity_url)
         assert activity is not None

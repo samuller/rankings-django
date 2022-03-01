@@ -3,8 +3,9 @@ import json
 import time
 import socket
 import datetime
+from typing import List, Dict, Optional, Any, Tuple, cast
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from trueskill import Rating, rate
@@ -23,7 +24,7 @@ from .models import (
 )
 
 
-def main_page(request):
+def main_page(request: HttpRequest) -> HttpResponse:
     """Generate the home page that lists all current activities."""
     activities = [
         activity.to_dict_with_url() for activity in Activity.objects.filter(active=True)
@@ -32,12 +33,12 @@ def main_page(request):
     return render(request, "main_page.html", context)
 
 
-def validate_all_matches(request):
+def validate_all_matches(request: HttpRequest) -> HttpResponse:
     """TODO: Validate all outstanding matches."""
     return HttpResponse("")
 
 
-def activity_summary(request, activity_url):
+def activity_summary(request: HttpRequest, activity_url: str) -> HttpResponse:
     """Generata a summary page for an activity (listing recent matches and leading players)."""
     activity = Activity.objects.filter(url=activity_url)
     if len(activity) != 1:
@@ -77,7 +78,7 @@ def activity_summary(request, activity_url):
     return render(request, "activity_summary.html", context)
 
 
-def list_players(request, activity_url, sort_by):
+def list_players(request: HttpRequest, activity_url: str, sort_by: str) -> HttpResponse:
     """List all the players (and their skill) that are active in the given activity."""
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
@@ -107,7 +108,9 @@ def list_players(request, activity_url, sort_by):
     return render(request, "list_players.html", context)
 
 
-def player_info(request, activity_url, player_id):
+def player_info(
+    request: HttpRequest, activity_url: str, player_id: int
+) -> HttpResponse:
     """Generate a summary/profile page for a player in a certain activity."""
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
@@ -126,7 +129,9 @@ def player_info(request, activity_url, player_id):
     return render(request, "player.html", context)
 
 
-def player_history(request, activity_url, player_id, max_len=500):
+def player_history(
+    request: HttpRequest, activity_url: str, player_id: int, max_len: int = 500
+) -> HttpResponse:
     """Get the full skill history for a given player and given activity."""
     activity = Activity.objects.get(url=activity_url)
     if activity is None:
@@ -148,7 +153,12 @@ def player_history(request, activity_url, player_id, max_len=500):
     )
 
 
-def list_matches(request, activity_url, page=1, match_id=None):
+def list_matches(
+    request: HttpRequest,
+    activity_url: str,
+    page: int = 1,
+    match_id: Optional[int] = None,
+) -> HttpResponse:
     """List all the matches for a given activity."""
     page = max(int(page), 1)
     results_per_page = 50
@@ -215,7 +225,9 @@ def list_matches(request, activity_url, page=1, match_id=None):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def update(request, activity_url, year=None):
+def update(
+    request: HttpRequest, activity_url: str, year: Optional[str] = None
+) -> HttpResponse:
     """
     Fully clears and recalculates all rankings.
 
@@ -235,13 +247,13 @@ def update(request, activity_url, year=None):
     return HttpResponse(f"Update completed in {end - start:.2f}s")
 
 
-def get_players(request, activity_url):
+def get_players(request: HttpRequest, activity_url: str) -> HttpResponse:
     """TODO: Get all players for an activity (currently embedded in page HTML)."""
     return HttpResponse("")
 
 
 @csrf_exempt
-def undo_submit(request, activity_url):
+def undo_submit(request: HttpRequest, activity_url: str) -> HttpResponse:
     """TODO: Allow a user to undo their own mistaken submission (within some constraints)."""
     submittor = identify_request_source(request)
 
@@ -277,13 +289,13 @@ def undo_submit(request, activity_url):
     return gen_valid_reason_response(True, "Match {match_id} deleted")
 
 
-def gen_valid_reason_response(valid, reason):
+def gen_valid_reason_response(valid: bool, reason: str) -> HttpResponse:
     """Help to generate a JSON message providing feedback on the submission process."""
     return HttpResponse(json.dumps({"valid": valid, "reason": reason}))
 
 
 @csrf_exempt
-def submit_match(request, activity_url):
+def submit_match(request: HttpRequest, activity_url: str) -> HttpResponse:
     """View to submit and record one or matches."""
     submittor = identify_request_source(request)
 
@@ -326,7 +338,7 @@ def submit_match(request, activity_url):
         return gen_valid_reason_response(True, "")
 
 
-def about(request):
+def about(request: HttpRequest) -> HttpResponse:
     """Generate the 'about' page."""
     activities = [a.to_dict_with_url() for a in Activity.objects.filter(active=True)]
     context = {"activities": activities}
@@ -335,7 +347,7 @@ def about(request):
 
 @csrf_exempt
 @user_passes_test(lambda u: u.is_superuser)
-def replace_player_in_submissions(request):
+def replace_player_in_submissions(request: HttpRequest) -> HttpResponse:
     """Correct a mistaken submission by replacing an incorrectly selected player."""
     if request.method != "POST":
         return HttpResponse("Not POST!", content_type="text/plain")
@@ -358,7 +370,9 @@ def replace_player_in_submissions(request):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def select_player_to_replace_in_submissions(request, session_ids_str):
+def select_player_to_replace_in_submissions(
+    request: HttpRequest, session_ids_str: str
+) -> HttpResponse:
     """Generate a view to help select players during the fix of a mistaken submission."""
     session_ids = [int(val) for val in session_ids_str.split(",")]
 
@@ -381,7 +395,7 @@ def select_player_to_replace_in_submissions(request, session_ids_str):
     return render(request, "select_player_to_fix.html", context)
 
 
-def new_rating(activity):
+def new_rating(activity: Activity) -> Rating:
     """Generate a starting ranking for the given activity."""
     # TODO: use activity.skill_ranking
     start_mu = 25
@@ -389,13 +403,15 @@ def new_rating(activity):
     return Rating(start_mu, start_sigma)
 
 
-def generate_blank_ratings(activity):
+def generate_blank_ratings(activity: Activity) -> Dict[int, Rating]:
     """Generate an empty dictionary of rankings for all currently known players."""
     ratings = {p.id: new_rating(activity) for p in Player.objects.all()}
     return ratings
 
 
-def batch_update_player_skills(activity_id, after_date=None):
+def batch_update_player_skills(
+    activity_id: int, after_date: Optional[Tuple[int, int, int]] = None
+) -> None:
     """Do a full/batch update of player skills for a specific activity.
 
     This will wipe all current rankings and recalculate them and the SkillHistory's from scratch,
@@ -412,12 +428,9 @@ def batch_update_player_skills(activity_id, after_date=None):
             .earliest("datetime")
             .datetime
         )
-        after_date = earliest_date
+        after_date_unix = earliest_date
     else:
-        after_date = list(after_date)
-        after_date.extend([0, 0, 0, 0, 0, 0])
-        after_date = tuple(after_date)
-        after_date = int(time.mktime(after_date))
+        after_date_unix = int(time.mktime((*after_date, 0, 0, 0, 0, 0, 0)))
 
     # Clear skill history that will be reconstructed
     SkillHistory.objects.filter(activity_id=activity_id).delete()
@@ -425,23 +438,25 @@ def batch_update_player_skills(activity_id, after_date=None):
     # Process each match to calculate rating progress and determine final rankings
     incremental_update_player_skills(
         GameSession.objects.filter(
-            activity=activity, validated=1, datetime__gte=after_date
+            activity=activity, validated=1, datetime__gte=after_date_unix
         ),
         ratings,
     )
 
 
-def get_common_activity(game_sessions):
+def get_common_activity(game_sessions: List[GameSession]) -> Optional[Activity]:
     """Get the activity in common between a list of GameSessions."""
     activity = game_sessions[0].activity
     # Check that all session are from the same activity
     for session in game_sessions:
         if session.activity.id != activity.id:
             return None
-    return activity
+    return cast(Activity, activity)
 
 
-def incremental_update_player_skills(new_game_sessions, current_ratings=None):
+def incremental_update_player_skills(
+    new_game_sessions: Any, current_ratings: Optional[Dict[int, Rating]] = None
+) -> Optional[Dict[int, Rating]]:
     """Incrementally update player skills by considering only the given new set of games."""
     if len(new_game_sessions) == 0:
         return current_ratings
@@ -497,12 +512,17 @@ def incremental_update_player_skills(new_game_sessions, current_ratings=None):
             player_id=player_id,
             defaults={"mu": rating.mu, "sigma": rating.sigma},
         )
+    return ratings
 
 
 # Logic for saving matches
 def record_matches(
-    activity, teams_per_match, winning_team_per_match, submittor, submission_time=None
-):
+    activity: Activity,
+    teams_per_match: List[List[List[int]]],
+    winning_team_per_match: List[int],
+    submittor: str,
+    submission_time: Optional[int] = None,
+) -> Optional[List[int]]:
     """Record multiple matches for a single activity."""
     assert len(teams_per_match) == len(winning_team_per_match)
     results = []
@@ -525,7 +545,9 @@ def record_matches(
     return results
 
 
-def record_match(session, teams, winning_team):
+def record_match(
+    session: GameSession, teams: List[List[int]], winning_team: int
+) -> Optional[Any]:
     """Record a single match as part of the given GameSession."""
     # TODO: support any number of teams (2+)
     if winning_team == 1:
@@ -571,18 +593,18 @@ def record_match(session, teams, winning_team):
     return session.id
 
 
-def show_id(request):
+def show_id(request: HttpRequest) -> HttpResponse:
     """Return a string to identify the source of the client request."""
     id = identify_request_source(request)
     return HttpResponse(id, content_type="text/plain")
 
 
-def identify_request_source(request):
+def identify_request_source(request: HttpRequest) -> str:
     """Generate a string that identifies the source of the request."""
-    id = request.META["REMOTE_ADDR"]
+    id = str(request.META["REMOTE_ADDR"])
     # Detect nginx ip forwarding
     if "HTTP_X_REAL_IP" in request.META:
-        id = request.META["HTTP_X_REAL_IP"]
+        id = str(request.META["HTTP_X_REAL_IP"])
     try:
         # getfqdn() won't throw exception, but then we can't differentiate when it
         # works, and we might generate e.g. "127.0.0.1 (127.0.0.1)"
