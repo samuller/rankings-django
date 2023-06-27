@@ -1,0 +1,19 @@
+# docker-compose.yml for use by devcontainer setup
+
+version: '3'
+services:
+  tailwind-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Map server port to host
+    ports:
+      - 8080:8080
+    volumes:
+      # Mounts the project folder to '/workspace'
+      # in devcontainer.json we have specified workspaceFolder=/workspace
+      - ..:/workspace:cached
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+volumes:
+  pypoetry-cache:
