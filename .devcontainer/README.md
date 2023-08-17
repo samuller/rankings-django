@@ -4,6 +4,7 @@ Visual Studio Code's devcontainer setup makes it easy to do development in isola
 
 ```
 cd rankings-tailwind/
+# npm i -D daisyui@latest
 npm i
 npm run dev
 
