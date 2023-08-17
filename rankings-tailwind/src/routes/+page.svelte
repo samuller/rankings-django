@@ -1,6 +1,4 @@
 <script lang="ts">
-    import Navbar from "../lib/navbar.svelte";
-    import Footer from "../lib/footer.svelte";
 	import Table from "../lib/table.svelte";
 	import AddButton from "../lib/add-button.svelte";
 	import Card from "../lib/card.svelte";

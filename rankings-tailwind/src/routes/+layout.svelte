@@ -6,7 +6,7 @@
 
 <div class="h-screen flex flex-col">
   <Navbar></Navbar>
-  <section class="flex-1 p-4">
+  <section class="bg-gray-300 flex flex-col justify-start gap-6 p-4 flex-1">
   <slot />
   </section>
   <Footer></Footer>
