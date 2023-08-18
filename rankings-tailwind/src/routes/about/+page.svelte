@@ -1,62 +1,42 @@
 <script lang="ts">
-    const TABS = ['Trueskill', 'Foosball', 'Table tennis', 'Website'];
-    let selectedTab = TABS[0];
+	import Card from "$lib/card.svelte";
+	import Tabs from "$lib/tabs.svelte";
+
+	const TABS = [
+		{
+            id: 'trueskill',
+			title: 'Trueskill',
+			content: `<p>
+                    These rankings are based on the <a href="http://research.microsoft.com/en-us/projects/trueskill/">Trueskill™</a>
+                    algorithm that was developed by Microsoft Research. The system represents skill as a Normal
+                    distribution which is updated after every game according to Bayesian probability.
+                </p>`
+		},
+		{
+            id: 'foosball',
+			title: 'Foosball',
+			content: ''
+		},
+		{
+            id: 'table_tennis',
+			title: 'Table tennis',
+			content: ''
+		},
+		{
+            id: 'website',
+			title: 'Website',
+			content: `<h5>Credits</h5>
+				<p>
+                    This site was created using <a href="https://kit.svelte.dev/">SvelteKit</a> and
+                    <a href="https://daisyui.com/">daisyUI</a> for the interface,
+                    <a href="http://www.highcharts.com/">Highcharts</a>
+                    for the graphs and the <a href="https://github.com/moserware/Skills">Skills</a> library for
+                    calculating the skill algorithm.
+                </p>`
+		}
+	];
 </script>
 
-<div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
-    <ul class="flex flex-wrap -mb-px">
-        <li class="mr-2">
-            <a href="#" class:active={selectedTab === TABS[0]} class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
-                Trueskill
-            </a>
-        </li>
-        <li class="mr-2">
-            <a href="#" class:active={selectedTab === TABS[1]} class="inline-block p-4 active:text-blue-600 border-b-2 border-blue-600 rounded-t-lg dark:text-blue-500 dark:border-blue-500" aria-current="page">
-                Foosball
-            </a>
-        </li>
-        <li class="mr-2">
-            <a href="#" class:active={selectedTab === TABS[2]} class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
-                Table tennis
-            </a>
-        </li>
-        <li class="mr-2">
-            <a href="#" class:active={selectedTab === TABS[3]} class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
-                Website
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-
-<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-        <li class="mr-2" role="presentation">
-            <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
-        </li>
-        <li class="mr-2" role="presentation">
-            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">Dashboard</button>
-        </li>
-        <li class="mr-2" role="presentation">
-            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Settings</button>
-        </li>
-        <li role="presentation">
-            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">Contacts</button>
-        </li>
-    </ul>
-</div>
-<div id="myTabContent">
-    <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-        <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Profile tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-    </div>
-    <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-        <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-    </div>
-    <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-        <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-    </div>
-    <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
-        <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Contacts tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-    </div>
-</div>
+<Card class="w-full lg:w-3/4 2xl:w-[calc(0.75*1536px)]">
+    <Tabs data={TABS}></Tabs>
+</Card>
