@@ -2,28 +2,20 @@
 	import Table from "../lib/table.svelte";
 	import AddButton from "../lib/add-button.svelte";
 	import Card from "../lib/card.svelte";
+
+    let activities = ['⚽ Foosball', '🏓 Table tennis', '🏆 Table Tennis Tournament 2022'];
 </script>
 
-<!--
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-
-<h1 class="text-3xl font-bold underline">
-    Hello world!
-</h1> -->
-
-<Card>
-    <p class="text-white group-hover:text-white text-lg">Table tennis</p>
-</Card>
-
-<Card>
-    <div class="flex items-center space-x-3">
-    <h3 class="text-white group-hover:text-white text-sm font-semibold">New project</h3>
-    </div>
-    <p class="text-white group-hover:text-white text-sm">Create a new project from a variety of starting templates.</p>
-</Card>
+{#each activities as activity}
+    <a href="#">
+        <Card class="w-96 md:w-[600px] hover:bg-sky-500 hover:ring-sky-500">
+                <p class="text-center text-white group-hover:[text-shadow:_0_0_3px_blue] text-2xl">{activity}</p>
+        </Card>
+    </a>
+{/each}
 
 <Table></Table>
+
 <AddButton></AddButton>
 
 <style lang="postcss">

@@ -1,3 +1,11 @@
-<a href="#" class="group block max-w-xs mx-auto rounded-lg p-6 bg-gray-600 text-white ring-1 ring-slate-900/5 shadow-lg space-y-3 hover:bg-sky-500 hover:ring-sky-500">
+<script lang="ts">
+    let classes: String = "";
+
+    // Creates a `class` property, even though it is a reserved word
+    // See: https://svelte.dev/docs/svelte-components#script-1-export-creates-a-component-prop
+    export { classes as class };
+</script>
+
+<div class="group block rounded-lg p-6 bg-gray-600 text-white ring-1 ring-slate-900/5 shadow-lg space-y-3 {classes}">
     <slot />
-</a>
+</div>
