@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+p {
+    @apply mb-5;
+}
+
+p a {
+    @apply text-emerald-400;
+    /* @apply link; */
+}
+
+p ~ ul {
+    @apply leading-relaxed;
+    @apply list-disc;
+}
+
+p ~ h5, h5 ~ p {
+    @apply text-lg;
+}
