@@ -2,8 +2,10 @@
 	import Table from "../lib/table.svelte";
 	import AddButton from "../lib/add-button.svelte";
 	import Card from "../lib/card.svelte";
+	import { page_title } from '../store';
 
     let activities = ['⚽ Foosball', '🏓 Table tennis', '🏆 Table Tennis Tournament 2022'];
+    page_title.set("");
 </script>
 
 {#each activities as activity}

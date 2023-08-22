@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { page } from '$app/stores';
+    import { page_title } from '../store';
     let testEl: HTMLElement;
     let menuOpenState: boolean | undefined = false;
 
@@ -22,9 +24,17 @@
 
 <div class="navbar bg-base-100">
     <div class="flex-1">
-        <a href="/" class="btn btn-ghost normal-case text-xl">
+        <a href="/" class="btn btn-ghost normal-case text-xl text-white">
             Rankings
         </a>
+        {#if $page_title != ""}
+        <div class="text-sm breadcrumbs">
+            <ul>
+                <li></li>
+                <li><a href={$page.url.pathname}>{$page_title}</a></li>
+            </ul>
+        </div>
+        {/if}
     </div>
     <div class="flex-none">
         <ul class="menu menu-horizontal px-1">
