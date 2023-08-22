@@ -9,6 +9,7 @@ Usage:
 -->
 
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 
 	// export let data: { x: number[], y: number[] } = { x: [], y: [] };
@@ -111,6 +112,10 @@ Usage:
 	onMount(async () => {
 		// @ts-ignore
 		const Plotly = window?.Plotly;
+		// Check if library has been loaded.
+		if (!Plotly) {
+			return;
+		}
 
 		// const domElement = document.getElementById('tester');
 		const data_x = data.x;
@@ -161,5 +166,8 @@ Usage:
 	<script src="https://cdn.plot.ly/plotly-2.25.2.min.js" charset="utf-8"></script>
 </svelte:head>
 
+{#if browser && !('Plotly' in window)}
+<div>Charting library hasn't loaded (refresh?).</div>
+{/if}
 <!-- style="width:600px;height:250px;" -->
 <div bind:this={plotElement} />
