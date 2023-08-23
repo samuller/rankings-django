@@ -1,0 +1,12 @@
+[Unit]
+Description=Rankings
+After=network.target
+
+[Service]
+Type=simple
+User=rankings
+ExecStart=/home/rankings/run-rankings-site.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
