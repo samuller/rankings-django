@@ -5,7 +5,7 @@ description = ""
 authors = ["Simon Muller <samullers@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.6.2,<4.0"
+python = ">=3.8.0,<4.0"
 Django = "2.2.27"
 trueskill = "0.4.5"
 Jinja2 = "2.11.3"
@@ -16,7 +16,7 @@ flake8 = "^4.0.1"
 black = "^22.1.0"
 flake8-docstrings = "^1.6.0"
 mypy = "^0.931"
-coverage = "6.2"
+coverage = "^6.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
