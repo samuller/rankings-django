@@ -8,17 +8,17 @@ For development perform the following commands from the root directory.
 ### Setup virtualenv
 
 [Install poetry](https://python-poetry.org/docs/#osx--linux--bashonwindows-install-instructions):
-```console
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+```shell
+curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.4.2 python -
 ```
 
 Install packages:
-```console
+```shell
 poetry install
 ```
 
 Activate virtual environment:
-```console
+```shell
 poetry shell
 ```
 
