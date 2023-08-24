@@ -55,7 +55,7 @@ jobs:
             && poetry run ./manage.py loaddata players.json
         working-directory: rankings
       - name: Run Django tests
-        run: poetry run coverage run --source='.' manage.py test --debug-mode
+        run: poetry run coverage run --branch --source='.' manage.py test --debug-mode
         working-directory: rankings
       - name: Print coverage report
         run: poetry run coverage report
