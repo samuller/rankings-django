@@ -47,7 +47,7 @@ jobs:
       - name: Check black formatting has been run
         run: poetry run black --check rankings/
       - name: Check for mypy typing issues
-        run: poetry run mypy --ignore-missing-imports --exclude **/*/migrations/ rankings/
+        run: poetry run mypy rankings/
       - name: Test database creation, migrations & data import
         run: |
           poetry run ./manage.py migrate \

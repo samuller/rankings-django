@@ -20,6 +20,11 @@ flake8-docstrings = "^1.6.0"
 mypy = "^0.931"
 coverage = "^6.5"
 
+[tool.mypy]
+# We only add configs here that can apply equally to our main code and our test code
+ignore_missing_imports = true
+exclude = ["migrations/"]  # "**/*/migrations/"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
