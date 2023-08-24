@@ -7,7 +7,7 @@ For development perform the following commands from the root directory.
 
 ### Setup virtualenv
 
-[Install poetry](https://python-poetry.org/docs/#osx--linux--bashonwindows-install-instructions):
+[Install poetry](https://python-poetry.org/docs/#installing-with-the-official-installer):
 ```shell
 curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.4.2 python -
 ```
@@ -25,23 +25,23 @@ poetry shell
 ### Installation
 
 Setup the database:
-```console
+```shell
 cd rankings
 python manage.py migrate
 ```
 
 For admin access, create a user:
-```console
+```shell
 python manage.py createsuperuser
 ```
 
 And start a development server:
-```console
+```shell
 python manage.py runserver
 ```
 
 You can also add test data:
-```console
+```shell
 python manage.py loaddata game.json
 python manage.py loaddata players.json
 ```
