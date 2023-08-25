@@ -84,6 +84,8 @@ def list_players(request: HttpRequest, activity_url: str, sort_by: str) -> HttpR
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
         return redirect("home")
+    if len(sort_by) == 0 or sort_by is None:
+        sort_by = "name"
 
     if sort_by == "skill":
         all_players = [

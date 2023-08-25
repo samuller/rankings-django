@@ -14,9 +14,9 @@ urlpatterns = [
         views.select_player_to_replace_in_submissions,
         name="select_fix_player",
     ),
-    url(r"^(?P<activity_url>.+)/$", views.activity_summary, name="activity_summary"),
+    url(r"^(?P<activity_url>[^/]+)/$", views.activity_summary, name="activity_summary"),
     url(
-        r"^(?P<activity_url>.+)/players/(?P<sort_by>.+)$",
+        r"^(?P<activity_url>.+)/players/(?P<sort_by>.*)$",
         views.list_players,
         name="list_players",
     ),
