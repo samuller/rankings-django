@@ -78,13 +78,15 @@ def activity_summary(request: HttpRequest, activity_url: str) -> HttpResponse:
     return render(request, "activity_summary.html", context)
 
 
-def list_players(request: HttpRequest, activity_url: str, sort_by: str) -> HttpResponse:
+def list_players(
+    request: HttpRequest, activity_url: str, sort_by: Optional[str] = None
+) -> HttpResponse:
     """List all the players (and their skill) that are active in the given activity."""
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
         return redirect("home")
-    if len(sort_by) == 0 or sort_by is None:
+    if sort_by is None or len(sort_by) == 0:
         sort_by = "name"
 
     if sort_by == "skill":
