@@ -32,8 +32,11 @@ format() {
 
 test() {
     cd rankings
+    # Run Django tests
     poetry run coverage run --branch --source='.' manage.py test --debug-mode
+    # Generate HTML coverage report
     poetry run coverage html
+    # Print coverage report
     poetry run coverage report --fail-under=65
 }
 

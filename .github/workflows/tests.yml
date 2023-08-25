@@ -42,21 +42,14 @@ jobs:
         run: curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.4.2 python -
       - name: Install dependencies
         run: poetry install
-      - name: Check for flake8 issues
-        run: poetry run flake8 --exclude **/*/migrations/ rankings/
-      - name: Check black formatting has been run
-        run: poetry run black --check rankings/
-      - name: Check for mypy typing issues
-        run: poetry run mypy rankings/
+      - name: Check for linting issues
+        run: ./run.sh lint
       - name: Test database creation, migrations & data import
         run: |
           poetry run ./manage.py migrate \
             && poetry run ./manage.py loaddata game.json \
             && poetry run ./manage.py loaddata players.json
         working-directory: rankings
-      - name: Run Django tests
-        run: poetry run coverage run --branch --source='.' manage.py test --debug-mode
-        working-directory: rankings
-      - name: Print coverage report
-        run: poetry run coverage report
+      - name: Run tests
+        run: ./run.sh test
         working-directory: rankings
