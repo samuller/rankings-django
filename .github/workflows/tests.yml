@@ -52,4 +52,3 @@ jobs:
         working-directory: rankings
       - name: Run tests
         run: ./run.sh test
-        working-directory: rankings
