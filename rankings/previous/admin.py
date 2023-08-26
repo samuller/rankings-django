@@ -117,7 +117,8 @@ class GameSessionAdmin(admin.ModelAdmin):
         # update will be slightly affected
         earliest_match = queryset.order_by("datetime").first()
         first_unvalidated = (
-            GameSession.objects.filter(activity=activity, validated__isnull=False)
+            # Null = unvalidated, True = validated, False = invalidated
+            GameSession.objects.filter(activity=activity, validated__isnull=True)
             .order_by("datetime")
             .first()
         )
@@ -130,10 +131,10 @@ class GameSessionAdmin(admin.ModelAdmin):
             return
 
         start = time.time()
-        # Validate sessions
-        queryset.update(validated=True)
         # Update player skills
         incremental_update_player_skills(queryset)
+        # Validate sessions
+        queryset.update(validated=True)
         end = time.time()
         self.message_user(request, f"GameSessions validated in {end - start:.2f}s")
 

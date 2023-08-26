@@ -55,7 +55,7 @@ class BasicDataTestCase(TestCase):
             submittor = "test.setup"
             session = GameSession.objects.create(
                 activity=activity,
-                validated=False,
+                validated=None,
                 datetime=submission_time,
                 submittor=submittor,
             )
@@ -69,13 +69,13 @@ class BasicDataTestCase(TestCase):
 
             team = AdhocTeam.objects.create(session=session)
             TeamMember.objects.create(
-                team=team, player=players[match[0]], validated=False
+                team=team, player=players[match[0]], validated=None
             )
             Result.objects.create(game=game, team=team, ranking=1)
 
             team = AdhocTeam.objects.create(session=session)
             TeamMember.objects.create(
-                team=team, player=players[match[1]], validated=False
+                team=team, player=players[match[1]], validated=None
             )
             Result.objects.create(game=game, team=team, ranking=2)
 
@@ -163,8 +163,8 @@ class BasicDataTestCase(TestCase):
 
         self.check_expected_skill_changes()
 
-    def test_admin_incremental_skill_update(self) -> None:
-        """Test incremental skil updates via the admin tool."""
+    def test_admin_incremental_skill_update_at_once(self) -> None:
+        """Test incremental skill updates (via the admin tool) done for all matches at once."""
         User.objects.create_superuser("adm2", "admin2@example.com", "passw2")
         self.client.login(username="adm2", password="passw2")
 
@@ -183,6 +183,29 @@ class BasicDataTestCase(TestCase):
         assert messages[0].startswith("GameSessions validated in 0."), messages
         self.assertEqual(response.status_code, 200)
 
+        self.check_expected_skill_changes()
+
+    def test_admin_incremental_skill_update_in_steps(self) -> None:
+        """Test incremental skil updates (via the admin tool) done for each match separately."""
+        User.objects.create_superuser("adm2", "admin2@example.com", "passw2")
+        self.client.login(username="adm2", password="passw2")
+
+        # TODO: test order independence of incremental function (.order_by("id"))
+        session_ids = GameSession.objects.values_list("id", flat=True)
+        for session_id in session_ids:
+            data = {
+                "action": "validate_matches_and_update_skill",
+                "_selected_action": [session_id],
+            }
+            change_url = reverse("admin:previous_gamesession_changelist")
+            response = self.client.post(change_url, data, follow=True)
+
+            messages = [str(msg) for msg in list(response.context["messages"])]
+            assert len(messages) == 1, messages
+            assert messages[0].startswith("GameSessions validated in 0."), messages
+            self.assertEqual(response.status_code, 200)
+        self.client.logout()
+        assert GameSession.objects.filter(validated__isnull=True).count() == 0
         self.check_expected_skill_changes()
 
     def test_submission(self) -> None:

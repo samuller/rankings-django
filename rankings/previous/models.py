@@ -67,6 +67,7 @@ class GameSession(SubmittedData):
 
     # id = models.IntegerField(primary_key=True)  # AutoField?
     activity = models.ForeignKey(Activity, models.DO_NOTHING, null=True)
+    # Null = unvalidated, True = validated, False = invalidated
     validated = models.IntegerField(blank=True, null=True)
 
     class Meta:
