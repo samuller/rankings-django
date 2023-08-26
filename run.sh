@@ -31,9 +31,8 @@ format() {
 }
 
 test() {
-    cd rankings
     # Run Django tests
-    poetry run coverage run --source='.' rankings/manage.py test rankings/ --debug-mode
+    poetry run coverage run --source='.' rankings/manage.py test --debug-mode rankings/
     # Generate HTML coverage report
     poetry run coverage html --show-contexts
     # Print coverage report
