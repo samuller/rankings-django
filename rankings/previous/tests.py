@@ -14,6 +14,7 @@ from .models import (
     SkillHistory,
 )
 
+from django.urls import reverse
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 
@@ -54,7 +55,7 @@ class BasicDataTestCase(TestCase):
             submittor = "test.setup"
             session = GameSession.objects.create(
                 activity=activity,
-                validated=True,
+                validated=False,
                 datetime=submission_time,
                 submittor=submittor,
             )
@@ -68,13 +69,13 @@ class BasicDataTestCase(TestCase):
 
             team = AdhocTeam.objects.create(session=session)
             TeamMember.objects.create(
-                team=team, player=players[match[0]], validated=True
+                team=team, player=players[match[0]], validated=False
             )
             Result.objects.create(game=game, team=team, ranking=1)
 
             team = AdhocTeam.objects.create(session=session)
             TeamMember.objects.create(
-                team=team, player=players[match[1]], validated=True
+                team=team, player=players[match[1]], validated=False
             )
             Result.objects.create(game=game, team=team, ranking=2)
 
@@ -113,20 +114,12 @@ class BasicDataTestCase(TestCase):
             )
             assert name in all_names
 
-    def test_calculated_rankings(self) -> None:
-        """Tets calculated rankings."""
-        act = self.activity_url
-        # First request will fail as superuser is required (we end URL with a backslash due to Django's
-        # APPEND_SLASH which any failures to become redirects and then the actual error status code
-        # is only seen after the slash has been appended).
-        response = self.client.get(f"/{act}/update/")
-        assert response.status_code == 404, response.status_code
+    def check_expected_skill_changes(self):
+        """
+        Check the expected changes in calculated skill.
 
-        User.objects.create_superuser("adm", "admin@example.com", "passw")
-        self.client.login(username="adm", password="passw")
-        response = self.client.get(f"/{act}/update")
-        assert response.status_code == 200, response.status_code
-
+        Separate function to allow re-use and cross-checking between incremental and full approach.
+        """
         # Check that skill changes as expected according to win/losses.
         history = SkillHistory.objects.all()
         skill_zeus = [h.calc_skill() for h in history if h.player.name == "Zeus"]
@@ -150,6 +143,47 @@ class BasicDataTestCase(TestCase):
         sigma_hades = [h.sigma for h in history if h.player.name == "Hades"]
         assert all(diff < 0 for diff in change_per_value(sigma_zeus))
         assert all(diff < 0 for diff in change_per_value(sigma_hades))
+
+    def test_calculated_rankings(self) -> None:
+        """Tets calculated rankings."""
+        # Validate all matches as following skill calculation runs only on validated matches.
+        GameSession.objects.all().update(validated=True)
+        TeamMember.objects.all().update(validated=True)
+
+        act = self.activity_url
+        # First request will fail as superuser is required (follow needed for redirect).
+        response = self.client.get(f"/{act}/update", follow=True)
+        assert response.status_code == 404, response.status_code
+
+        User.objects.create_superuser("adm", "admin@example.com", "passw")
+        self.client.login(username="adm", password="passw")
+        response = self.client.get(f"/{act}/update")
+        self.client.logout()
+        assert response.status_code == 200, response.status_code
+
+        self.check_expected_skill_changes()
+
+    def test_admin_incremental_skill_update(self) -> None:
+        """Test incremental skil updates via the admin tool."""
+        User.objects.create_superuser("adm2", "admin2@example.com", "passw2")
+        self.client.login(username="adm2", password="passw2")
+
+        # TODO: test order independence of incremental function (.order_by("id"))
+        session_ids = GameSession.objects.values_list("id", flat=True)
+        data = {
+            "action": "validate_matches_and_update_skill",
+            "_selected_action": session_ids,
+        }
+        change_url = reverse("admin:previous_gamesession_changelist")
+        response = self.client.post(change_url, data, follow=True)
+        self.client.logout()
+
+        messages = [str(msg) for msg in list(response.context["messages"])]
+        assert len(messages) == 1, messages
+        assert messages[0].startswith("GameSessions validated in 0."), messages
+        self.assertEqual(response.status_code, 200)
+
+        self.check_expected_skill_changes()
 
     def test_submission(self) -> None:
         """Test submitting match results."""
