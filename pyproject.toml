@@ -17,7 +17,7 @@ django-mass-edit = "3.2.0"
 flake8 = "^6.1.0"
 black = "^23.7.0"
 flake8-docstrings = "^1.6.0"
-mypy = "^0.931"
+mypy = "^1.5.1"
 coverage = "^7.3.0"
 
 [tool.mypy]
