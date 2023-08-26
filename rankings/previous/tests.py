@@ -31,7 +31,9 @@ class BasicDataTestCase(TestCase):
 
     activity_url = "tennis"
     player_names = ["Zeus", "Hades"]
-    matches = [[0, 1],] * 10 + [
+    matches = [
+        [0, 1],
+    ] * 10 + [
         [1, 0],
     ] * 5
 

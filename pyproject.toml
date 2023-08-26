@@ -15,7 +15,7 @@ django-mass-edit = "3.2.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
-black = "^22.1.0"
+black = "^23.7.0"
 flake8-docstrings = "^1.6.0"
 mypy = "^0.931"
 coverage = "^6.5"
@@ -24,6 +24,9 @@ coverage = "^6.5"
 # We only add configs here that can apply equally to our main code and our test code
 ignore_missing_imports = true
 exclude = ["migrations/"]  # "**/*/migrations/"
+
+[tool.black]
+exclude = "migrations/"
 
 [tool.coverage.run]
 branch = true
