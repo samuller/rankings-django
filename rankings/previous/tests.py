@@ -89,6 +89,42 @@ class BasicDataTestCase(TestCase):
         assert response.status_code == 200
         assert f'<li><a href="/{act}">{act}</a></li>' in str(response.content)
 
+    def test_gen_activity_summary_page(self) -> None:
+        """Test generation of activity summary page."""
+        act = self.activity_url
+        response = self.client.get(f"/{act}", follow=True)
+        assert response.status_code == 200, response.status_code
+        content = str(response.content)
+        assert '<h3 class="title">Top players</h3>' in content
+        assert '<h3 class="title">Pending match results</h3>' in content
+
+    def test_gen_player_page(self) -> None:
+        """Test generation of player page."""
+        act = self.activity_url
+        response = self.client.get(f"/{act}/player/1", follow=True)
+        assert response.status_code == 200, response.status_code
+        content = str(response.content)
+        for expected_word in [
+            "Skill progression",
+            "Current skill estimate",
+            "Skill level",
+            "Matches played",
+        ]:
+            assert expected_word in content, expected_word
+
+    def test_gen_about_page(self) -> None:
+        """Test generation of about page."""
+        response = self.client.get("/about", follow=True)
+        assert response.status_code == 200, response.status_code
+        content = str(response.content)
+        for expected_word in [
+            "Trueskill",
+            "Website",
+            "Bayesian probability",
+            "Zurb Foundation",
+        ]:
+            assert expected_word in content, expected_word
+
     def test_activity_page_matches(self) -> None:
         """Test activity page lists matches."""
         act = self.activity_url

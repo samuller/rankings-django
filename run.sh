@@ -36,7 +36,7 @@ test() {
     # Generate HTML coverage report
     poetry run coverage html --show-contexts
     # Print coverage report
-    poetry run coverage report --fail-under=65
+    poetry run coverage report --fail-under=75
 }
 
 if [ "$#" -gt 1 ]; then
