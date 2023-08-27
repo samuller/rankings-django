@@ -159,35 +159,35 @@ toml = ["tomli"]
 
 [[package]]
 name = "django"
-version = "3.1.14"
+version = "3.2.20"
 description = "A high-level Python Web framework that encourages rapid development and clean, pragmatic design."
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "Django-3.1.14-py3-none-any.whl", hash = "sha256:0fabc786489af16ad87a8c170ba9d42bfd23f7b699bd5ef05675864e8d012859"},
-    {file = "Django-3.1.14.tar.gz", hash = "sha256:72a4a5a136a214c39cf016ccdd6b69e2aa08c7479c66d93f3a9b5e4bb9d8a347"},
+    {file = "Django-3.2.20-py3-none-any.whl", hash = "sha256:a477ab326ae7d8807dc25c186b951ab8c7648a3a23f9497763c37307a2b5ef87"},
+    {file = "Django-3.2.20.tar.gz", hash = "sha256:dec2a116787b8e14962014bf78e120bba454135108e1af9e9b91ade7b2964c40"},
 ]
 
 [package.dependencies]
-asgiref = ">=3.2.10,<4"
+asgiref = ">=3.3.2,<4"
 pytz = "*"
 sqlparse = ">=0.2.2"
 
 [package.extras]
-argon2 = ["argon2-cffi (>=16.1.0)"]
+argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-mass-edit"
-version = "3.4.1"
+version = "3.5.0"
 description = "Make bulk changes in the Django admin interface"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "django-mass-edit-3.4.1.tar.gz", hash = "sha256:e05ef51e02b952f9ca517964d302ab75991886332d212d46697ad9debb38dfd6"},
-    {file = "django_mass_edit-3.4.1-py3-none-any.whl", hash = "sha256:03e5adabfc9bf89ae4edee80d63957e86a18e0f4564076779750d30e4b3650d6"},
+    {file = "django-mass-edit-3.5.0.tar.gz", hash = "sha256:4da202ef31862d1978088c38ca7dfb98d0ee7456e031e81d83885978065068b6"},
+    {file = "django_mass_edit-3.5.0-py3-none-any.whl", hash = "sha256:ac1be9b519d2464111e859299fa7081793cf7fa431c21f546471c3cc9183cb1f"},
 ]
 
 [package.dependencies]
@@ -570,4 +570,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<4.0"
-content-hash = "fca27035082393d2071354a1c0f9e68152f746615f61271f4389526761a778ab"
+content-hash = "8823aa43bb548a241a3df83425c7dc637097ab0d666c15a3f9007d3c59998c1f"
