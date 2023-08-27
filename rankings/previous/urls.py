@@ -7,14 +7,18 @@ urlpatterns = [
     re_path(r"^$", views.main_page, name="home"),
     re_path(r"^about$", views.about, name="about"),
     re_path(r"^api/id$", views.show_id),
-    re_path(r"^api/fix_player$", views.replace_player_in_submissions, name="fix_player"),
+    re_path(
+        r"^api/fix_player$", views.replace_player_in_submissions, name="fix_player"
+    ),
     re_path(r"^api/validate_all$", views.validate_all_matches),
     re_path(
         r"^select_player_to_fix/(?P<session_ids_str>.*)$",
         views.select_player_to_replace_in_submissions,
         name="select_fix_player",
     ),
-    re_path(r"^(?P<activity_url>[^/]+)/$", views.activity_summary, name="activity_summary"),
+    re_path(
+        r"^(?P<activity_url>[^/]+)/$", views.activity_summary, name="activity_summary"
+    ),
     re_path(
         r"^(?P<activity_url>.+)/players/(?P<sort_by>.*)$",
         views.list_players,
