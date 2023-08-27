@@ -7,10 +7,19 @@ from typing import List, Dict, Optional, Any, Tuple, cast
 
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
 from trueskill import Rating, rate
 from django.contrib.auth.decorators import user_passes_test
 
+from rest_framework import permissions
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.decorators import (
+    api_view,
+    permission_classes,
+    authentication_classes,
+)
+
+from .utils import CsrfExemptSessionAuthentication
 from .models import (
     Activity,
     AdhocTeam,
@@ -33,7 +42,10 @@ def main_page(request: HttpRequest) -> HttpResponse:
     return render(request, "main_page.html", context)
 
 
-def validate_all_matches(request: HttpRequest) -> HttpResponse:
+@api_view()
+@authentication_classes([CsrfExemptSessionAuthentication])
+@permission_classes([permissions.IsAdminUser])
+def validate_all_matches(request: Request) -> Response:
     """TODO: Validate all outstanding matches."""
     return HttpResponse("")
 
@@ -251,13 +263,14 @@ def update(
     return HttpResponse(f"Update completed in {end - start:.2f}s")
 
 
-def get_players(request: HttpRequest, activity_url: str) -> HttpResponse:
+@api_view()
+def get_players(request: Request, activity_url: str) -> Response:
     """TODO: Get all players for an activity (currently embedded in page HTML)."""
     return HttpResponse("")
 
 
-@csrf_exempt
-def undo_submit(request: HttpRequest, activity_url: str) -> HttpResponse:
+@api_view(["POST"])
+def undo_submit(request: Request, activity_url: str) -> Response:
     """TODO: Allow a user to undo their own mistaken submission (within some constraints)."""
     submittor = identify_request_source(request)
 
@@ -298,8 +311,9 @@ def gen_valid_reason_response(valid: bool, reason: str) -> HttpResponse:
     return HttpResponse(json.dumps({"valid": valid, "reason": reason}))
 
 
-@csrf_exempt
-def submit_match(request: HttpRequest, activity_url: str) -> HttpResponse:
+@api_view(["POST"])
+@authentication_classes([])
+def submit_match(request: Request, activity_url: str) -> Response:
     """View to submit and record one or matches."""
     submittor = identify_request_source(request)
 
@@ -349,9 +363,10 @@ def about(request: HttpRequest) -> HttpResponse:
     return render(request, "about.html", context)
 
 
-@csrf_exempt
-@user_passes_test(lambda u: u.is_superuser)
-def replace_player_in_submissions(request: HttpRequest) -> HttpResponse:
+@api_view(["POST"])
+@authentication_classes([CsrfExemptSessionAuthentication])
+@permission_classes([permissions.IsAdminUser])
+def replace_player_in_submissions(request: Request) -> Response:
     """Correct a mistaken submission by replacing an incorrectly selected player."""
     if request.method != "POST":
         return HttpResponse("Not POST!", content_type="text/plain")
@@ -598,6 +613,7 @@ def record_match(
 
 
 def show_id(request: HttpRequest) -> HttpResponse:
+@api_view()
     """Return a string to identify the source of the client request."""
     id = identify_request_source(request)
     return HttpResponse(id, content_type="text/plain")

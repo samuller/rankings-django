@@ -1,4 +1,18 @@
 """Utility functions."""
+from rest_framework.authentication import SessionAuthentication
+
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+    """
+    SessionAuthentication that doesn't require CSRF tokens.
+
+    See: https://stackoverflow.com/questions/30871033/django-rest-framework-remove-csrf
+    """
+
+    def enforce_csrf(self, request):
+        """Enforce CSRF validation for session based authentication."""
+        # Skip CSRF check from happening.
+        return
 
 
 def cardinalToOrdinal(num: int) -> str:
