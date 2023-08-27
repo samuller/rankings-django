@@ -612,26 +612,26 @@ def record_match(
     return session.id
 
 
-def show_id(request: HttpRequest) -> HttpResponse:
 @api_view()
+def show_source_id(request: Request) -> Response:
     """Return a string to identify the source of the client request."""
-    id = identify_request_source(request)
-    return HttpResponse(id, content_type="text/plain")
+    src = identify_request_source(request)
+    return Response({"source": src})
 
 
 def identify_request_source(request: HttpRequest) -> str:
     """Generate a string that identifies the source of the request."""
-    id = str(request.META["REMOTE_ADDR"])
+    src = str(request.META["REMOTE_ADDR"])
     # Detect nginx ip forwarding
     if "HTTP_X_REAL_IP" in request.META:
-        id = str(request.META["HTTP_X_REAL_IP"])
+        src = str(request.META["HTTP_X_REAL_IP"])
     try:
         # getfqdn() won't throw exception, but then we can't differentiate when it
         # works, and we might generate e.g. "127.0.0.1 (127.0.0.1)"
         # addr = socket.getfqdn(submittor)
-        addr = socket.gethostbyaddr(id)
-        id = f"{id} ({addr[0]})"
+        addr = socket.gethostbyaddr(src)
+        src = f"{src} ({addr[0]})"
     except:  # noqa: E722
         pass
 
-    return id
+    return src

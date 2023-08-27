@@ -6,7 +6,7 @@ from . import views
 urlpatterns = [
     re_path(r"^$", views.main_page, name="home"),
     re_path(r"^about$", views.about, name="about"),
-    re_path(r"^api/id$", views.show_id),
+    re_path(r"^api/id$", views.show_source_id),
     re_path(
         r"^api/fix_player$", views.replace_player_in_submissions, name="fix_player"
     ),
