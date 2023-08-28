@@ -32,7 +32,7 @@ format() {
 
 test() {
     # Run Django tests
-    poetry run coverage run --source='.' rankings/manage.py test --debug-mode rankings/
+    PYTHONWARNINGS=default poetry run coverage run --source='.' rankings/manage.py test --debug-mode rankings/
     # Generate HTML coverage report
     poetry run coverage html --show-contexts
     # Print coverage report
