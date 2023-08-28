@@ -3,6 +3,10 @@ name = "rankings-django"
 version = "0.1.0"
 description = ""
 authors = ["Simon Muller <samullers@gmail.com>"]
+packages = [
+    # Currently only used so we can get version with importlib.metadata.version
+    { include = "rankings" }
+]
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
@@ -13,6 +17,9 @@ Jinja2 = "2.11.3"
 markupsafe = "2.0.1"
 django-mass-edit = "3.5.0"
 djangorestframework = "3.14.0"
+# Needed for DRF's dynamic schema generation for OpenAPI docs
+# See: https://www.django-rest-framework.org/api-guide/schemas/#install-dependencies
+uritemplate = "^4.1.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^6.1.0"

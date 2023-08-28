@@ -75,7 +75,10 @@ ROOT_URLCONF = "rankings.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",
-        "DIRS": [os.path.join(BASE_DIR, "previous", "templates", "previous")],
+        "DIRS": [
+            os.path.join(BASE_DIR, "previous", "templates", "previous"),
+            os.path.join(BASE_DIR, "templates"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "environment": "rankings.jinja2.environment",
