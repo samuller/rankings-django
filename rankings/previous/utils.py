@@ -3,7 +3,7 @@ from typing import Literal, Optional, List, TypedDict
 
 from rest_framework import serializers, authentication
 from rest_framework.settings import api_settings
-from django.core.exceptions import FieldDoesNotExist
+from rest_framework.exceptions import ValidationError
 from rest_framework.schemas import openapi
 
 
@@ -57,7 +57,7 @@ class FieldFilterMixin:
         # Filter fields returned in output.
         if self.field_filter_param is not None and fields is not None:
             if fields == "":
-                raise serializers.ValidationError(
+                raise ValidationError(
                     {"error": f"query parameter '{self.field_filter_param}' is empty"}
                 )
 
@@ -66,7 +66,7 @@ class FieldFilterMixin:
             all_fields = self.get_serializer_class().Meta.fields
             if not set(fields).issubset(all_fields):
                 invalid_fields = list(set(fields) - set(all_fields))
-                raise serializers.ValidationError(
+                raise ValidationError(
                     {
                         "error": f"query parameter '{self.field_filter_param}'"
                         + f" referenced invalid fields: {invalid_fields}"
@@ -90,6 +90,9 @@ class ValidateParamsMixin:
         # Check first for invalid query parameters.
         allowed_params = [
             api_settings.URL_FORMAT_OVERRIDE,
+            api_settings.SEARCH_PARAM,
+            api_settings.ORDERING_PARAM,
+            api_settings.VERSION_PARAM,
             *self.extra_allowed_params,
         ]
         if self.field_filter_param:
@@ -98,7 +101,7 @@ class ValidateParamsMixin:
             allowed_params.extend(self.filterset_fields)
         if not set(self.request.GET.keys()).issubset(allowed_params):
             invalid_params = list(set(self.request.GET.keys()) - set(allowed_params))
-            raise FieldDoesNotExist(f"Invalid parameter: {invalid_params}")
+            raise ValidationError(f"Invalid parameter: {invalid_params}")
 
         return super().get_queryset()
 

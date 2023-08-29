@@ -26,6 +26,19 @@ def change_per_value(arr: List) -> List:
     return [next - prev for prev, next in zip(arr[0:-2], arr[1:-1])]
 
 
+class NoDataTestCase(TestCase):
+    """Basic tests that don't require any data."""
+
+    def setUp(self) -> None:
+        """Test set-up."""
+        self.client = Client()
+
+    def test_gen_openapi_docs(self):
+        """Test generation of OpenAPI JSON."""
+        response = self.client.get("/openapi.json")
+        assert response.status_code == 200, response.status_code
+
+
 class BasicDataTestCase(TestCase):
     """Basic tests."""
 
@@ -88,6 +101,30 @@ class BasicDataTestCase(TestCase):
         response = self.client.get("/")
         assert response.status_code == 200
         assert f'<li><a href="/{act}">{act}</a></li>' in str(response.content)
+
+    def test_api_get_activity(self) -> None:
+        """Test API endpoints for getting activities."""
+        jsresp = None
+        # Check filtering functionalities with queries that should all return the same results.
+        for url in [
+            "/api/activities",
+            "/api/activities?active=true",
+            "/api/activities?search=tennis",
+        ]:
+            response = self.client.get(url, follow=True)
+            assert response.status_code == 200
+            jsresp_new = json.loads(response.content)
+            if jsresp is not None:
+                assert jsresp_new == jsresp_new
+            jsresp = jsresp_new
+            assert len(jsresp) == 1
+            assert jsresp[0]["id"] == "tennis"
+        response = self.client.get("/api/activities?invalid_param=true", follow=True)
+        assert response.status_code == 400, response.status_code
+        assert json.loads(response.content) == ["Invalid parameter: ['invalid_param']"]
+        response = self.client.get("/api/activities?select=name", follow=True)
+        assert response.status_code == 200, response.status_code
+        assert json.loads(response.content) == [{"name": "tennis"}]
 
     def test_gen_activity_summary_page(self) -> None:
         """Test generation of activity summary page."""
