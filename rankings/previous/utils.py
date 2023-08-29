@@ -58,7 +58,7 @@ class FieldFilterMixin:
         if self.field_filter_param is not None and fields is not None:
             if fields == "":
                 raise ValidationError(
-                    {"error": f"query parameter '{self.field_filter_param}' is empty"}
+                    f"query parameter '{self.field_filter_param}' is empty"
                 )
 
             fields = tuple(fields.split(","))
@@ -67,10 +67,8 @@ class FieldFilterMixin:
             if not set(fields).issubset(all_fields):
                 invalid_fields = list(set(fields) - set(all_fields))
                 raise ValidationError(
-                    {
-                        "error": f"query parameter '{self.field_filter_param}'"
-                        + f" referenced invalid fields: {invalid_fields}"
-                    }
+                    f"query parameter '{self.field_filter_param}'"
+                    + f" referenced invalid fields: {invalid_fields}"
                 )
 
             return super().get_serializer(fields=fields, *args, **kwargs)
