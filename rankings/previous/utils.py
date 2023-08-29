@@ -87,18 +87,26 @@ class ValidateParamsMixin:
 
     def get_queryset(self):
         """Get the list of items for this view."""
-        # Check first for invalid query parameters.
+        # Build up a list of all the expected/allowed query parameters.
         allowed_params = [
-            api_settings.URL_FORMAT_OVERRIDE,
-            api_settings.SEARCH_PARAM,
             api_settings.ORDERING_PARAM,
             api_settings.VERSION_PARAM,
+            # Pagination params.
+            *[
+                param["name"]
+                for param in self.paginator.get_schema_operation_parameters(None)
+            ],
             *self.extra_allowed_params,
         ]
-        if self.field_filter_param:
+        if api_settings.URL_FORMAT_OVERRIDE is not None:
+            allowed_params.append(api_settings.URL_FORMAT_OVERRIDE)
+        if self.search_fields is not None:
+            allowed_params.append(api_settings.SEARCH_PARAM)
+        if self.field_filter_param is not None:
             allowed_params.append(self.field_filter_param)
         if self.filterset_fields:
             allowed_params.extend(self.filterset_fields)
+        # Check for any invalid query parameters.
         if not set(self.request.GET.keys()).issubset(allowed_params):
             invalid_params = list(set(self.request.GET.keys()) - set(allowed_params))
             raise ValidationError(f"Invalid parameter: {invalid_params}")
