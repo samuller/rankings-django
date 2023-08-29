@@ -5,7 +5,7 @@ from rest_framework import routers
 from . import views, api
 
 router = routers.DefaultRouter()
-router.register('activities', api.ActivityViewSet)
+router.register("activities", api.ActivityViewSet, basename="activities")
 
 urlpatterns = [
     re_path(r"^$", views.main_page, name="home"),
