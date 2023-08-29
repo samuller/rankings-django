@@ -7,7 +7,7 @@ from typing import List, Optional, Any
 
 from django.http import HttpResponse, HttpRequest
 from django.core.exceptions import FieldDoesNotExist
-from rest_framework import permissions, serializers, viewsets
+from rest_framework import permissions, serializers
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import (
@@ -17,7 +17,11 @@ from rest_framework.decorators import (
 )
 from rest_framework.settings import api_settings
 
-from .utils import CsrfExemptSessionAuthentication
+from .utils import (
+    CsrfExemptSessionAuthentication,
+    DynamicFieldsModelSerializer,
+    ModelSubViewSet,
+)
 from .models import (
     Activity,
     AdhocTeam,
@@ -28,8 +32,15 @@ from .models import (
     TeamMember,
 )
 
+# Query parameter to use for filtering fields returned by the serializer.
+# We choose to follow PostgREST's "select" convention.
+# See: https://postgrest.org/en/stable/references/api/tables_views.html#vertical-filtering
+FIELD_FILTER_PARAM = "select"
 
-class ActivitySerializer(serializers.HyperlinkedModelSerializer):
+
+class ActivitySerializer(
+    serializers.HyperlinkedModelSerializer, DynamicFieldsModelSerializer
+):
     """Serializer for Activities."""
 
     class Meta:
@@ -46,17 +57,22 @@ class ActivitySerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-class ActivityViewSet(viewsets.ModelViewSet):
+class ActivityViewSet(ModelSubViewSet):
     """ViewSet for viewing and editing Activities."""
 
     serializer_class = ActivitySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filterset_fields = ["active"]
+    field_filter_param = FIELD_FILTER_PARAM
 
     def get_queryset(self):
         """Get the list of items for this view."""
         # Check for invalid query parameters.
-        allowed_params = [api_settings.URL_FORMAT_OVERRIDE, *self.filterset_fields]
+        allowed_params = [
+            api_settings.URL_FORMAT_OVERRIDE,
+            self.field_filter_param,
+            *self.filterset_fields,
+        ]
         if not set(self.request.GET.keys()).issubset(allowed_params):
             invalid_params = list(set(self.request.GET.keys()) - set(allowed_params))
             raise FieldDoesNotExist(f"Invalid parameter: {invalid_params}")
