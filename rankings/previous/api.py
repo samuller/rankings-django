@@ -20,6 +20,7 @@ from .utils import (
     DynamicFieldsModelSerializer,
     FieldFilterMixin,
     ValidateParamsMixin,
+    ManualAutoSchema,
 )
 from .models import (
     Activity,
@@ -64,6 +65,24 @@ class ActivityViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewS
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filterset_fields = ["active"]
     field_filter_param = FIELD_FILTER_PARAM
+    schema = ManualAutoSchema(
+        manual_fields=[
+            {
+                "name": "format",
+                "required": False,
+                "in": "query",
+                "description": "Format of response to return.",
+                "schema": {"type": "string"},
+            },
+            {
+                "name": "select",
+                "required": False,
+                "in": "query",
+                "description": "Comma separated list of the subset of fields to return in response.",
+                "schema": {"type": "string"},
+            },
+        ]
+    )
 
 
 @api_view()

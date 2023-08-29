@@ -1,9 +1,10 @@
 """Utility functions."""
-from typing import Optional, List
+from typing import Literal, Optional, List, TypedDict
 
 from rest_framework import serializers, authentication
 from rest_framework.settings import api_settings
 from django.core.exceptions import FieldDoesNotExist
+from rest_framework.schemas import openapi
 
 
 class CsrfExemptSessionAuthentication(authentication.SessionAuthentication):
@@ -100,6 +101,42 @@ class ValidateParamsMixin:
             raise FieldDoesNotExist(f"Invalid parameter: {invalid_params}")
 
         return super().get_queryset()
+
+
+# Need to use TypedDict's function syntax due to reserved keywords in Python ("in", "type").
+# See: https://stackoverflow.com/questions/73001554/how-to-define-a-typeddict-class-with-keys-containing-hyphens
+OpenAPIParameterSchema = TypedDict("OpenAPIParameterSchema", {"type": str})
+OpenAPIParameters = TypedDict(
+    "OpenAPIParameters",
+    {
+        "name": str,
+        "in": Literal["query", "path"],
+        "required": bool,
+        "description": str,
+        "schema": OpenAPIParameterSchema,
+    },
+    total=False,
+)
+
+
+class ManualAutoSchema(openapi.AutoSchema):
+    """An AutoSchema that allows some extra fields to be manually added."""
+
+    def __init__(
+        self,
+        manual_fields: List[OpenAPIParameters],
+        tags=None,
+        operation_id_base=None,
+        component_name=None,
+    ):
+        super().__init__(tags, operation_id_base, component_name)
+        self.manual_fields = manual_fields
+
+    def get_operation(self, path, method):
+        """Get operation schema details of API endpoint."""
+        operation = super().get_operation(path, method)
+        operation["parameters"].extend(self.manual_fields)
+        return operation
 
 
 def cardinalToOrdinal(num: int) -> str:
