@@ -56,5 +56,5 @@ urlpatterns = [
     re_path(r"^(?P<activity_url>.+)/api/get_players$", api.get_players),
     re_path(r"^(?P<activity_url>.+)/api/add_matches$", api.submit_match),
     re_path(r"^(?P<activity_url>.+)/api/undo_submission$", api.undo_submit),
-    path('api/', include(router.urls)),
+    path("api/", include(router.urls)),
 ]

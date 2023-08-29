@@ -30,8 +30,6 @@ def main_page(request: HttpRequest) -> HttpResponse:
     return render(request, "main_page.html", context)
 
 
-
-
 def activity_summary(request: HttpRequest, activity_url: str) -> HttpResponse:
     """Generata a summary page for an activity (listing recent matches and leading players)."""
     activity = Activity.objects.filter(url=activity_url)
