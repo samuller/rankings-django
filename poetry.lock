@@ -225,6 +225,21 @@ django = ">=3.0"
 pytz = "*"
 
 [[package]]
+name = "drf-link-header-pagination"
+version = "0.2.0"
+description = "Link Header Pagination for Django Rest Framework"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "drf_link_header_pagination-0.2.0-py3-none-any.whl", hash = "sha256:9890a871803395544c5a0ee0665fc2d2701fcdf151570ed15c8b8d873aefe27d"},
+    {file = "drf_link_header_pagination-0.2.0.tar.gz", hash = "sha256:19446c5716a8b857f5e0ecbba39a49508a8e748ef51a8cfd6bd706090e97060c"},
+]
+
+[package.dependencies]
+djangorestframework = ">=3.11"
+
+[[package]]
 name = "flake8"
 version = "6.1.0"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -613,4 +628,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<4.0"
-content-hash = "12fd427dbb4b380247c89bc2101faa8cd068881503d613d53992e825b8d05f29"
+content-hash = "8a5ebf5e867664fa3f883768495ad8f36878c85758e4abf219a311dcdedfb848"
