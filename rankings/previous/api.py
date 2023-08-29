@@ -64,6 +64,7 @@ class ActivityViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewS
     serializer_class = ActivitySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filterset_fields = ["active"]
+    search_fields = ["id", "url", "name"]
     field_filter_param = FIELD_FILTER_PARAM
     schema = ManualAutoSchema(
         manual_fields=[
