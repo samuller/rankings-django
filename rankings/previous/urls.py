@@ -1,7 +1,11 @@
 """Django URL patterns to redirect URL paths to specific views."""
-from django.urls import re_path
+from django.urls import re_path, path, include
+from rest_framework import routers
 
 from . import views, api
+
+router = routers.DefaultRouter()
+router.register('activities', api.ActivityViewSet)
 
 urlpatterns = [
     re_path(r"^$", views.main_page, name="home"),
@@ -52,4 +56,5 @@ urlpatterns = [
     re_path(r"^(?P<activity_url>.+)/api/get_players$", api.get_players),
     re_path(r"^(?P<activity_url>.+)/api/add_matches$", api.submit_match),
     re_path(r"^(?P<activity_url>.+)/api/undo_submission$", api.undo_submit),
+    path('api/', include(router.urls)),
 ]

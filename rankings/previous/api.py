@@ -6,7 +6,7 @@ import datetime
 from typing import List, Optional, Any
 
 from django.http import HttpResponse, HttpRequest
-from rest_framework import permissions
+from rest_framework import permissions, serializers, viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import (
@@ -25,6 +25,31 @@ from .models import (
     Result,
     TeamMember,
 )
+
+
+class ActivitySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Activity
+        fields = [
+            "id",
+            "url",
+            "name",
+            "active",
+            "min_teams_per_match",
+            "max_teams_per_match",
+            "min_players_per_team",
+            "max_players_per_team",
+        ]
+
+
+class ActivityViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for viewing and editing Activities.
+    """
+
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 @api_view()
