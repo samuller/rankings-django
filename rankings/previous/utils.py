@@ -1,6 +1,9 @@
 """Utility functions."""
-from typing import Optional
-from rest_framework import serializers, authentication, viewsets
+from typing import Optional, List
+
+from rest_framework import serializers, authentication
+from rest_framework.settings import api_settings
+from django.core.exceptions import FieldDoesNotExist
 
 
 class CsrfExemptSessionAuthentication(authentication.SessionAuthentication):
@@ -37,10 +40,11 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
 
 
-class ModelSubViewSet(viewsets.ModelViewSet):
-    """A ModelViewSet that also allows you to view only a subset of the serialized fields.
+class FieldFilterMixin:
+    """This mixin allows you to return only a subset of the fields serialized.
 
-    Requires that you're already using a `serializer_class` that is based on `DynamicFieldsModelSerializer`.
+    Use with a class extending `rest_framework.viewsets.ModelViewSet` and that is already using a `serializer_class`
+    that is based on `DynamicFieldsModelSerializer`.
     """
 
     # Name of the query parameter to use for filtering fields."""
@@ -70,6 +74,32 @@ class ModelSubViewSet(viewsets.ModelViewSet):
 
             return super().get_serializer(fields=fields, *args, **kwargs)
         return super().get_serializer(*args, **kwargs)
+
+
+class ValidateParamsMixin:
+    """Mixin for validating query parameters.
+
+    Use with a class extending `rest_framework.viewsets.ModelViewSet`.
+    """
+
+    extra_allowed_params: List[str] = []
+
+    def get_queryset(self):
+        """Get the list of items for this view."""
+        # Check first for invalid query parameters.
+        allowed_params = [
+            api_settings.URL_FORMAT_OVERRIDE,
+            *self.extra_allowed_params,
+        ]
+        if self.field_filter_param:
+            allowed_params.append(self.field_filter_param)
+        if self.filterset_fields:
+            allowed_params.extend(self.filterset_fields)
+        if not set(self.request.GET.keys()).issubset(allowed_params):
+            invalid_params = list(set(self.request.GET.keys()) - set(allowed_params))
+            raise FieldDoesNotExist(f"Invalid parameter: {invalid_params}")
+
+        return super().get_queryset()
 
 
 def cardinalToOrdinal(num: int) -> str:

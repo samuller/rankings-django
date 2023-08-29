@@ -6,8 +6,7 @@ import datetime
 from typing import List, Optional, Any
 
 from django.http import HttpResponse, HttpRequest
-from django.core.exceptions import FieldDoesNotExist
-from rest_framework import permissions, serializers
+from rest_framework import permissions, serializers, viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import (
@@ -15,12 +14,12 @@ from rest_framework.decorators import (
     permission_classes,
     authentication_classes,
 )
-from rest_framework.settings import api_settings
 
 from .utils import (
     CsrfExemptSessionAuthentication,
     DynamicFieldsModelSerializer,
-    ModelSubViewSet,
+    FieldFilterMixin,
+    ValidateParamsMixin,
 )
 from .models import (
     Activity,
@@ -57,27 +56,14 @@ class ActivitySerializer(
         ]
 
 
-class ActivityViewSet(ModelSubViewSet):
+class ActivityViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
     """ViewSet for viewing and editing Activities."""
 
+    queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filterset_fields = ["active"]
     field_filter_param = FIELD_FILTER_PARAM
-
-    def get_queryset(self):
-        """Get the list of items for this view."""
-        # Check for invalid query parameters.
-        allowed_params = [
-            api_settings.URL_FORMAT_OVERRIDE,
-            self.field_filter_param,
-            *self.filterset_fields,
-        ]
-        if not set(self.request.GET.keys()).issubset(allowed_params):
-            invalid_params = list(set(self.request.GET.keys()) - set(allowed_params))
-            raise FieldDoesNotExist(f"Invalid parameter: {invalid_params}")
-
-        return Activity.objects.all()
 
 
 @api_view()
