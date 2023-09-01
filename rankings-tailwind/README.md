@@ -14,6 +14,14 @@ npm create svelte@latest
 npm create svelte@latest my-app
 ```
 
+## Additional dependencies
+
+Beyond `svelte-kit` we only added the following additional dependencies:
+
+```bash
+npm i -D daisyui@latest
+```
+
 ## Developing
 
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
