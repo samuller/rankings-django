@@ -15,10 +15,17 @@
 	}
 </script>
 
+<svelte:head>
+{#await activities.load()}
+	<title>Rankings</title>
+{:then}
+	<title>Rankings - {activity.name}</title>
+{/await}
+</svelte:head>
 
 {#await activities.load()}
 	<Loader></Loader>
-{:then value}
+{:then}
 	<Card class="w-1/2 2xl:w-[calc(0.5*1536px)] flex justify-center" style="tight">
 		<a class="normal-case text-xl font-semibold">{activity?.name}</a>
 	</Card>
