@@ -12,6 +12,10 @@
 	];
 </script>
 
+<svelte:head>
+    <title>Rankings</title> 
+</svelte:head>
+
 {#await activities.load()}
 	<Loader></Loader>
 {/await}
