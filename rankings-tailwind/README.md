@@ -20,6 +20,8 @@ Beyond `svelte-kit` we only added the following additional dependencies:
 
 ```bash
 npm i -D daisyui@latest
+# See: https://github.com/square/svelte-store/issues/67
+npm i -D @square/svelte-store --force
 ```
 
 ## Developing
