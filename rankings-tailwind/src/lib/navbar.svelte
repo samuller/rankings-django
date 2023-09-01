@@ -1,8 +1,6 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import { page_title } from '../store';
-    let testEl: HTMLElement;
-    let menuOpenState: boolean | undefined = false;
 
     /**
      * Close dropdown menu if it is currently open - use with on:blur to close on click-away.
