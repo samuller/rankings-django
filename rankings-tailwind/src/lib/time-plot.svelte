@@ -28,7 +28,9 @@ Usage:
 	const gridColor =  '#bbb';
 	const bgColor = 'rgba(0,0,0,0)';
 
+	let loadingPlotlyLibrary = true;
 	let plotElement: HTMLElement;
+	// A mutex to prevent us from triggering a relayout while one is already in progress.
 	let busyRelayout = false;
 
 	/**
@@ -108,14 +110,14 @@ Usage:
 		}
 	};
 
-	// Ensure code only runs in browser (and not on server).
-	onMount(async () => {
+	const setupPlot = async function() {
 		// @ts-ignore
 		const Plotly = window?.Plotly;
 		// Check if library has been loaded.
 		if (!Plotly) {
 			return;
 		}
+		loadingPlotlyLibrary = false;
 
 		// const domElement = document.getElementById('tester');
 		const data_x = data.x;
@@ -159,15 +161,20 @@ Usage:
 		plotElement.on('plotly_relayout', async function (relayoutData) {
 			await onRelayout(Plotly, data_x, data_y, relayoutData);
 		});
-	});
+	};
+
+	// Ensure code only runs in browser (and not on server).
+	// onMount(async () => {
+	// 	await setupPlot();
+	// });
 </script>
 
 <svelte:head>
-	<script src="https://cdn.plot.ly/plotly-2.25.2.min.js" charset="utf-8"></script>
+	<script on:load|once={setupPlot} src="https://cdn.plot.ly/plotly-2.25.2.min.js" charset="utf-8"></script>
 </svelte:head>
 
-{#if browser && !('Plotly' in window)}
-<div>Charting library hasn't loaded (refresh?).</div>
+{#if browser && !('Plotly' in window) && loadingPlotlyLibrary}
+<div>Charting library hasn't loaded (wait or refresh?).</div>
 {/if}
 <!-- style="width:600px;height:250px;" -->
 <div bind:this={plotElement} />
