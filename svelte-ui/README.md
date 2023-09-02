@@ -5,12 +5,12 @@
 
 This Svelte project was created by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte). 
 ```bash
-# Create a new project SvelteKit project in "rankings-tailwind" folder.
+# Create a new project SvelteKit project in "svelte-ui" folder.
 # Interactive options will appear. Chosen options were:
 #  * Skeleton project
 #  * With typescript syntax
 #  * And the following extras enabled: eslint, prettier, playwright, vitest
-npm init svelte@latest rankings-tailwind
+npm init svelte@latest svelte-ui
 ```
 
 ## Additional dependencies
