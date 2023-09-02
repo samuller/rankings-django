@@ -3,10 +3,14 @@ name = "rankings-django"
 version = "0.1.0"
 description = ""
 authors = ["Simon Muller <samullers@gmail.com>"]
+readme = "README.md"
+homepage = "https://github.com/samuller/rankings-django"
+repository = "https://github.com/samuller/rankings-django"
 packages = [
     # Currently only used so we can get version with importlib.metadata.version
     { include = "rankings" }
 ]
+include = ["NOTICE"]
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
