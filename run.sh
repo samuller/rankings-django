@@ -15,8 +15,9 @@ help() {
 }
 
 lint() {
+    cd rankings
     echo "flake8..."
-    poetry run flake8 --exclude **/*/migrations/
+    poetry run flake8 --exclude **/migrations/
     # We're not as strict about docstrings in our tests
     # poetry run flake8 --extend-ignore=D tests/
     echo "mypy..."
@@ -28,12 +29,14 @@ lint() {
 }
 
 format() {
+    cd rankings
     black rankings/
 }
 
 test() {
+    cd rankings
     # Run Django tests
-    PYTHONWARNINGS=default poetry run coverage run --source='.' rankings/manage.py test --debug-mode rankings/
+    PYTHONWARNINGS=default poetry run coverage run --source='.' manage.py test --debug-mode .
     # Generate HTML coverage report
     poetry run coverage html --show-contexts
     # Print coverage report
