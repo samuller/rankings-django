@@ -1,0 +1,20 @@
+{
+	"name": "rankings-tailwind-dev",
+
+	// path to docker-compose.yml relative to devcontainer.json
+	"dockerComposeFile": "docker-compose.yml",
+	// this is the service vscode is going to attach to
+	"service": "tailwind-dev",
+	// here we specify /workspace, because in docker-compose we have mapped
+	// through the top-level project folder to /workspace
+	"workspaceFolder": "/workspace",
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": {},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": ["svelte.svelte-vscode", "bradlc.vscode-tailwindcss"],
+
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode"
+}
