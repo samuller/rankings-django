@@ -55,3 +55,4 @@ jobs:
         run: ./run.sh test
       - name: Print out all outdated packages
         run: poetry show --outdated
+        working-directory: rankings
