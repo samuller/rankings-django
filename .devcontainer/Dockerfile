@@ -1,41 +1,91 @@
 #
-# VSCode devcontainer for development with: Ubuntu + Python + Poetry
+# VSCode devcontainer for development with: Ubuntu + Node + Python + Poetry
 #
 ARG UBUNTU_VERSION=22.04
+ARG NODE_MAJOR_VERSION=18
+ARG PYTHON_VERSION=3.8
+ARG POETRY_VERSION=1.4.2
 
 FROM ubuntu:$UBUNTU_VERSION
+# FROM creates a new build stage, so we need to redeclare any arguments we want to keep.
+# See: https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
+ARG NODE_MAJOR_VERSION
+ARG PYTHON_VERSION
+ARG POETRY_VERSION
 
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 RUN unset DISPLAY
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Switch to automatic mirror select mode if apt downloads are slow.
+# RUN sed -i 's http://archive.ubuntu.com/ubuntu/ mirror://mirrors.ubuntu.com/mirrors.txt ' /etc/apt/sources.list
+
 ########
-# Install node
+# Install Node
 ########
 RUN apt-get update && apt-get -y install software-properties-common build-essential curl wget unzip sudo
 
-RUN curl -sSL https://deb.nodesource.com/setup_18.x | sudo -E bash - && \
+RUN curl -sSL "https://deb.nodesource.com/setup_$NODE_MAJOR_VERSION.x" | sudo -E bash - && \
     apt-get install -y nodejs
+
+########
+# Install Python
+########
+
+RUN echo python${PYTHON_VERSION}
+
+# Install build dependencies.
+# This will bloat the image, but is necessary to "poetry install" the dependencies
+# then install specific Python version.
+RUN apt-get update && apt-get -y upgrade && apt-get install -y --no-install-recommends build-essential \
+ && apt-get install -y curl software-properties-common git \
+ && add-apt-repository ppa:deadsnakes/ppa && apt-get install -y \
+ python${PYTHON_VERSION} python${PYTHON_VERSION}-venv python${PYTHON_VERSION}-dev
+RUN python${PYTHON_VERSION} -m venv /opt/venv
+# Make sure we use the virtualenv
+ENV PATH="/opt/venv/bin:$PATH"
+
+########
+# Install Pip
+########
+
+# Install latest pip
+RUN /opt/venv/bin/python${PYTHON_VERSION} -m pip install --upgrade pip
+
+# Note that we don't clear out the APT-GET cache -- one often needs to install
+# packages inside the devcontainer.
+RUN apt-get update && apt-get -y upgrade && apt-get -qqy install apt-transport-https iputils-ping sudo gnupg2 tzdata
 
 ########
 # Setup vscode user
 ########
 
-# create the non-root user that we're going to use for dev
+# Create the non-root user that we're going to use for dev
 # -m: create home
 # -s: set shell
 # -G sudo: add to sudo group
 RUN useradd -ms /bin/bash -G sudo vscode
-# the whole sudo group does not need to supply password when sudoing
+# The whole sudo group does not need to supply password when sudoing.
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-# pre-create the pypoetry cache directory by the non-root user
-# so that the named-volume we mount there will be writable to vscode
 USER vscode
-# in-case base image sets this to root, we have to reset to vscode's home (USER
+# In-case base image sets this to root, we have to reset to vscode's home (USER
 # statement not sufficient)
 ENV HOME=/home/vscode
 
-# default command to run if nothing else is specified
+########
+# Install Poetry
+########
+
+RUN curl -sSL https://install.python-poetry.org | python${PYTHON_VERSION} -
+
+########
+# Setups for specific dependencies
+########
+
+# Needed for cv2.
+RUN sudo apt-get install -y ffmpeg libsm6 libxext6
+
+# Default command to run if nothing else is specified.
 CMD ["/bin/bash"]
