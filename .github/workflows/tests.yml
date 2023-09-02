@@ -12,7 +12,7 @@ on:
   - cron: '7 14 * * fri'
 
 jobs:
-  run-tests:
+  test-backend:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -56,3 +56,26 @@ jobs:
       - name: Print out all outdated packages
         run: poetry show --outdated
         working-directory: rankings
+        continue-on-error: true
+
+  test-ui:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Test with specific supported versions
+          - name: supported
+            os: ubuntu-22.04
+            node: 20
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Install Node v${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+        working-directory: svelte-ui
