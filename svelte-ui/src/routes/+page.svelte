@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page_title, activities } from '../store';
 	import Card from "$lib/card.svelte";
-	import Loader from "$lib/loader.svelte";
+	import DynamicData from '$lib/dynamic-data.svelte';
 
 	page_title.set("");
 
@@ -16,9 +16,7 @@
     <title>Rankings</title> 
 </svelte:head>
 
-{#await activities.load()}
-	<Loader></Loader>
-{/await}
+<DynamicData data={activities}></DynamicData>
 
 {#each $activities ?? [] as activity}
 	<a href="/{activity.url}">
