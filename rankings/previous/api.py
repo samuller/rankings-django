@@ -86,6 +86,30 @@ class ActivityViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewS
     )
 
 
+class PlayerSerializer(
+    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
+):
+    """Serializer for Players."""
+
+    class Meta:
+        model = Player
+        fields = [
+            "name",
+            "email",
+        ]
+
+
+class PlayerViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
+    """ViewSet for viewing and editing players."""
+
+    queryset = Player.objects.filter(active=True)
+    serializer_class = PlayerSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filterset_fields = ["active"]
+    search_fields = ["name", "email"]
+    field_filter_param = FIELD_FILTER_PARAM
+
+
 @api_view()
 @authentication_classes([CsrfExemptSessionAuthentication])
 @permission_classes([permissions.IsAdminUser])
