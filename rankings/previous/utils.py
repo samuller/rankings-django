@@ -20,8 +20,8 @@ class CsrfExemptSessionAuthentication(authentication.SessionAuthentication):
         return
 
 
-class DynamicFieldsModelSerializer(serializers.ModelSerializer):
-    """Control which fields are serlialzed if an additional `fields` argument is given.
+class FieldFilterModelSerializer(serializers.ModelSerializer):
+    """Control which fields are serlialized if an additional `fields` argument is given.
 
     Source: https://www.django-rest-framework.org/api-guide/serializers/#examples
     """

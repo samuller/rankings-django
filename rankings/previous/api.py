@@ -17,7 +17,7 @@ from rest_framework.decorators import (
 
 from .utils import (
     CsrfExemptSessionAuthentication,
-    DynamicFieldsModelSerializer,
+    FieldFilterModelSerializer,
     FieldFilterMixin,
     ValidateParamsMixin,
     ManualAutoSchema,
@@ -39,7 +39,7 @@ FIELD_FILTER_PARAM = "select"
 
 
 class ActivitySerializer(
-    serializers.HyperlinkedModelSerializer, DynamicFieldsModelSerializer
+    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
 ):
     """Serializer for Activities."""
 
