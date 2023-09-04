@@ -33,7 +33,10 @@
 {#await dataLoadPromise}
 	<Loader></Loader>
 {:catch error}
-	<p class="text-red-500">
-		{error.message} {#if retry}(<TextButton on:click={reload}>retry</TextButton>){/if}
-	</p>
+    <div class="flex flex-col">
+        <p class="text-red-500">{error.message}</p>
+        {#if retry}
+        <button class="btn btn-outline btn-error" on:click={reload}>Retry</button>
+        {/if}
+    </div>
 {/await}
