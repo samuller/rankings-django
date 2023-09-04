@@ -26,3 +26,19 @@ export interface Activity {
   name: string;
 }
 export const activities = readJSONAPI<Activity[]>([], '/api/activities/?active=true&select=url,name')
+
+export interface Player {
+  name: string;
+  email: string;
+}
+export const players = readJSONAPI<Player[]>([], '/api/players/?ordering=name')
+
+export interface Ranking {
+  player: {
+    name: string
+  };
+  skill: number;
+}
+export const rankingsAPIStore = function(activity_url: string) {
+  return readJSONAPI<Ranking[]>([], `/api/rankings/?activity=${activity_url}&ordering=-skill&select=player,skill`);
+}
