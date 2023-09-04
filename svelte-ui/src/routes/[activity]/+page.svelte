@@ -4,14 +4,20 @@
 	import Table from "$lib/table.svelte";
 	import TimePlot from "$lib/time-plot.svelte";
 	import AddButton from "$lib/add-button.svelte";
-	import { page_title, activities, type Activity } from '../../store';
+	import { page_title, activities, type Activity, players, type Player, rankingsAPIStore, type Ranking } from '../../store';
 	import DynamicData from "$lib/dynamic-data.svelte";
 
 	export let data: ActivityPage;
 
+	let rankings: any;
+	let rankingsTable: string[][] = [];
+
 	$: activity = $activities?.find((act: Activity) => act.url == data.url);
-	$: if (activity) {
-		page_title.set(activity.name);
+	$: if (activity) { page_title.set(activity.name); }
+	$: if (activity) { rankings = rankingsAPIStore(activity.url); }
+	$: if (rankings) { rankingsTable = $rankings
+		.filter((ranking: any) => ranking.skill > 0)
+		.map((ranking: any) => [ranking.player.name, ranking.skill.toFixed(0)]);
 	}
 </script>
 
@@ -30,7 +36,10 @@
 		<a class="normal-case text-xl font-semibold">{activity.name}</a>
 	</Card>
 
-	<Table></Table>
+	<Table
+		columnNames={['Name', 'Skill']}
+		rows={rankingsTable}
+	></Table>
 
 	<TimePlot></TimePlot>
 
