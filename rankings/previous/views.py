@@ -3,8 +3,8 @@ import json
 import time
 from typing import List, Dict, Optional, Any, Tuple, cast
 
-from django.http import HttpResponse, HttpRequest
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpRequest, HttpResponseNotFound
+from django.shortcuts import render
 from trueskill import Rating, rate
 from django.contrib.auth.decorators import user_passes_test
 
@@ -31,10 +31,10 @@ def main_page(request: HttpRequest) -> HttpResponse:
 
 
 def activity_summary(request: HttpRequest, activity_url: str) -> HttpResponse:
-    """Generata a summary page for an activity (listing recent matches and leading players)."""
+    """Generate a summary page for an activity (listing recent matches and leading players)."""
     activity = Activity.objects.filter(url=activity_url)
     if len(activity) != 1:
-        return redirect("home")
+        return HttpResponseNotFound(f"Path doesn't exist - unknown [activity]: '{activity_url}'.")
     activity = activity[0].to_dict_with_url()
 
     active_players_ids = []
@@ -77,7 +77,7 @@ def list_players(
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
-        return redirect("home")
+        return HttpResponseNotFound(f"Path doesn't exist - unknown [activity]/players: '{activity_url}'.")
     if sort_by is None or len(sort_by) == 0:
         sort_by = "name"
 
@@ -111,7 +111,7 @@ def player_info(
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
-        return redirect("home")
+        return HttpResponseNotFound(f"Path doesn't exist - unknown [activity]/player/{player_id}: {activity_url}.")
 
     player = Player.objects.get(id=player_id)
     context = {
