@@ -3,16 +3,16 @@ import { writable } from 'svelte/store';
 import { asyncReadable, type Loadable } from '@square/svelte-store';
 
 
-const readJSONAPI = function(initial: any, url: string): Loadable<any> {
+const readJSONAPI = function<T = any>(initial: any, url: string): Loadable<any> {
   if (!browser) return {} as Loadable<any>;
-  return asyncReadable(
+  return asyncReadable<T>(
       initial,
       async () => {
         const response = await fetch(url);
         if (!response.ok) {
           throw { message: response.statusText, status: response.status }
         }
-        const jsonData = await response.json();
+        const jsonData: T = await response.json();
         return jsonData;
       },
       { reloadable: true }
@@ -21,4 +21,8 @@ const readJSONAPI = function(initial: any, url: string): Loadable<any> {
 
 export const page_title = writable("");
 
-export const activities = readJSONAPI([], '/api/activities/?active=true&select=url,name')
+export interface Activity {
+  url: string;
+  name: string;
+}
+export const activities = readJSONAPI<Activity[]>([], '/api/activities/?active=true&select=url,name')
