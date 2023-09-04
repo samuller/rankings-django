@@ -108,8 +108,9 @@ class BasicDataTestCase(TestCase):
         # Check filtering functionalities with queries that should all return the same results.
         for url in [
             "/api/activities",
-            "/api/activities?active=true",
-            "/api/activities?search=tennis",
+            "/api/activities?active=true",  # Field filtering
+            "/api/activities?search=tennis",  # Searching
+            "/api/activities?limit=1&offset=0",  # Pagination
         ]:
             response = self.client.get(url, follow=True)
             assert response.status_code == 200
