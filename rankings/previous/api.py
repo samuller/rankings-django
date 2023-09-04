@@ -6,6 +6,8 @@ import datetime
 from typing import List, Optional, Any
 
 from django.http import HttpResponse, HttpRequest
+from django.db.models.functions import Greatest, Least
+from django.db.models import ExpressionWrapper, Value, F, FloatField
 from rest_framework import permissions, serializers, viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -28,6 +30,7 @@ from .models import (
     Player,
     Game,
     GameSession,
+    Ranking,
     Result,
     TeamMember,
 )
@@ -72,7 +75,7 @@ class ActivityViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewS
                 "name": "format",
                 "required": False,
                 "in": "query",
-                "description": "Format of response to return.",
+                "description": "Format of response to return (e.g. json, api).",
                 "schema": {"type": "string"},
             },
             {
@@ -105,8 +108,41 @@ class PlayerViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet
     queryset = Player.objects.filter(active=True)
     serializer_class = PlayerSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filterset_fields = ["active"]
+    filterset_fields: List[str] = []
     search_fields = ["name", "email"]
+
+
+class RankingSerializer(
+    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
+):
+    """Serializer for Rankings."""
+
+    activity = ActivitySerializer(fields=["name"])
+    player = PlayerSerializer(fields=["name"])
+    skill = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Ranking
+        fields = [
+            "activity",
+            "player",
+            "skill",
+            "mu",
+            "sigma",
+        ]
+
+
+class RankingViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
+    """ViewSet for viewing and editing Rankings."""
+
+    queryset = Ranking.objects.annotate(
+        skill=ExpressionWrapper(Greatest(Value(0), Least(Value(50), F('mu') - 3 * F('sigma'))),
+                                output_field=FloatField())
+    ).all()  # filter(active=True)
+    serializer_class = RankingSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filterset_fields = ["activity"]
+    search_fields: List[str] = []  # "activity.name", "player.name"]
     field_filter_param = FIELD_FILTER_PARAM
 
 
