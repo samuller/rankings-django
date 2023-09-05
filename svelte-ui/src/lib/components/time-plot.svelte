@@ -23,6 +23,10 @@ Usage:
 	export const initRangeX: [number | null, number | null] | null = [0, 50];
 	export const minRangeY: number | null = null;
 
+	const title = "The time between space";
+	const xAxisTitle = "time";
+	const yAxisTitle = "space";
+
 	// Add 10% marging if near edge of axes.
 	const axisMargin = 0.1;
 	const gridColor =  '#bbb';
@@ -130,19 +134,26 @@ Usage:
 			}
 		];
 		const layout = {
-			// `b: 0` -> Causes bottom tick labels to be cut-off
-			margin: { t: 0 },
+			// b: 0 -> Causes bottom tick labels to be cut-off.
+			// t: 0 -> Causes title to be cut-off.
+			margin: { t: 30, b: 30 },
 			paper_bgcolor: bgColor,
 			plot_bgcolor: bgColor,
 			dragmode: 'pan',
+			// https://stackoverflow.com/questions/47892127/succinct-concise-syntax-for-optional-object-keys-in-es6-es7
+			...(title && { title: { text: title } }),
 			xaxis: {
 				gridcolor: gridColor,
-				// https://stackoverflow.com/questions/47892127/succinct-concise-syntax-for-optional-object-keys-in-es6-es7
 				...(true && { range: initRangeX }),
+				...(xAxisTitle && { title: { text: xAxisTitle } }),
 			},
 			// xaxis: { fixedrange: true },
 			// , autorange: true
-			yaxis: { gridcolor: gridColor, fixedrange: true }
+			yaxis: {
+				gridcolor: gridColor,
+				fixedrange: true,
+				...(yAxisTitle && { title: { text: yAxisTitle } }),
+			}
 		};
 		const config = {
 			// staticPlot: true,
