@@ -12,6 +12,6 @@
     }
 </script>
 
-<div class="group block rounded-lg {padding} bg-gray-600 text-white ring-1 ring-slate-900/5 shadow-lg space-y-3 {classes}">
+<div class="group block rounded-lg {padding} bg-gray-600 text-white ring-1 ring-slate-900/5 shadow-lg {classes}">
     <slot />
 </div>
