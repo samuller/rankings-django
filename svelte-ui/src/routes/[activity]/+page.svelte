@@ -23,7 +23,7 @@
 	let rankingsTable: string[][] = [];
 	currentActivityUrl.set(data.url);
 
-	$: navTitle.set($currentActivity?.name);
+	$: if ($currentActivity) { navTitle.set($currentActivity.name); }
 	$: rankings = apiRankings[data.url];
 	$: rankingsTable = $rankings
 		.filter((ranking: Ranking) => ranking.skill > 0)
@@ -45,10 +45,13 @@
 		<a class="normal-case text-xl font-semibold">{$currentActivity.name}</a>
 	</Card>
 
+	<DynamicData data={rankings}></DynamicData>
+	{#if rankingsTable.length > 0}
 	<Table
 		columnNames={['Name', 'Skill']}
-		rows={rankingsTable}
+		rows={rankingsTable.slice(0, 5)}
 	></Table>
+	{/if}
 
 	<TimePlot></TimePlot>
 
