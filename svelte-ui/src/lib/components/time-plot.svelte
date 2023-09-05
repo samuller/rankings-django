@@ -12,14 +12,12 @@ Usage:
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 
-	// export let data: { x: number[], y: number[] } = { x: [], y: [] };
-    // export const initRangeX : [number | null, number | null] | null = null;
-
-	// Some starting data for initial testing.
-	export let data: { x: number[]; y: number[] } = { x: [], y: [] };
-	export const initRangeX: [number | null, number | null] | null = [0, 50];
-	export const minRangeY: number | null = null;
-
+	// Data to plot.
+	export let data: { x: number[], y: number[] } = { x: [], y: [] };
+	// Options for hard-coding or auto-scaling axes.
+	export let initRangeX: [number | null, number | null] | null = [null, null];
+	export let yRangeMinMax: (number|null)[] = [null, null];
+	// Plot titles.
 	export let title = "";
 	export let xAxisTitle = "";
 	export let yAxisTitle = "";
@@ -65,7 +63,7 @@ Usage:
 	 * We do our own custom updating of range limits.
 	 *
 	 * Plotly.js doesn't yet have a config for this, see: https://github.com/plotly/plotly.js/issues/1876
-	 * Thought one might soon (within weeks?) be implemented: https://github.com/plotly/plotly.js/pull/6547
+	 * Though one might soon (within weeks?) be implemented: https://github.com/plotly/plotly.js/pull/6547
 	 */
 	const onRelayout = async function (Plotly: any, data_x: number[], data_y: number[], relayoutData: any) {
 		if (!('xaxis.range[0]' in relayoutData && 'xaxis.range[1]' in relayoutData)) {
@@ -97,11 +95,13 @@ Usage:
 		const min_y_data = Math.min(...data_y_subset);
 		const max_y_data = Math.max(...data_y_subset);
 
+		const yRangeMin = yRangeMinMax[0];
+		const yRangeMax = yRangeMinMax[1];
 		// Add 10% buffer if near edge of y-axes.
 		const y_axis_buffer_dist = (max_y_data - min_y_data) * axisMargin;
 		const min_y = min_y_data - y_axis_buffer_dist;
 		const max_y = max_y_data + y_axis_buffer_dist;
-		new_layout['yaxis.range'] = [(minRangeY != null) ? (minRangeY - y_axis_buffer_dist) : min_y, max_y];
+		new_layout['yaxis.range'] = [(yRangeMin != null) ? (yRangeMin - y_axis_buffer_dist) : min_y, max_y];
 
 		if (!busyRelayout) {
 			Plotly.relayout(plotElement, new_layout).then(() => {
@@ -131,15 +131,18 @@ Usage:
 			}
 		];
 		const layout = {
+			width: 1000,
 			// b: 0 -> Causes bottom tick labels to be cut-off.
 			// t: 0 -> Causes title to be cut-off.
-			margin: { t: 30, b: 30 },
+			margin: { t: 30, b: 40 },
 			paper_bgcolor: bgColor,
 			plot_bgcolor: bgColor,
 			dragmode: 'pan',
 			// https://stackoverflow.com/questions/47892127/succinct-concise-syntax-for-optional-object-keys-in-es6-es7
 			...(title && { title: { text: title } }),
 			xaxis: {
+				showgrid: false,
+				dtick: 1,
 				gridcolor: gridColor,
 				...(true && { range: initRangeX }),
 				...(xAxisTitle && { title: { text: xAxisTitle } }),

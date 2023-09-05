@@ -19,7 +19,7 @@
 	currentActivityUrl.set(data.activity_url);
 
 	$: if ($currentActivity) { navTitle.set($currentActivity.name); }
-	$: plotData = {
+	$: skillPlotData = {
 		x: $skillHistory ? $skillHistory.map((obj, idx) => idx) : [],
 		y: $skillHistory ? $skillHistory.map((obj) => obj.skill) : [],
 	};
@@ -43,12 +43,16 @@
 		</div>
 	</Card>
 
+	{#if skillPlotData}
 	<TimePlot
 		title="Skill progress"
 		xAxisTitle="Matches played"
 		yAxisTitle="Skill level"
-		data={plotData}
+		data={skillPlotData}
+		initRangeX={[Math.max(skillPlotData.x.length - 30, 0), skillPlotData.x.length]}
+		yRangeMinMax={[-2, null]}
 	></TimePlot>
+	{/if}
 	<!-- <GaussianPlot
 		title="Current skill estimate"
 		xAxisTitle="Skill level"
