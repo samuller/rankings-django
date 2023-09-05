@@ -15,7 +15,7 @@ class DefaultDict<T> {
 };
 
 
-const readJSONAPI = function<T = any>(initial: T, url: string): Loadable<T> {
+export const readJSONAPI = function<T = any>(initial: T, url: string): Loadable<T> {
   if (!browser) return {} as Loadable<T>;
   return asyncReadable<T>(
       initial,
