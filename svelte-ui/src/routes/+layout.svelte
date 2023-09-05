@@ -1,7 +1,7 @@
 <script>
   import "../app.css";
-	import Footer from "../lib/footer.svelte";
-	import Navbar from "../lib/navbar.svelte";
+	import Footer from "$lib/components/footer.svelte";
+	import Navbar from "$lib/components/navbar.svelte";
 </script>
 
 <div class="h-screen flex flex-col">

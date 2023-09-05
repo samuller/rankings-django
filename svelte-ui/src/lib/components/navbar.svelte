@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { navTitle } from '../store';
+    import { navTitle } from '../../store';
 
     /**
      * Close dropdown menu if it is currently open - use with on:blur to close on click-away.

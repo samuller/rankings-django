@@ -1,10 +1,9 @@
 <script lang="ts">
 	import type { ActivityPage } from './+page';
-	import Card from '$lib/card.svelte';
-	import Table, { type RowDetail } from '$lib/table.svelte';
-	import TimePlot from '$lib/time-plot.svelte';
-	import AddButton from '$lib/add-button.svelte';
-	import DynamicData from '$lib/dynamic-data.svelte';
+	import Card from '$lib/components/card.svelte';
+	import Table, { type RowDetail } from '$lib/components/table.svelte';
+	import AddButton from '$lib/components/add-button.svelte';
+	import DynamicData from '$lib/components/dynamic-data.svelte';
 	import {
 		currentActivityUrl,
 		currentActivity,
@@ -51,7 +50,6 @@
 		rows={rankingsTable.slice(0, 5)}
 	></Table>
 	{/if}
-
 
 	<AddButton></AddButton>
 {/if}

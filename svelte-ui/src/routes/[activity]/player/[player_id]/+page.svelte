@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { PlayerPage } from './+page';
-	import Card from '$lib/card.svelte';
-	import TimePlot from '$lib/time-plot.svelte';
-	import DynamicData from '$lib/dynamic-data.svelte';
+	import Card from '$lib/components/card.svelte';
+	import TimePlot from '$lib/components/time-plot.svelte';
+	import DynamicData from '$lib/components/dynamic-data.svelte';
 	import {
 		currentActivityUrl,
 		currentActivity,

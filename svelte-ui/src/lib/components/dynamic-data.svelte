@@ -15,8 +15,7 @@
 </script>
 
 <script lang="ts">
-	import Loader from "$lib/loader.svelte";
-	import TextButton from '$lib/text-button.svelte';
+	import Loader from "./loader.svelte";
 
     // Reloadable data, most likely a asyncReadable from @square/svelte-store.
     export let data: Reloadable<any>;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { navTitle, activities } from '../store';
-	import Card from "$lib/card.svelte";
-	import DynamicData from '$lib/dynamic-data.svelte';
+	import Card from "$lib/components/card.svelte";
+	import DynamicData from '$lib/components/dynamic-data.svelte';
 
 	navTitle.set("");
 
