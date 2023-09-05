@@ -136,9 +136,11 @@ class RankingViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSe
     """ViewSet for viewing and editing Rankings."""
 
     queryset = Ranking.objects.annotate(
+        # We add a calculated column for "skill". Ordering & pagination could get slow for large amounts of data when
+        # using calculated columns.
         skill=ExpressionWrapper(Greatest(Value(0), Least(Value(50), F('mu') - 3 * F('sigma'))),
                                 output_field=FloatField())
-    ).all()  # filter(active=True)
+    ).filter(player__active=True, skill__gt=0)
     serializer_class = RankingSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filterset_fields = ["activity"]
