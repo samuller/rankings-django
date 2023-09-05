@@ -1,11 +1,19 @@
 <script lang="ts">
-	import type { ActivityPage } from "./+page";
-	import Card from "$lib/card.svelte";
-	import Table from "$lib/table.svelte";
-	import TimePlot from "$lib/time-plot.svelte";
-	import AddButton from "$lib/add-button.svelte";
-	import { page_title, activities, type Activity, players, type Player, rankingsAPIStore, type Ranking } from '../../store';
-	import DynamicData from "$lib/dynamic-data.svelte";
+	import type { ActivityPage } from './+page';
+	import Card from '$lib/card.svelte';
+	import Table from '$lib/table.svelte';
+	import TimePlot from '$lib/time-plot.svelte';
+	import AddButton from '$lib/add-button.svelte';
+	import DynamicData from '$lib/dynamic-data.svelte';
+	import {
+		page_title,
+		activities,
+		type Activity,
+		players,
+		type Player,
+		rankingsAPIStore,
+		type Ranking
+	} from '../../store';
 
 	export let data: ActivityPage;
 
