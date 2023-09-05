@@ -16,16 +16,13 @@ Usage:
     // export const initRangeX : [number | null, number | null] | null = null;
 
 	// Some starting data for initial testing.
-	export let data: { x: number[]; y: number[] } = {
-		x: [1, 2, 3, 4, 5].concat(Array.from({ length: 200 }, (_, i) => 6 + i)),
-		y: [1, 2, 4, 8, 16].concat(Array.from({ length: 200 }, (_, i) => 6 + i))
-	};
+	export let data: { x: number[]; y: number[] } = { x: [], y: [] };
 	export const initRangeX: [number | null, number | null] | null = [0, 50];
 	export const minRangeY: number | null = null;
 
-	const title = "The time between space";
-	const xAxisTitle = "time";
-	const yAxisTitle = "space";
+	export let title = "";
+	export let xAxisTitle = "";
+	export let yAxisTitle = "";
 
 	// Add 10% marging if near edge of axes.
 	const axisMargin = 0.1;
