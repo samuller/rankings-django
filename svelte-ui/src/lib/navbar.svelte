@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { page_title } from '../store';
+    import { navTitle } from '../store';
 
     /**
      * Close dropdown menu if it is currently open - use with on:blur to close on click-away.
@@ -25,11 +25,11 @@
         <a href="/" class="btn btn-ghost normal-case text-xl text-white">
             Rankings
         </a>
-        {#if $page_title != ""}
+        {#if $navTitle != ""}
         <div class="text-sm breadcrumbs">
             <ul>
                 <li></li>
-                <li><a href={$page.url.pathname}>{$page_title}</a></li>
+                <li><a href={$page.url.pathname}>{$navTitle}</a></li>
             </ul>
         </div>
         {/if}

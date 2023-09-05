@@ -8,7 +8,7 @@
 	import {
 		currentActivityUrl,
 		currentActivity,
-		page_title,
+		navTitle,
 		activities,
 		type Activity,
 		players,
@@ -23,7 +23,7 @@
 	let rankings = rankingsAPIStore(data.url);
 	let rankingsTable: string[][] = [];
 
-	$: page_title.set($currentActivity?.name);
+	$: navTitle.set($currentActivity?.name);
 	$: rankingsTable = $rankings
 		.filter((ranking: any) => ranking.skill > 0)
 		.map((ranking: any) => [ranking.player.name, ranking.skill.toFixed(0)]);
@@ -31,7 +31,7 @@
 
 <svelte:head>
 {#if $currentActivity}
-	<title>Rankings - {$page_title}</title>
+	<title>Rankings - {$navTitle}</title>
 {:else}
 	<title>Rankings</title>
 {/if}

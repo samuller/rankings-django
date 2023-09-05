@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Card from "$lib/card.svelte";
 	import Tabs from "$lib/tabs.svelte";
-    import { page_title } from '../../store';
+    import { navTitle } from '../../store';
 
-    page_title.set("About");
+    navTitle.set("About");
 
 	const TABS = [
 		{

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { page_title, activities } from '../store';
+	import { navTitle, activities } from '../store';
 	import Card from "$lib/card.svelte";
 	import DynamicData from '$lib/dynamic-data.svelte';
 
-	page_title.set("");
+	navTitle.set("");
 
 	let test_data = [
 		{ title: '⚽ Foosball', url: 'foosball' },

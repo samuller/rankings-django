@@ -20,7 +20,8 @@ const readJSONAPI = function<T = any>(initial: any, url: string): Loadable<any> 
 }
 
 export const currentActivityUrl = writable<string | null>(null);
-export const page_title = writable("");
+// Title used for breadcrumbs in the navbar.
+export const navTitle = writable("");
 
 export interface Activity {
   url: string;
