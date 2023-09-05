@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ActivityPage } from './+page';
 	import Card from '$lib/card.svelte';
-	import Table from '$lib/table.svelte';
+	import Table, { type RowDetail } from '$lib/table.svelte';
 	import TimePlot from '$lib/time-plot.svelte';
 	import AddButton from '$lib/add-button.svelte';
 	import DynamicData from '$lib/dynamic-data.svelte';
@@ -20,14 +20,17 @@
 
 	export let data: ActivityPage;
 
-	let rankingsTable: string[][] = [];
+	let rankingsTable: RowDetail[][] = [];
 	currentActivityUrl.set(data.url);
 
 	$: if ($currentActivity) { navTitle.set($currentActivity.name); }
 	$: rankings = apiRankings[data.url];
 	$: rankingsTable = $rankings
 		.filter((ranking: Ranking) => ranking.skill > 0)
-		.map((ranking: Ranking) => [ranking.player.name, ranking.skill.toFixed(0)]);
+		.map((ranking: Ranking) => [
+			{ text: ranking.player.name, url: `/${data.url}/player/${ranking.player.id}` },
+			{ text: ranking.skill.toFixed(0) }
+		]);
 </script>
 
 <svelte:head>
@@ -53,7 +56,6 @@
 	></Table>
 	{/if}
 
-	<TimePlot></TimePlot>
 
 	<AddButton></AddButton>
 {/if}

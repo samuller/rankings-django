@@ -57,7 +57,8 @@ export const players = readJSONAPI<Player[]>([], '/api/players/?ordering=name')
 
 export interface Ranking {
   player: {
-    name: string
+    id: number;
+    name: string;
   };
   skill: number;
 }

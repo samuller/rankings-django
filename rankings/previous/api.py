@@ -97,6 +97,7 @@ class PlayerSerializer(
     class Meta:
         model = Player
         fields = [
+            "id",
             "name",
             "email",
         ]
@@ -118,7 +119,7 @@ class RankingSerializer(
     """Serializer for Rankings."""
 
     activity = ActivitySerializer(fields=["name"])
-    player = PlayerSerializer(fields=["name"])
+    player = PlayerSerializer(fields=["id", "name"])
     skill = serializers.ReadOnlyField()
 
     class Meta:

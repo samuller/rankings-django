@@ -1,6 +1,13 @@
+<script context="module" lang="ts">
+    export interface RowDetail {
+        text: string;
+        url?: string;
+    }
+</script>
+
 <script lang="ts">
     export let columnNames: string[];
-    export let rows: string[][];
+    export let rows: RowDetail[][];
 
     $: columnAlignments = columnNames.map((val, idx) => {
         return idx == columnNames.length - 1 ? "text-right" : "text-left"
@@ -23,7 +30,11 @@
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 {#each row as cell, cell_idx}
                 <td class="px-6 py-4 text-white {columnAlignments[cell_idx]}">
-                    {cell}
+                    {#if cell.url}
+                        <a href="{cell.url}" class="underline">{cell.text}</a>
+                    {:else}
+                        {cell.text}
+                    {/if}
                 </td>
                 {/each}
             </tr>
