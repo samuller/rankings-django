@@ -14,19 +14,20 @@
 		players,
 		type Player,
 		rankingsAPIStore,
-		type Ranking
+		type Ranking,
+		apiRankings,
 	} from '../../store';
 
 	export let data: ActivityPage;
+
+	let rankingsTable: string[][] = [];
 	currentActivityUrl.set(data.url);
 
-	let rankings = rankingsAPIStore(data.url);
-	let rankingsTable: string[][] = [];
-
 	$: navTitle.set($currentActivity?.name);
+	$: rankings = apiRankings[data.url];
 	$: rankingsTable = $rankings
-		.filter((ranking: any) => ranking.skill > 0)
-		.map((ranking: any) => [ranking.player.name, ranking.skill.toFixed(0)]);
+		.filter((ranking: Ranking) => ranking.skill > 0)
+		.map((ranking: Ranking) => [ranking.player.name, ranking.skill.toFixed(0)]);
 </script>
 
 <svelte:head>
