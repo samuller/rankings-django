@@ -8,6 +8,11 @@ router = routers.DefaultRouter()
 router.register("activities", api.ActivityViewSet)
 router.register("players", api.PlayerViewSet)
 router.register("rankings", api.RankingViewSet)
+router.register(
+    r"skill-history/(?P<activity_url>[^/]+)/(?P<player_id>\d+)",
+    api.SkillHistoryViewSet,
+    basename="SkillHistory",
+)
 
 urlpatterns = [
     re_path(r"^$", views.main_page, name="home"),

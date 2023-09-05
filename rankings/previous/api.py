@@ -32,6 +32,7 @@ from .models import (
     GameSession,
     Ranking,
     Result,
+    SkillHistory,
     TeamMember,
 )
 
@@ -39,6 +40,13 @@ from .models import (
 # We choose to follow PostgREST's "select" convention.
 # See: https://postgrest.org/en/stable/references/api/tables_views.html#vertical-filtering
 FIELD_FILTER_PARAM = "select"
+
+# We can add a calculated column for "skill" when doing queries on an object that has skill parameters.
+# NOTE: Ordering & pagination could get slow for large amounts of data when using calculated columns.
+SKILL_EXPRESSION = ExpressionWrapper(
+    Greatest(Value(0), Least(Value(50), F("mu") - 3 * F("sigma"))),
+    output_field=FloatField(),
+)
 
 
 class ActivitySerializer(
@@ -136,17 +144,92 @@ class RankingSerializer(
 class RankingViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
     """ViewSet for viewing and editing Rankings."""
 
-    queryset = Ranking.objects.annotate(
-        # We add a calculated column for "skill". Ordering & pagination could get slow for large amounts of data when
-        # using calculated columns.
-        skill=ExpressionWrapper(Greatest(Value(0), Least(Value(50), F('mu') - 3 * F('sigma'))),
-                                output_field=FloatField())
-    ).filter(player__active=True, skill__gt=0)
+    queryset = Ranking.objects.annotate(skill=SKILL_EXPRESSION).filter(
+        player__active=True, skill__gt=0
+    )
     serializer_class = RankingSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filterset_fields = ["activity"]
     search_fields: List[str] = []  # "activity.name", "player.name"]
     field_filter_param = FIELD_FILTER_PARAM
+
+
+class GameSerializer(
+    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
+):
+    """Serializer for Game."""
+
+    class Meta:
+        model = Game
+        fields = [
+            "id",
+            "datetime",
+            "submittor",
+            # "session",
+            "position",
+        ]
+
+
+class ResultSerializer(
+    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
+):
+    """Serializer for Result."""
+
+    game = GameSerializer(fields=["id", "datetime", "submittor"])
+
+    class Meta:
+        model = Result
+        fields = [
+            "game",
+            "team",
+            "ranking",
+        ]
+
+
+class SkillHistorySerializer(
+    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
+):
+    """Serializer for SkillHistory."""
+
+    # activity = ActivitySerializer(fields=["name"])
+    player = PlayerSerializer(fields=["id", "name"])
+    result = ResultSerializer(fields=["game"])
+    skill = serializers.ReadOnlyField()
+    datetime = serializers.ReadOnlyField()
+
+    class Meta:
+        model = SkillHistory
+        fields = [
+            "activity_id",
+            "datetime",
+            "player",
+            "result",
+            "skill",
+            "mu",
+            "sigma",
+        ]
+
+
+class SkillHistoryViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
+    """ViewSet for viewing and editing SkillHistory."""
+
+    queryset = SkillHistory.objects.annotate(skill=SKILL_EXPRESSION).filter(
+        player__active=True
+    )
+    serializer_class = SkillHistorySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filterset_fields = ["activity_id", "player"]
+    search_fields: List[str] = []
+    field_filter_param = FIELD_FILTER_PARAM
+
+    def get_queryset(self):
+        """Get the list of items for this view."""
+        base_query = super().get_queryset()
+        activity_url = self.kwargs["activity_url"]
+        player_id = self.kwargs["player_id"]
+        return base_query.filter(
+            activity_id=activity_url, player__id=player_id
+        ).annotate(datetime=F("result__game__datetime"))
 
 
 @api_view()
