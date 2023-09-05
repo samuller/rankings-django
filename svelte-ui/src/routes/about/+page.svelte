@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Card from "$lib/components/card.svelte";
-	import Tabs from "$lib/components/tabs.svelte";
+	import { Card, Tabs } from "$lib/components";
     import { navTitle } from '../../store';
 
     navTitle.set("About");

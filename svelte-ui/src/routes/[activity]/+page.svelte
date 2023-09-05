@@ -1,9 +1,6 @@
 <script lang="ts">
 	import type { ActivityPage } from './+page';
-	import Card from '$lib/components/card.svelte';
-	import Table, { type RowDetail } from '$lib/components/table.svelte';
-	import AddButton from '$lib/components/add-button.svelte';
-	import DynamicData from '$lib/components/dynamic-data.svelte';
+	import { AddButton, Card, DynamicData, Table, type RowDetail } from '$lib/components';
 	import {
 		currentActivityUrl,
 		currentActivity,
