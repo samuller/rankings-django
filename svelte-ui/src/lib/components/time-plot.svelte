@@ -189,3 +189,17 @@ Usage:
 {/if}
 <!-- style="width:600px;height:250px;" -->
 <div bind:this={plotElement} />
+
+<style lang="postcss">
+	/*
+	Disable plotly preventing text selection.
+	See: https://community.plotly.com/t/selecting-copying-axis-label-text-and-table-cell-contents/47805
+	*/
+	:global(.user-select-none) {
+		user-select: text !important;
+	}
+	/* Allow selecting text in title layer. */
+	:global(.infolayer) {
+		pointer-events: all;
+	}
+</style>
