@@ -25,12 +25,12 @@ lint() {
     # No "strict" type requirements for tests.
     # poetry run mypy tests/
     echo "black..."
-    poetry run black --check rankings/
+    poetry run black --check .
 }
 
 format() {
     cd rankings
-    black rankings/
+    black .
 }
 
 test() {

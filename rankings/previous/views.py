@@ -34,7 +34,9 @@ def activity_summary(request: HttpRequest, activity_url: str) -> HttpResponse:
     """Generate a summary page for an activity (listing recent matches and leading players)."""
     activity = Activity.objects.filter(url=activity_url)
     if len(activity) != 1:
-        return HttpResponseNotFound(f"Path doesn't exist - unknown [activity]: '{activity_url}'.")
+        return HttpResponseNotFound(
+            f"Path doesn't exist - unknown [activity]: '{activity_url}'."
+        )
     activity = activity[0].to_dict_with_url()
 
     active_players_ids = []
@@ -77,7 +79,9 @@ def list_players(
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
-        return HttpResponseNotFound(f"Path doesn't exist - unknown [activity]/players: '{activity_url}'.")
+        return HttpResponseNotFound(
+            f"Path doesn't exist - unknown [activity]/players: '{activity_url}'."
+        )
     if sort_by is None or len(sort_by) == 0:
         sort_by = "name"
 
@@ -111,7 +115,9 @@ def player_info(
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
-        return HttpResponseNotFound(f"Path doesn't exist - unknown [activity]/player/{player_id}: {activity_url}.")
+        return HttpResponseNotFound(
+            f"Path doesn't exist - unknown [activity]/player/{player_id}: {activity_url}."
+        )
 
     player = Player.objects.get(id=player_id)
     context = {
