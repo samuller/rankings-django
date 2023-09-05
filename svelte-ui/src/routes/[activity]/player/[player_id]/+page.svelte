@@ -11,11 +11,18 @@
 	} from '../../../../store';
 
 	export let data: PlayerPage;
-	const playerInfo = readJSONAPI<Player | null>(null, `/api/players/${data.player_id}/`)
+	const playerInfo = readJSONAPI<Player | null>(null, `/api/players/${data.player_id}/`);
+	const skillHistory = readJSONAPI<{ datetime: number, skill: number }[] | null>(null,
+		`/api/skill-history/${data.activity_url}/${data.player_id}/?select=skill,datetime`
+	);
 
 	currentActivityUrl.set(data.activity_url);
 
 	$: if ($currentActivity) { navTitle.set($currentActivity.name); }
+	$: plotData = {
+		x: $skillHistory ? $skillHistory.map((obj, idx) => idx) : [],
+		y: $skillHistory ? $skillHistory.map((obj) => obj.skill) : [],
+	};
 </script>
 
 <svelte:head>
@@ -36,5 +43,15 @@
 		</div>
 	</Card>
 
-	<TimePlot></TimePlot>
+	<TimePlot
+		title="Skill progress"
+		xAxisTitle="Matches played"
+		yAxisTitle="Skill level"
+		data={plotData}
+	></TimePlot>
+	<!-- <GaussianPlot
+		title="Current skill estimate"
+		xAxisTitle="Skill level"
+		yAxisTitle="Likelihood of actual skill (%)"
+	></GaussianPlot> -->
 {/if}
