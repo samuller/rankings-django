@@ -1,6 +1,6 @@
 import { browser } from "$app/environment";
 import { writable } from 'svelte/store';
-import { asyncReadable, type Loadable } from '@square/svelte-store';
+import { asyncReadable, derived, type Loadable } from '@square/svelte-store';
 
 
 const readJSONAPI = function<T = any>(initial: any, url: string): Loadable<any> {
@@ -19,6 +19,7 @@ const readJSONAPI = function<T = any>(initial: any, url: string): Loadable<any> 
   );
 }
 
+export const currentActivityUrl = writable<string | null>(null);
 export const page_title = writable("");
 
 export interface Activity {
@@ -26,6 +27,14 @@ export interface Activity {
   name: string;
 }
 export const activities = readJSONAPI<Activity[]>([], '/api/activities/?active=true&select=url,name')
+
+export const currentActivity = derived([currentActivityUrl, activities], 
+  ([$currentActivityUrl , $activities]) => {
+    if ($currentActivityUrl == null) {
+      return null;
+    }
+    return $activities?.find((act: Activity) => act.url == $currentActivityUrl!)
+});
 
 export interface Player {
   name: string;

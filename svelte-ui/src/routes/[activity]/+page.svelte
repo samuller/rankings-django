@@ -6,6 +6,8 @@
 	import AddButton from '$lib/add-button.svelte';
 	import DynamicData from '$lib/dynamic-data.svelte';
 	import {
+		currentActivityUrl,
+		currentActivity,
 		page_title,
 		activities,
 		type Activity,
@@ -16,22 +18,20 @@
 	} from '../../store';
 
 	export let data: ActivityPage;
+	currentActivityUrl.set(data.url);
 
-	let rankings: any;
+	let rankings = rankingsAPIStore(data.url);
 	let rankingsTable: string[][] = [];
 
-	$: activity = $activities?.find((act: Activity) => act.url == data.url);
-	$: if (activity) { page_title.set(activity.name); }
-	$: if (activity) { rankings = rankingsAPIStore(activity.url); }
-	$: if (rankings) { rankingsTable = $rankings
+	$: page_title.set($currentActivity?.name);
+	$: rankingsTable = $rankings
 		.filter((ranking: any) => ranking.skill > 0)
 		.map((ranking: any) => [ranking.player.name, ranking.skill.toFixed(0)]);
-	}
 </script>
 
 <svelte:head>
-{#if activity}
-	<title>Rankings - {activity.name}</title>
+{#if $currentActivity}
+	<title>Rankings - {$page_title}</title>
 {:else}
 	<title>Rankings</title>
 {/if}
@@ -39,9 +39,9 @@
 
 <DynamicData data={activities}></DynamicData>
 
-{#if activity}
+{#if $currentActivity}
 	<Card class="w-1/2 2xl:w-[calc(0.5*1536px)] flex justify-center" style="tight">
-		<a class="normal-case text-xl font-semibold">{activity.name}</a>
+		<a class="normal-case text-xl font-semibold">{$currentActivity.name}</a>
 	</Card>
 
 	<Table
