@@ -10,10 +10,6 @@
 		currentActivity,
 		navTitle,
 		activities,
-		type Activity,
-		players,
-		type Player,
-		rankingsAPIStore,
 		type Ranking,
 		apiRankings,
 	} from '../../store';
@@ -21,14 +17,14 @@
 	export let data: ActivityPage;
 
 	let rankingsTable: RowDetail[][] = [];
-	currentActivityUrl.set(data.url);
+	currentActivityUrl.set(data.activity_url);
 
 	$: if ($currentActivity) { navTitle.set($currentActivity.name); }
-	$: rankings = apiRankings[data.url];
+	$: rankings = apiRankings[data.activity_url];
 	$: rankingsTable = $rankings
 		.filter((ranking: Ranking) => ranking.skill > 0)
 		.map((ranking: Ranking) => [
-			{ text: ranking.player.name, url: `/${data.url}/player/${ranking.player.id}` },
+			{ text: ranking.player.name, url: `/${data.activity_url}/player/${ranking.player.id}` },
 			{ text: ranking.skill.toFixed(0) }
 		]);
 </script>
@@ -45,7 +41,7 @@
 
 {#if $currentActivity}
 	<Card class="w-1/2 2xl:w-[calc(0.5*1536px)] flex justify-center" style="tight">
-		<a class="normal-case text-xl font-semibold">{$currentActivity.name}</a>
+		<span class="normal-case text-xl font-semibold">{$currentActivity.name}</span>
 	</Card>
 
 	<DynamicData data={rankings}></DynamicData>
