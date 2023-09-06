@@ -174,6 +174,9 @@ Usage:
 		});
 	};
 
+	// Update plot if "data" prop changes.
+	$: if (data && plotElement) { setupPlot(); }
+
 	// Ensure code only runs in browser (and not on server).
 	// onMount(async () => {
 	// 	await setupPlot();
