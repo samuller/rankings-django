@@ -36,20 +36,24 @@ export const readJSONAPI = function<T = any>(initial: T, url: string): PageableA
         // Link header is used for Github-style pagination.
         // See: https://docs.github.com/en/rest/guides/traversing-with-pagination
         if (response.headers.has('link')) {
-          const links = response.headers.get('link')!
-            .split(",");
-          links.forEach((link) => {
-            const linkTuple = link.split("; ");
-            if (linkTuple.length != 2) {
-              console.log("Unexpected linkTuple value:", linkTuple);
-              return;
-            }
-            const linkURL = new URL(linkTuple[0].slice(1, -1));
-            // Remove hostname/path etc. to make URL relative in-case backend has internally got wrong hostname.
-            const relativeURL = linkURL.pathname + linkURL.search + linkURL.hash;
-            const relation = (/rel="(.*)"/g.exec(linkTuple[1]) ?? ["", ""])[1];
-            pagingURLs[relation] = relativeURL;
-          });
+          // We use try-catch since this metadata is optional and we'd rather lose it than crash.
+          try {
+            const links = response.headers.get('link')!.split(", ");
+            links.forEach((link) => {
+              const linkTuple = link.split("; ");
+              if (linkTuple.length != 2) {
+                console.log("Unexpected linkTuple value:", linkTuple);
+                return;
+              }
+              const linkURL = new URL(linkTuple[0].slice(1, -1));
+              // Remove hostname/path etc. to make URL relative in-case backend has internally got wrong hostname.
+              const relativeURL = linkURL.pathname + linkURL.search + linkURL.hash;
+              const relation = (/rel="(.*)"/g.exec(linkTuple[1]) ?? ["", ""])[1];
+              pagingURLs[relation] = relativeURL;
+            });
+          } catch(err) {
+            console.log(err);
+          }
         }
         const jsonData: T = await response.json();
         return jsonData;
