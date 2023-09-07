@@ -21,6 +21,7 @@ Usage:
 	export let xAxisTitle = "";
 	export let yAxisTitle = "";
 
+    export let showRangeSlider = false;
 	// Add 10% marging if near edge of axes.
 	const axisMargin = 0.1;
 	const gridColor =  '#bbb';
@@ -161,6 +162,7 @@ Usage:
 				...(true && { range: initRangeX }),
 				...(xAxisTitle && { title: { text: xAxisTitle } }),
 				rangeslider: { visible: true },
+				...(showRangeSlider && { rangeslider: { visible: true } }),
 			},
 			// xaxis: { fixedrange: true },
 			// , autorange: true

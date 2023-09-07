@@ -11,4 +11,4 @@ Usage:
 	import PlotlyWrapper from './plotly-wrapper.svelte';
 </script>
 
-<PlotlyWrapper {...$$props}></PlotlyWrapper>
+<PlotlyWrapper {...$$props} showRangeSlider={true} />
