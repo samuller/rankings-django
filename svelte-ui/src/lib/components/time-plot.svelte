@@ -214,11 +214,11 @@ Usage:
 	  Disable plotly preventing text selection.
 	  See: https://community.plotly.com/t/selecting-copying-axis-label-text-and-table-cell-contents/47805
 	*/
-	:global(.user-select-none) {
+	:global(.plotly .user-select-none) {
 		user-select: text !important;
 	}
 	/* Allow selecting text in title layer. */
-	:global(.infolayer) {
+	:global(.plotly .infolayer) {
 		pointer-events: all;
 	}
 
@@ -226,11 +226,10 @@ Usage:
 	  Disable plotly's rangeSlider's handle bars.
 	  See: https://community.plotly.com/t/hide-the-handler-grabarea-of-rangeslider/17437/2
 	*/
-	:global(.rangeslider-grabber-min) {
+	:global(.plotly .rangeslider-grabber-min) {
     	display: none;
 	}
-
-	:global(.rangeslider-grabber-max) {
+	:global(.plotly .rangeslider-grabber-max) {
     	display: none;
 	}
 </style>
