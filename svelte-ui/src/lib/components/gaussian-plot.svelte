@@ -10,11 +10,11 @@ Usage:
 <script lang="ts">
 	import PlotlyWrapper from './plotly-wrapper.svelte';
 
-	export let mu = 25;
-	export let sigma = 8.333;
-	export let limits: [number, number] = [0, 50];
+	export let mu;
+	export let sigma;
+	export let limits: [number, number] = [0, 100];
     export let steps = 100;
-	export let verticalIndicators = [{ xPos: 25, title: 'Skill value' }];
+	export let verticalIndicators: { xPos: number, title: string }[] = [];
 
     $: annotations = verticalIndicators.map((indicator) =>{
         return {
@@ -67,7 +67,7 @@ Usage:
 
 <PlotlyWrapper
 	{data}
-	{...$$props}
+	{...$$restProps}
 	initRangeX={limits}
 	xAxisFixedRange={true}
 	yRangeMinMax={[0, null]}
@@ -75,4 +75,5 @@ Usage:
 	fill="tozeroy"
     shapes={shapes}
     annotations={annotations}
+    smoothing={1.0}
 />

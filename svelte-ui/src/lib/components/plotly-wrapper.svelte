@@ -27,6 +27,7 @@ Usage:
     export let fill = "";
     export let shapes: any[] = [];
     export let annotations: any[] = [];
+    export let smoothing = 0;
 
 	// Add 10% marging if near edge of axes.
 	const axisMargin = 0.1;
@@ -145,7 +146,8 @@ Usage:
 				x: data_x,
 				y: data_y,
 				mode: chartType,
-                ...(fill && { fill: fill })
+                ...(fill && { fill: fill }),
+                ...(smoothing && { line: {shape: 'spline', smoothing: smoothing} }),
 			}
 		];
 		const layout = {
