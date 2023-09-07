@@ -65,11 +65,7 @@ Usage:
 	 * Plotly.js doesn't yet have a config for this, see: https://github.com/plotly/plotly.js/issues/1876
 	 * Though one might soon (within weeks?) be implemented: https://github.com/plotly/plotly.js/pull/6547
 	 */
-	const onRelayout = async function (Plotly: any, data_x: number[], data_y: number[], relayoutData: any) {
-		if (!('xaxis.range[0]' in relayoutData && 'xaxis.range[1]' in relayoutData)) {
-			return;
-		}
-		const x_range = [relayoutData['xaxis.range[0]'], relayoutData['xaxis.range[1]']];
+	const limitXAxisScrolling = function (data_x: number[], data_y: number[], x_range: number[]) {
 		let new_x_range = x_range;
 		let new_layout: { [key: string]: any } = {};
 
@@ -102,6 +98,20 @@ Usage:
 		const min_y = min_y_data - y_axis_buffer_dist;
 		const max_y = max_y_data + y_axis_buffer_dist;
 		new_layout['yaxis.range'] = [(yRangeMin != null) ? (yRangeMin - y_axis_buffer_dist) : min_y, max_y];
+
+		return new_layout;
+	}
+
+	/**
+	 * Our custom handling when user scrolls interface.
+	 */
+	const onRelayout = async function (Plotly: any, data_x: number[], data_y: number[], relayoutData: any) {
+		// We currently only have handling for changes to the x-axis.
+		if (!('xaxis.range[0]' in relayoutData && 'xaxis.range[1]' in relayoutData)) {
+			return;
+		}
+		const x_range = [relayoutData['xaxis.range[0]'], relayoutData['xaxis.range[1]']];
+		const new_layout: { [key: string]: any } = limitXAxisScrolling(data_x, data_y, x_range);
 
 		if (!busyRelayout) {
 			Plotly.relayout(plotElement, new_layout).then(() => {
