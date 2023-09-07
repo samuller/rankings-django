@@ -146,6 +146,7 @@ Usage:
 				gridcolor: gridColor,
 				...(true && { range: initRangeX }),
 				...(xAxisTitle && { title: { text: xAxisTitle } }),
+				rangeslider: { visible: true },
 			},
 			// xaxis: { fixedrange: true },
 			// , autorange: true
@@ -195,8 +196,8 @@ Usage:
 
 <style lang="postcss">
 	/*
-	Disable plotly preventing text selection.
-	See: https://community.plotly.com/t/selecting-copying-axis-label-text-and-table-cell-contents/47805
+	  Disable plotly preventing text selection.
+	  See: https://community.plotly.com/t/selecting-copying-axis-label-text-and-table-cell-contents/47805
 	*/
 	:global(.user-select-none) {
 		user-select: text !important;
@@ -204,5 +205,17 @@ Usage:
 	/* Allow selecting text in title layer. */
 	:global(.infolayer) {
 		pointer-events: all;
+	}
+
+	/*
+	  Disable plotly's rangeSlider's handle bars.
+	  See: https://community.plotly.com/t/hide-the-handler-grabarea-of-rangeslider/17437/2
+	*/
+	:global(.rangeslider-grabber-min) {
+    	display: none;
+	}
+
+	:global(.rangeslider-grabber-max) {
+    	display: none;
 	}
 </style>
