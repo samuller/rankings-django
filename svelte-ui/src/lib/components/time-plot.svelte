@@ -64,6 +64,7 @@ Usage:
 	 *
 	 * Plotly.js doesn't yet have a config for this, see: https://github.com/plotly/plotly.js/issues/1876
 	 * Though one might soon (within weeks?) be implemented: https://github.com/plotly/plotly.js/pull/6547
+	 * Update: see xaxis.minallowed & xaxis.maxallowed in plotly.js v2.26.0.
 	 */
 	const limitXAxisScrolling = function (data_x: number[], data_y: number[], x_range: number[]) {
 		let new_x_range = x_range;
@@ -154,6 +155,10 @@ Usage:
 				showgrid: false,
 				dtick: 1,
 				gridcolor: gridColor,
+				// Available since plotly.js v2.26.0. We don't use it yet as it triggers scaling when scrolling
+				// past limits.
+				// minallowed: 0,
+				// maxallowed: 100,
 				...(true && { range: initRangeX }),
 				...(xAxisTitle && { title: { text: xAxisTitle } }),
 				rangeslider: { visible: true },
@@ -195,7 +200,7 @@ Usage:
 </script>
 
 <svelte:head>
-	<script on:load|once={setupPlot} src="https://cdn.plot.ly/plotly-2.25.2.min.js" charset="utf-8"></script>
+	<script on:load|once={setupPlot} src="https://cdn.plot.ly/plotly-2.26.0.min.js" charset="utf-8"></script>
 </svelte:head>
 
 {#if browser && !('Plotly' in window) && loadingPlotlyLibrary}
