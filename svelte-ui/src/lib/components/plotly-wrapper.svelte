@@ -22,6 +22,12 @@ Usage:
 	export let yAxisTitle = "";
 
     export let showRangeSlider = false;
+    export let xAxisFixedRange = false;
+    export let chartType = "lines+markers";
+    export let fill = "";
+    export let shapes: any[] = [];
+    export let annotations: any[] = [];
+
 	// Add 10% marging if near edge of axes.
 	const axisMargin = 0.1;
 	const gridColor =  '#bbb';
@@ -138,7 +144,8 @@ Usage:
 			{
 				x: data_x,
 				y: data_y,
-				mode: 'lines+markers'
+				mode: chartType,
+                ...(fill && { fill: fill })
 			}
 		];
 		const layout = {
@@ -161,16 +168,18 @@ Usage:
 				// maxallowed: 100,
 				...(true && { range: initRangeX }),
 				...(xAxisTitle && { title: { text: xAxisTitle } }),
-				rangeslider: { visible: true },
 				...(showRangeSlider && { rangeslider: { visible: true } }),
+				...(xAxisFixedRange && { fixedrange: true }),
+                
 			},
-			// xaxis: { fixedrange: true },
 			// , autorange: true
 			yaxis: {
 				gridcolor: gridColor,
 				fixedrange: true,
 				...(yAxisTitle && { title: { text: yAxisTitle } }),
-			}
+			},
+            ...(shapes && { shapes: shapes }),
+            ...(annotations && { annotations: annotations }),
 		};
 		const config = {
 			// staticPlot: true,

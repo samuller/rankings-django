@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PlayerPage } from './+page';
-	import { Card, DynamicData, TimePlot } from '$lib/components';
+	import { Card, DynamicData, TimePlot, GaussianPlot } from '$lib/components';
 	import {
 		currentActivityUrl,
 		currentActivity,
@@ -53,9 +53,9 @@
 		yRangeMinMax={[-2, null]}
 	></TimePlot>
 	{/if}
-	<!-- <GaussianPlot
+	<GaussianPlot
 		title="Current skill estimate"
 		xAxisTitle="Skill level"
 		yAxisTitle="Likelihood of actual skill (%)"
-	></GaussianPlot> -->
+	></GaussianPlot>
 {/if}
