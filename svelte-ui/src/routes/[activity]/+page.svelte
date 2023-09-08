@@ -48,6 +48,7 @@
 	</div>
 	<Table
 		columnNames={['Name', 'Skill']}
+		columnAlignments={['text-left', 'text-right']}
 		rows={rankingsTable.slice(0, 5)}
 	></Table>
 	{/if}

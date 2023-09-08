@@ -7,15 +7,13 @@
 
 <script lang="ts">
     export let columnNames: string[];
+    export let columnAlignments: string[] = [];
     export let rows: RowDetail[][];
 
-    $: columnAlignments = columnNames.map((val, idx) => {
-        return idx == columnNames.length - 1 ? "text-right" : "text-left"
-    });
 </script>
 
 <div class="relative overflow-x-auto">
-    <table class="w-full table-auto sm:w-96 mx-auto text-sm text-left text-gray-500 dark:text-gray-400">
+    <table class="w-full table-auto sm:min-w-[24rem] mx-auto text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 {#each columnNames as name, idx}
