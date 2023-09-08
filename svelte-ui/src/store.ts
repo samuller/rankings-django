@@ -112,3 +112,16 @@ export const rankingsAPIStore = function(activity_url: string) {
 // A shared store of rankings for each type of activity. Rankings for a new activity will be correctly initialised when
 // accessed for the first time.
 export const apiRankings = new DefaultDict(rankingsAPIStore) as { [key: string]: any };
+
+export interface Matches {
+  id: number;
+  datetime: number;
+  submittor: string;
+  validated: number;
+  games: { id: number, datetime: number }[];
+  teams: { members: { player: { id: number, name: string, email: string } } [] }[];
+}
+export const matchesAPIStore = function(activity_url: string) {
+  return readJSONAPI<Ranking[]>([], `/api/matches/${activity_url}/?ordering=-datetime`);
+}
+export const apiMatches = new DefaultDict(matchesAPIStore) as { [key: string]: any };
