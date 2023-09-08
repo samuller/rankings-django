@@ -41,20 +41,20 @@
     </div>
     <div class="flex-none">
         <ul class="menu menu-horizontal px-1">
-            <li>
+            <!-- <li>
                 <details class="dropdown">
                     <summary on:blur={closeMenuIfOpen}>
                         Request
                     </summary>
                     <ul class="dropdown-content bg-base-200 p-2 !mt-0">
                         <li><a href="#">Clear submission</a></li>
-                        <!-- <li><hr/></li> -->
+                        !-- <li><hr/></li> --
                         <li><a href="#">New player</a></li>
                         <li><a href="#">New tournament</a></li>
                         <li><a href="#">New activity</a></li>
                     </ul>
                 </details>
-            </li>
+            </li> -->
             <li>
                 <a href="/about">
                     About
