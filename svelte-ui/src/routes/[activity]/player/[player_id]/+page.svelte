@@ -33,7 +33,6 @@
 		x: $skillHistory ? $skillHistory.map((obj, idx) => idx) : [],
 		y: $skillHistory ? $skillHistory.map((obj) => obj.skill) : []
 	};
-	$: console.log('currentSkill', $currentSkill);
 </script>
 
 <svelte:head>

@@ -42,6 +42,10 @@
 
 	<DynamicData data={rankings}></DynamicData>
 	{#if rankingsTable.length > 0}
+	<div class="w-1/2 text-gray-700">
+		<h2 class="text-2xl font-bold text-left">Top players</h2>
+		<p class="text-left">The currently top ranked active players according to the validated match history.</p>
+	</div>
 	<Table
 		columnNames={['Name', 'Skill']}
 		rows={rankingsTable.slice(0, 5)}

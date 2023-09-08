@@ -2,6 +2,8 @@
 @component
 A wrapper around the Plotly.js plotting library.
 
+This is not really a generic wrapper, but more a place for all code shared among our other types of plots.
+
 Usage:
 	```tsx
 	<PlotlyWrapper></PlotlyWrapper>
