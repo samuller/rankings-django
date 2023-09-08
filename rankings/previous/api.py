@@ -268,9 +268,9 @@ class MatchSerializer(
     class Meta:
         model = GameSession
         fields = [
+            "id",
             "datetime",
             "submittor",
-            "activity",
             "validated",
             "games",
             "teams",
