@@ -232,6 +232,68 @@ class SkillHistoryViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelV
         ).annotate(datetime=F("result__game__datetime"))
 
 
+class TeamMemberSerializer(
+    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
+):
+    """Serializer for TeamMember."""
+    player = PlayerSerializer()
+
+    class Meta:
+        model = TeamMember
+        fields = [
+            "player"
+        ]
+
+
+class AdhocTeamSerializer(
+    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
+):
+    """Serializer for AdhocTeam."""
+    members = TeamMemberSerializer(source="teammember_set", many=True, read_only=True)
+
+    class Meta:
+        model = AdhocTeam
+        fields = [
+            "members"
+        ]
+
+
+class MatchSerializer(
+    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
+):
+    """Serializer for Matches (a GameSet of multiple Games)."""
+    games = GameSerializer(source="game_set", many=True, read_only=True)
+    teams = AdhocTeamSerializer(source="adhocteam_set", many=True, read_only=True)
+
+    class Meta:
+        model = GameSession
+        fields = [
+            "datetime",
+            "submittor",
+            "activity",
+            "validated",
+            "games",
+            "teams",
+        ]
+
+
+class MatchViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
+    """ViewSet for viewing and editing Matches (a GameSet of multiple Games)."""
+
+    queryset = GameSession.objects.all()
+    serializer_class = MatchSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filterset_fields = ["validated"]
+    search_fields: List[str] = []
+    field_filter_param = FIELD_FILTER_PARAM
+
+    def get_queryset(self):
+        """Get the list of items for this view."""
+        base_query = super().get_queryset()
+        activity_url = self.kwargs["activity_url"]
+        return base_query.filter(activity_id=activity_url)
+
+
 @api_view()
 @authentication_classes([CsrfExemptSessionAuthentication])
 @permission_classes([permissions.IsAdminUser])
