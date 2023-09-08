@@ -29,7 +29,12 @@
         <div class="text-sm breadcrumbs">
             <ul>
                 <li></li>
-                <li><a href={$page.url.pathname}>{$navTitle}</a></li>
+                <!--
+                    We show a breadcrumb with only the high-level route to help orientate which category of
+                    the site (activity in our) you are currently in (since all the lower-level views of the categories
+                    look very similar).
+                -->
+                <li><a href={`/${$page.url.pathname.split('/')[1]}`}>{$navTitle}</a></li>
             </ul>
         </div>
         {/if}
