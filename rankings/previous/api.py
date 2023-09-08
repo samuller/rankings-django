@@ -236,32 +236,31 @@ class TeamMemberSerializer(
     serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
 ):
     """Serializer for TeamMember."""
+
     player = PlayerSerializer()
 
     class Meta:
         model = TeamMember
-        fields = [
-            "player"
-        ]
+        fields = ["player"]
 
 
 class AdhocTeamSerializer(
     serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
 ):
     """Serializer for AdhocTeam."""
+
     members = TeamMemberSerializer(source="teammember_set", many=True, read_only=True)
 
     class Meta:
         model = AdhocTeam
-        fields = [
-            "members"
-        ]
+        fields = ["members"]
 
 
 class MatchSerializer(
     serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
 ):
     """Serializer for Matches (a GameSet of multiple Games)."""
+
     games = GameSerializer(source="game_set", many=True, read_only=True)
     teams = AdhocTeamSerializer(source="adhocteam_set", many=True, read_only=True)
 

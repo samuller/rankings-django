@@ -13,10 +13,7 @@ router.register(
     api.SkillHistoryViewSet,
     basename="SkillHistory",
 )
-router.register(
-    r"matches/(?P<activity_url>[^/]+)",
-    api.MatchViewSet
-)
+router.register(r"matches/(?P<activity_url>[^/]+)", api.MatchViewSet)
 
 
 urlpatterns = [
