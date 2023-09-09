@@ -10,7 +10,12 @@
     }
 }
 
+/*
+  Make default text formattings slightly better.
+  Especially needed for "About" page or anywhere that formatted html is dynamically injected.
+*/
 p {
+    @apply text-base;
     @apply mb-5;
 }
 
@@ -22,8 +27,4 @@ p a {
 p ~ ul {
     @apply leading-relaxed;
     @apply list-disc;
-}
-
-p ~ h5, h5 ~ p {
-    @apply text-lg;
 }

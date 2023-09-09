@@ -26,7 +26,7 @@
 <!-- Content -->
 {#each data as tab, idx}
 <div class:hidden={selectedTabIdx != idx}>
-    <!-- Not safe against XSS injections unless sanitized -->
+    <!-- Not safe against XSS injections unless sanitized. -->
     {@html tab.content}
 </div>
 {/each}
