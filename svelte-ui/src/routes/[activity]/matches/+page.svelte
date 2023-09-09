@@ -18,7 +18,7 @@
 	let matchesTable: RowDetail[][] = [];
 
 	$: if ($currentActivity) { navTitle.set($currentActivity.name); }
-	$: matches = apiMatches(data.activity_url, pageNr);
+	$: matches = apiMatches(data.activity_url, pageNr, 10);
 	$: matchesTable = $matches
 		.map((match: Matches) => [
 			{ text: match.id },
