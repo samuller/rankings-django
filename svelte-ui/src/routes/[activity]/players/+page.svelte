@@ -11,6 +11,7 @@
 	$: rankings = apiRankings[$page.params.activity];
 	$: rankingsTable = $rankings
 		.filter((ranking: Ranking) => ranking.skill > 0)
+		.sort((rnkA: Ranking, rnkB: Ranking) => rnkA.player.name.localeCompare(rnkB.player.name))
 		.map((ranking: Ranking) => [
 			{ text: ranking.player.name, url: `/${$page.params.activity}/player/${ranking.player.id}` },
 			{ text: ranking.skill.toFixed(0) }
