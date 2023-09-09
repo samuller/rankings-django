@@ -1,22 +1,21 @@
 <script lang="ts">
-	import type { PlayerPage } from './+page';
+	import { page } from '$app/stores';
 	import { Card, TimePlot, GaussianPlot } from '$lib/components';
 	import {
 		type Player,
 		readJSONAPI
 	} from '../../../../store';
 
-	export let data: PlayerPage;
-	const playerInfo = readJSONAPI<Player | null>(null, `/api/players/${data.player_id}/`);
+	const playerInfo = readJSONAPI<Player | null>(null, `/api/players/${$page.params.player_id}/`);
 	const skillHistory = readJSONAPI<{ datetime: number; skill: number }[] | null>(
 		null,
-		`/api/skill-history/${data.activity_url}/${data.player_id}/?select=skill,datetime`
+		`/api/skill-history/${$page.params.activity}/${$page.params.player_id}/?select=skill,datetime`
 	);
 	const currentSkill = readJSONAPI<
 		[{ datetime: number; skill: number; mu: number; sigma: number }] | null
 	>(
 		null,
-		`/api/skill-history/${data.activity_url}/${data.player_id}/` +
+		`/api/skill-history/${$page.params.activity}/${$page.params.player_id}/` +
 			'?select=skill,mu,sigma,datetime&ordering=-datetime&limit=1'
 	);
 

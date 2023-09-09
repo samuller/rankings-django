@@ -1,17 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { ActivityPage } from './+page';
 	import { AddButton, DynamicData, PagingNav, Table, type RowDetail } from '$lib/components';
 	import {
 		type Matches,
 		apiMatches,
 	} from '../../../store';
 
-	export let data: ActivityPage;
 	$: pageNr = parseInt($page.url.searchParams.get('page') ?? '1');
 
 	let matchesTable: RowDetail[][] = [];
-	$: matches = apiMatches(data.activity_url, pageNr, 10);
+	$: matches = apiMatches($page.params.activity, pageNr, 10);
 	$: matchesTable = $matches
 		.map((match: Matches) => [
 			{ text: match.id },

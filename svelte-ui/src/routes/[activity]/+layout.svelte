@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { page } from '$app/stores';
-	import type { ActivityPage } from './+page';
+	import { page } from '$app/stores'
 	import { Card, DynamicData } from '$lib/components';
 	import {
 		currentActivityUrl,
@@ -9,8 +8,7 @@
 		activities,
 	} from '../../store';
 
-	export let data: ActivityPage;
-	currentActivityUrl.set(data.activity_url);
+	currentActivityUrl.set($page.params.activity);
 	$: if ($currentActivity) { navTitle.set($currentActivity.name); }
     $: viewingPlayerProfile = $page.url.pathname.includes("/player/");
 </script>
