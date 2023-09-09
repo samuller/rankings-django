@@ -1,11 +1,7 @@
 <script lang="ts">
 	import type { PlayerPage } from './+page';
-	import { Card, DynamicData, TimePlot, GaussianPlot } from '$lib/components';
+	import { Card, TimePlot, GaussianPlot } from '$lib/components';
 	import {
-		currentActivityUrl,
-		currentActivity,
-		navTitle,
-		activities,
 		type Player,
 		readJSONAPI
 	} from '../../../../store';
@@ -24,28 +20,13 @@
 			'?select=skill,mu,sigma,datetime&ordering=-datetime&limit=1'
 	);
 
-	currentActivityUrl.set(data.activity_url);
-
-	$: if ($currentActivity) {
-		navTitle.set($currentActivity.name);
-	}
 	$: skillPlotData = {
 		x: $skillHistory ? $skillHistory.map((obj, idx) => idx) : [],
 		y: $skillHistory ? $skillHistory.map((obj) => obj.skill) : []
 	};
 </script>
 
-<svelte:head>
-	{#if $currentActivity}
-		<title>Rankings - {$navTitle}</title>
-	{:else}
-		<title>Rankings</title>
-	{/if}
-</svelte:head>
-
-<DynamicData data={activities} />
-
-{#if $currentActivity && $playerInfo}
+{#if $playerInfo}
 	<Card
 		class="w-full md:w-1/2 2xl:w-[calc(0.5*1536px)] flex flex-col items-center justify-center"
 		style="tight"
