@@ -30,6 +30,9 @@
 		algorithm that was developed by Microsoft Research. The system represents skill as a Normal
 		distribution which is updated after every game according to Bayesian probability.
 	</p>
+	<div class="bg-white">
+		<img class="m-auto w-[228px] h-[200px]" alt="Normal distribution of skill" src="/images/skill-normal.jpg">
+	</div>
 	<p class="text-justify">
 		By representing skill as a Normal distribution it is therefore described by two values, μ and σ which
 		respectively represent the player's average skill and the degree of uncertainty in the player's skill.
