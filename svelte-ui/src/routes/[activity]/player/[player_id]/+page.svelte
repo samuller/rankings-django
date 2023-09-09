@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Card, TimePlot, GaussianPlot } from '$lib/components';
+	import { Card, TimePlot, GaussianPlot, DynamicData } from '$lib/components';
 	import {
 		type Player,
 		readJSONAPI
@@ -25,6 +25,7 @@
 	};
 </script>
 
+<DynamicData data={playerInfo}></DynamicData>
 {#if $playerInfo}
 	<Card
 		class="w-full md:w-1/2 2xl:w-[calc(0.5*1536px)] flex flex-col items-center justify-center"
