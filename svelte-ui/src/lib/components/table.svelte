@@ -1,6 +1,7 @@
 <script context="module" lang="ts">
     export interface RowDetail {
-        text: string;
+        // Type is actually anything that can be implicitly converted to a string.
+        text: any;
         url?: string;
     }
 </script>

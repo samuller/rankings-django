@@ -21,7 +21,7 @@
     export let data: Reloadable<any>;
     export const retry = true;
 
-	let dataLoadPromise = data.load();
+	$: dataLoadPromise = data.load();
 	function reload() {
 		if (data.reload) {
 			dataLoadPromise = data.reload();

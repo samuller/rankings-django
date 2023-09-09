@@ -6,8 +6,8 @@ import { asyncReadable, derived, type Reloadable } from '@square/svelte-store';
 // See: https://stackoverflow.com/questions/19127650/defaultdict-equivalent-in-javascript
 class DefaultDict<T> {
   constructor(defaultInit: (key: string) => T) {
-    return new Proxy({}, {
-      get: (target: { [key: string]: T }, name: string) => name in target ?
+    return new Proxy<{ [key: string]: T }>({}, {
+      get: (target: { [key: string]: T }, name: string): T => name in target ?
         target[name] :
         (target[name] = defaultInit(name))
     })
@@ -16,6 +16,7 @@ class DefaultDict<T> {
 
 export interface PageableAPIStore<T> extends Reloadable<T> {
   paged(): boolean;
+  pageFromURL(url: string): number;
   prevURL(): string | null;
   nextURL(): string | null;
   firstURL(): string | null;
@@ -62,6 +63,12 @@ export const readJSONAPI = function<T = any>(initial: T, url: string): PageableA
   ) as PageableAPIStore<T>;
   // Add pagination functions.
   store.paged = () => Object.keys(pagingURLs).length != 0;
+  store.pageFromURL = (url: string) => {
+    const _url = new URL(url, window.location.href);
+    const offset = parseInt(_url.searchParams.get('offset') ?? '0');
+    const limit = parseInt(_url.searchParams.get('limit') ?? '100');
+    return 1 + (offset / limit);
+  };
   store.linkURL = function(name: string) {
     if (name in pagingURLs) {
       return pagingURLs[name];
@@ -121,7 +128,18 @@ export interface Matches {
   games: { id: number, datetime: number }[];
   teams: { members: { player: { id: number, name: string, email: string } } [] }[];
 }
-export const matchesAPIStore = function(activity_url: string) {
-  return readJSONAPI<Ranking[]>([], `/api/matches/${activity_url}/?ordering=-datetime`);
+export const generateListAPIStore = function<T>(url: string) {
+  return readJSONAPI<T[]>([], url);
 }
-export const apiMatches = new DefaultDict(matchesAPIStore) as { [key: string]: any };
+// The type coercion is needed to use correctly typed indexing on the DefaultDict.
+const _apiMatches = new DefaultDict(generateListAPIStore<Matches>) as { [key: string]: PageableAPIStore<Matches[]> };
+
+export const apiMatches = function(activity_url: string, pageNr: number = 1): PageableAPIStore<Matches[]> {
+  const url = `/api/matches/${activity_url}/?ordering=-datetime`;
+  const pagedUrl = new URL(url, window.location.href);
+  const limit = 100;
+  const offset = (pageNr - 1) * limit;
+  pagedUrl.searchParams.set('offset', offset.toString());
+  pagedUrl.searchParams.set('limit', limit.toString());
+  return _apiMatches[pagedUrl.href];
+};
