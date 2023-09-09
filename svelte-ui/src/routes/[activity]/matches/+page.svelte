@@ -37,11 +37,11 @@
 <DynamicData data={activities}></DynamicData>
 
 {#if $currentActivity}
-	<Card class="w-1/2 2xl:w-[calc(0.5*1536px)] flex justify-center" style="tight">
+	<Card class="w-full md:w-1/2 2xl:w-[calc(0.5*1536px)] flex justify-center" style="tight">
 		<span class="normal-case text-xl font-semibold">{$currentActivity.name}</span>
 	</Card>
 
-	<div class="w-1/2 text-gray-700">
+	<div class="w-full md:w-1/2 text-gray-700">
 		<h2 class="text-2xl font-bold text-left">Match history</h2>
 		<p class="text-left">Reported matches which have been validated.</p>
 	</div>

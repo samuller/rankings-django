@@ -47,7 +47,7 @@
 
 {#if $currentActivity && $playerInfo}
 	<Card
-		class="w-1/2 2xl:w-[calc(0.5*1536px)] flex flex-col items-center justify-center"
+		class="w-full md:w-1/2 2xl:w-[calc(0.5*1536px)] flex flex-col items-center justify-center"
 		style="tight"
 	>
 		<div class="text-xl font-semibold">🙂 {$playerInfo.name}</div>

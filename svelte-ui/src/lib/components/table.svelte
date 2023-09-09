@@ -13,11 +13,11 @@
 </script>
 
 <div class="relative overflow-x-auto">
-    <table class="w-full table-auto sm:min-w-[24rem] mx-auto text-sm text-left text-gray-500 dark:text-gray-400">
+    <table class="w-full table-auto min-w-[16rem] md:min-w-[24rem] mx-auto text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 {#each columnNames as name, idx}
-                <th scope="col" class="px-6 py-3 {columnAlignments[idx]}">
+                <th scope="col" class="px-3 md:px-6 py-3 {columnAlignments[idx]}">
                     {name}
                 </th>
                 {/each}
@@ -27,7 +27,7 @@
             {#each rows as row, row_idx}
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 {#each row as cell, cell_idx}
-                <td class="px-6 py-4 text-white {columnAlignments[cell_idx]}">
+                <td class="px-3 md:px-6 py-4 text-white {columnAlignments[cell_idx]}">
                     {#if cell.url}
                         <a href="{cell.url}" class="underline">{cell.text}</a>
                     {:else}
