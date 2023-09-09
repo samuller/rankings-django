@@ -29,6 +29,7 @@
 	rows={rankingsTable.slice(0, 5)}
 ></Table>
 {/if}
+<a href={`/${$page.params.activity}/players`} class="text-gray-700 text-2xl font-bold underline">View all players</a>
 <a href={`/${$page.params.activity}/matches`} class="text-gray-700 text-2xl font-bold underline">View all matches</a>
 
 <AddButton></AddButton>
