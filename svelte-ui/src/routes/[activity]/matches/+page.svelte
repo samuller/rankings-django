@@ -47,9 +47,9 @@
 		<h2 class="text-2xl font-bold text-left">Match history</h2>
 		<p class="text-left">Reported matches which have been validated.</p>
 	</div>
+	<PagingNav {pageNr} pageable={matches}></PagingNav>
 	<DynamicData data={matches}></DynamicData>
 	{#if matchesTable.length > 0}
-		<PagingNav {pageNr} pageable={matches}></PagingNav>
 		<Table
 			columnNames={['ID #', 'Date', 'Team 1', 'Team 2']}
 			columnAlignments={['text-center', 'text-center', 'text-center', 'text-center']}

@@ -10,10 +10,17 @@
 		return currURL;
 	}
 
-	$: showFirst = pageable.paged() && pageable.firstURL() != null && pageable.prevURL() != null;
-	$: showPrev = pageable.paged() && pageable.prevURL() != null;
-	$: showNext = pageable.paged() && pageable.nextURL() != null;
-	$: showLast = pageable.paged() && pageable.lastURL() != null && pageable.nextURL() != null;
+	let showFirst = false;
+	let showPrev = false;
+	let showNext = false;
+	let showLast = false;
+
+	$: if ($pageable) {
+		showFirst = pageable.paged() && pageable.firstURL() != null && pageable.prevURL() != null;
+		showPrev = pageable.paged() && pageable.prevURL() != null;
+		showNext = pageable.paged() && pageable.nextURL() != null;
+		showLast = pageable.paged() && pageable.lastURL() != null && pageable.nextURL() != null;
+	}
 </script>
 
 <div class="join">
