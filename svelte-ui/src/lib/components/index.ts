@@ -5,8 +5,9 @@ import Footer from './footer.svelte';
 import GaussianPlot from './gaussian-plot.svelte'
 import Loader from './loader.svelte';
 import Navbar from './navbar.svelte';
+import PagingNav from './paging-nav.svelte';
 import Tabs from './tabs.svelte';
 import Table, { type RowDetail } from './table.svelte';
 import TimePlot from './time-plot.svelte';
 
-export { AddButton, Card, DynamicData, Footer, GaussianPlot, Loader, Navbar, Tabs, TimePlot, Table, type RowDetail };
+export { AddButton, Card, DynamicData, Footer, GaussianPlot, Loader, Navbar, PagingNav, Tabs, TimePlot, Table, type RowDetail };

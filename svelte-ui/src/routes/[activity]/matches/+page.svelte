@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { ActivityPage } from './+page';
-	import { AddButton, Card, DynamicData, Table, type RowDetail } from '$lib/components';
+	import { AddButton, Card, DynamicData, PagingNav, Table, type RowDetail } from '$lib/components';
 	import {
 		currentActivityUrl,
 		currentActivity,
@@ -26,12 +26,6 @@
 			{ text: match.teams[0].members.map((member) => member.player.name).join(" & ") },
 			{ text: match.teams[1].members.map((member) => member.player.name).join(" & ") },
 		]);
-	
-	function setQuery(key: string, value: string) {
-		const currURL = new URL(window.location.href);
-		currURL.searchParams.set(key, value);
-		return currURL;
-	}
 </script>
 
 <svelte:head>
@@ -55,35 +49,11 @@
 	</div>
 	<DynamicData data={matches}></DynamicData>
 	{#if matchesTable.length > 0}
+		<PagingNav {pageNr} pageable={matches}></PagingNav>
 		<Table
 			columnNames={['ID #', 'Date', 'Team 1', 'Team 2']}
 			columnAlignments={['text-center', 'text-center', 'text-center', 'text-center']}
 			rows={matchesTable}
 		></Table>
-
-		<div class="join">
-			{#if matches.paged() && matches.firstURL() && matches.prevURL()}
-			<div class="tooltip" data-tip="First">
-				<a href={setQuery('page', '1').href}  class="join-item btn">&lt;&lt;</a>
-			</div>
-			{/if}
-			{#if matches.paged() && matches.prevURL()}
-			<div class="tooltip" data-tip="Previous">
-				<a href={setQuery('page', (pageNr - 1).toString()).href}  class="join-item btn">&lt;</a>
-			</div>
-			{/if}
-			{#if matches.paged() && matches.nextURL()}
-			<div class="tooltip" data-tip="Next">
-				<a href={setQuery('page', (pageNr + 1).toString()).href} class="join-item btn">&gt;</a>
-			</div>
-			{/if}
-			{#if matches.paged() && matches.lastURL() && matches.nextURL()}
-			<div class="tooltip" data-tip="last">
-				<a
-					href={setQuery('page', matches.pageFromURL(matches.lastURL() ?? '').toString()).href}
-					class="join-item btn normal-case">&gt;&gt;</a>
-			</div>
-			{/if}
-		</div>
 	{/if}
 {/if}
