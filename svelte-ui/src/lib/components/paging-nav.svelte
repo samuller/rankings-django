@@ -14,12 +14,14 @@
 	let showPrev = false;
 	let showNext = false;
 	let showLast = false;
+	let lastURL = '';
 
 	$: if ($pageable) {
 		showFirst = pageable.paged() && pageable.firstURL() != null && pageable.prevURL() != null;
 		showPrev = pageable.paged() && pageable.prevURL() != null;
 		showNext = pageable.paged() && pageable.nextURL() != null;
 		showLast = pageable.paged() && pageable.lastURL() != null && pageable.nextURL() != null;
+		lastURL = pageable.lastURL() ?? '';
 	}
 </script>
 
@@ -48,7 +50,7 @@
 	</div>
 	<div class="tooltip" data-tip="Last">
 		<a
-			href={setQuery('page', pageable.pageFromURL(pageable.lastURL() ?? '').toString()).href}
+			href={setQuery('page', pageable.pageFromURL(lastURL).toString()).href}
 			class="join-item btn normal-case text-xl"
 			class:btn-disabled={!showLast}>»</a
 		>
