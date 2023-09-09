@@ -76,4 +76,5 @@ Usage:
     shapes={shapes}
     annotations={annotations}
     smoothing={1.0}
+    dtick={5}
 />

@@ -37,13 +37,14 @@
 		</div>
 	</Card>
 
+	<div class="w-[110%] md:w-[90%]">
 	{#if skillPlotData}
 		<TimePlot
 			title="Skill progress"
 			xAxisTitle="Matches played"
 			yAxisTitle="Skill level"
 			data={skillPlotData}
-			initRangeX={[Math.max(skillPlotData.x.length - 30, 0), skillPlotData.x.length]}
+			initRangeX={[Math.max(skillPlotData.x.length - 15, 0), skillPlotData.x.length]}
 			yRangeMinMax={[-2, null]}
 		/>
 	{/if}
@@ -58,4 +59,5 @@
 			verticalIndicators={[{ xPos: $currentSkill[0].skill, title: 'Skill value' }]}
 		/>
 	{/if}
+	</div>
 {/if}

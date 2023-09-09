@@ -30,6 +30,7 @@ Usage:
     export let shapes: any[] = [];
     export let annotations: any[] = [];
     export let smoothing = 0;
+	export let dtick = 1;
 
 	let loadingMessage = "Loading charting library...";
 
@@ -155,7 +156,6 @@ Usage:
 			}
 		];
 		const layout = {
-			width: 1000,
 			// b: 0 -> Causes bottom tick labels to be cut-off.
 			// t: 0 -> Causes title to be cut-off.
 			margin: { t: 30, b: 40 },
@@ -166,7 +166,7 @@ Usage:
 			...(title && { title: { text: title } }),
 			xaxis: {
 				showgrid: false,
-				dtick: 1,
+				dtick: dtick,
 				gridcolor: gridColor,
 				// Available since plotly.js v2.26.0. We don't use it yet as it triggers scaling when scrolling
 				// past limits.
@@ -182,6 +182,7 @@ Usage:
 			yaxis: {
 				gridcolor: gridColor,
 				fixedrange: true,
+				hoverformat: '.2f',
 				...(yAxisTitle && { title: { text: yAxisTitle } }),
 			},
             ...(shapes && { shapes: shapes }),
@@ -189,9 +190,10 @@ Usage:
 		};
 		const config = {
 			// staticPlot: true,
+			responsive: true,
 			showAxisDragHandles: false,
 			scrollZoom: false,
-			displayModeBar: false
+			displayModeBar: false,
 		};
 		Plotly.newPlot(plotElement, traces, layout, config);
 
