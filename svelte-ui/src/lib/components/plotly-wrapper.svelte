@@ -31,6 +31,8 @@ Usage:
     export let annotations: any[] = [];
     export let smoothing = 0;
 
+	let loadingMessage = "Loading charting library...";
+
 	// Add 10% marging if near edge of axes.
 	const axisMargin = 0.1;
 	const gridColor =  '#bbb';
@@ -208,9 +210,13 @@ Usage:
 	$: if (data && plotElement) { setupPlot(); }
 
 	// Ensure code only runs in browser (and not on server).
-	// onMount(async () => {
-	// 	await setupPlot();
-	// });
+	onMount(() => {
+		// When charting library takes very long to load, we try to suggest that something's up.
+		// It might just be very slow, but it could also be blocked or require a page refresh.
+		setTimeout(() => {
+			loadingMessage = "Loading charting library... hopefully...";
+		}, 10000);
+	});
 </script>
 
 <svelte:head>
@@ -218,7 +224,7 @@ Usage:
 </svelte:head>
 
 {#if browser && !('Plotly' in window) && loadingPlotlyLibrary}
-<div>Charting library hasn't loaded (wait or refresh?).</div>
+<div>{loadingMessage}</div>
 {/if}
 <!-- style="width:600px;height:250px;" -->
 <div bind:this={plotElement} />
