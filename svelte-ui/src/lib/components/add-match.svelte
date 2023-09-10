@@ -1,10 +1,14 @@
 <script lang="ts">
 	import Tabs from "./tabs.svelte";
 
-    const teams = ["Team 1", "Team 2"];
-    const members = [["Player 1", "Player 2"], ["Player 3", "Player 4"]];
-    let multiMatchList: HTMLSelectElement;
+    const teamNames = ["Team 1", "Team 2"];
+    const defaultNames = [["Player 1", "Player 2"], ["Player 3", "Player 4"]];
+    // Full list of all known possible players.
+    export let players: { name: string, id: number }[] = [];
 
+    let selectedMemberIds = [[0, 0], [0, 0]];
+
+    let multiMatchList: HTMLSelectElement;
     let multiMatchWins: number[] = [];
 
     const addMultiMatchResult = function (teamNr: number) {
@@ -26,7 +30,7 @@
 <p class="pt-4">Specify the teams that played:</p>
 
 <div>
-    {#each teams as team, teamIdx}
+    {#each teamNames as team, teamIdx}
     <table class="table">
         <thead>
           <tr class="bg-base-200">
@@ -35,11 +39,14 @@
         </thead>
         <tbody>
           <tr class="flex flex-col sm:flex-row">
-              {#each members[teamIdx] as member}
-              <select class="flex-1 m-1 sm:m-3 select select-bordered sm:max-w-xs">
-                  <option disabled selected>[{member}]</option>
-                  <option>Han Solo</option>
-                  <option>Greedo</option>
+              {#each defaultNames[teamIdx] as member, memberIdx}
+              <select
+                bind:value={selectedMemberIds[teamIdx][memberIdx]}
+                class="flex-1 m-1 sm:m-3 select select-bordered sm:max-w-xs">
+                  <option selected value={0}>[{member}]</option>
+                  {#each players as player}
+                  <option value={player.id}>{player.name}</option>
+                  {/each}
               </select>
               {/each}
           </tr>
