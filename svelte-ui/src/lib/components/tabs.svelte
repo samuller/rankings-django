@@ -11,14 +11,21 @@
 
     let selectedTabIdx = 0;
 
-    onMount(() => {
-        data.forEach((tab) => {
-            if (!tab.content) {
-                tab.content = document.getElementById(tab.id)?.innerHTML ?? '';
+    const updateVisibleTabs = function (tabs: ITabData[], selectedTabIdx: number) {
+        data.forEach((tab, idx) => {
+            const tabEl = document.getElementById(tab.id);
+            if (idx != selectedTabIdx) {
+                tabEl?.classList.add("hidden");
+            } else {
+                tabEl?.classList.remove("hidden");
             }
         });
-        // Indicate that data has changed to trigger updates.
-        data = data;
+    };
+
+    $: if (data) { updateVisibleTabs(data, selectedTabIdx); }
+
+    onMount(() => {
+        updateVisibleTabs(data, selectedTabIdx);
     });
 </script>
 

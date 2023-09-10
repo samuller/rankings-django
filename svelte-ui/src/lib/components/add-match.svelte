@@ -15,7 +15,7 @@
 <h3 class="font-bold text-2xl">Match results</h3>
 <p class="pt-4">Specify the teams that played:</p>
 
-<div class="overflow-x-auto">
+<div>
     {#each teams as team, teamIdx}
     <table class="table">
         <thead>
@@ -41,14 +41,15 @@
         { title: "Multiple Matches", id: "multi-match" },
         { title: "Round-Tobin Teams", id: "round-robin" },
     ]}>
-        <template id="single-match">
+        <div id="single-match">
             <p class="pt-4">Select the winning team for a single game:</p>
             <div class="flex flex-col sm:flex-row gap-6">
                 <button class="btn btn-primary flex-1">Team 1</button>
                 <button class="btn btn-primary flex-1">Team 2</button>
             </div>
-        </template>
-        <template id="multi-match">
+        </div>
+
+        <div id="multi-match">
             <p class="pt-4">
                 Select the results for multiple games (between the same teams):
             </p>
@@ -69,8 +70,9 @@
                     <button class="btn btn-primary flex-1">Submit</button>
                 </div>
             </div>
-        </template>
-        <template id="round-robin">
+        </div>
+
+        <div id="round-robin">
             <p class="pt-4">Select a result for a set of games consisting of all team combinations:</p>
             <div class="flex flex-col items-center">
                 <span class="flex flex-row items-baseline">
@@ -91,6 +93,6 @@
                 </span>
                 <button class="btn btn-primary flex-1 md:w-1/2">Submit</button>
             </div>
-        </template>
+        </div>
     </Tabs>
 </div>
