@@ -13,7 +13,7 @@
 	$: matchesTable = $matches
 		.map((match: Matches) => [
 			{ text: match.id },
-			{ text: new Date(match.datetime*1000).toISOString().replace('T', ' ').split('.')[0]+"Z" },
+			{ text: new Date(match.datetime*1000).toISOString().replace('T', ' ').split('.')[0]},
 			{ text: match.teams[0].members.map((member) => member.player.name).join(" & ") },
 			{ text: match.teams[1].members.map((member) => member.player.name).join(" & ") },
 		]);
