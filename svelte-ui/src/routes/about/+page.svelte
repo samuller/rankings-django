@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Card, Tabs } from "$lib/components";
+	import { navTitle } from '../../store';
 
 	let TABS: any[] = [];
+
+	navTitle.set('');
 
 	onMount(() => {
 		TABS = [
