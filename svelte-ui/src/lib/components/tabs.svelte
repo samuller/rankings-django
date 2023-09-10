@@ -1,13 +1,25 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
+
     interface ITabData {
         id: string;
         title: string;
-        content: string;
+        content?: string;
     }
 
     export let data: ITabData[] = [];
 
     let selectedTabIdx = 0;
+
+    onMount(() => {
+        data.forEach((tab) => {
+            if (!tab.content) {
+                tab.content = document.getElementById(tab.id)?.innerHTML ?? '';
+            }
+        });
+        // Indicate that data has changed to trigger updates.
+        data = data;
+    });
 </script>
 
 <!-- Headers -->
@@ -31,10 +43,12 @@
 </div>
 {/each}
 
+<slot></slot>
+
 <style lang="postcss">
     /*
     We extend the DaisyUI class "".tab-active" because we couldn't get a tailwind modifier for when this class has
-    been added. Another alternative is to add the followin svelte code to the applicable components:
+    been added. Another alternative is to add the following svelte code to the applicable components:
         class:tab-active={selectedTabIdx == idx}
         class:text-blue-600={selectedTabIdx == idx}
     */
