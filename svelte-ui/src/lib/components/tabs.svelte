@@ -1,3 +1,24 @@
+<!--
+  @component
+  Tabs that are used to show/hide different parts of the interface below it.
+
+  Usage:
+  ```tsx
+  // Method one: fully dynamic tabs, but can only use static HTML strings.
+  <Tabs data={[
+    {title: 'Tab 1', id: 'tab1', content: '<button>First tab</button>'},
+    {title: 'Tab 2', id: 'tab2', content: '<button>Second tab</button>'},
+  ]}></Tabs>
+  // Method two: tabs can use full dynamic HTML, events, etc.
+  <Tabs data={[
+    {title: 'Tab 1', id: 'tab1'}
+    {title: 'Tab 2', id: 'tab2'}
+  ]}>
+    <button id="tab1">First tab</button>
+    <button id="tab2">Second tab</button>
+  </Tabs>
+  ```
+-->
 <script lang="ts">
     import { onMount } from 'svelte';
 
@@ -44,10 +65,12 @@
 </div>
 <!-- Content -->
 {#each data as tab, idx}
-<div class:hidden={selectedTabIdx != idx}>
-    <!-- Not safe against XSS injections unless sanitized. -->
-    {@html tab.content}
-</div>
+    {#if tab.content}
+    <div class:hidden={selectedTabIdx != idx}>
+        <!-- Not safe against XSS injections unless sanitized. -->
+        {@html tab.content}
+    </div>
+    {/if}
 {/each}
 
 <slot></slot>
