@@ -51,15 +51,22 @@
 </script>
 
 <!-- Headers -->
-<div class="tabs">
+<div class="block whitespace-nowrap overflow-x-scroll horz-scroll-edges">
 {#each data as tab, idx}
     <a
         id="tab_{tab.id}"
         href="#"
         data-sveltekit-noscroll
-        class="tab tab-lg tab-bordered"
+        class="tab tab-lg tab-bordered inline-block"
         class:tab-active={selectedTabIdx == idx}
-        on:click={() => (selectedTabIdx = idx)}>{tab.title}</a
+        on:click={(event) => {
+            // Scroll selected tab into view (mainly horizontally for small screens).
+            if (event.target && 'scrollIntoView' in event.target) {
+                // @ts-ignore
+                event.target?.scrollIntoView?.({ behavior: "smooth", block: "start", inline: "start" });
+            }
+            selectedTabIdx = idx;
+        }}>{tab.title}</a
     >
 {/each}
 </div>
@@ -84,5 +91,13 @@
     */
     .tab-active {
         @apply text-white;
+    }
+
+    /*
+      Gradient edges used to hint at/indicate that horizontal scrolling is possible.
+      Needed because horizontal scrollbar only appears on mouse over or click.
+    */
+    .horz-scroll-edges {
+        mask-image: linear-gradient(90deg, #000 60%, #000 60px, transparent);
     }
 </style>

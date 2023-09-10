@@ -22,7 +22,6 @@
     };
 </script>
 
-
 <h3 class="font-bold text-2xl">Match results</h3>
 <p class="pt-4">Specify the teams that played:</p>
 
