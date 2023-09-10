@@ -3,11 +3,22 @@
 
     const teams = ["Team 1", "Team 2"];
     const members = [["Player 1", "Player 2"], ["Player 3", "Player 4"]];
+    let multiMatchList: HTMLSelectElement;
 
-    let multiMatchWins: number[] = [1, 2, 1];
-    const addMultiMatchTeam = function (teamNr: number) {
+    let multiMatchWins: number[] = [];
+
+    const addMultiMatchResult = function (teamNr: number) {
         multiMatchWins.push(teamNr);
-        // multiMatchWins = multiMatchWins;
+        // Indicate variable has changed to trigger updates.
+        multiMatchWins = multiMatchWins;
+    };
+    const removeSelectedMultiMatches = function () {
+        // Loop backwards so that indexes aren't changed after each remove.
+        for (let idx = multiMatchList.selectedOptions.length - 1; idx >= 0; idx--) {
+            const selected = multiMatchList.selectedOptions[idx];
+            multiMatchWins.splice(parseInt(selected.value), 1);
+        }
+        multiMatchWins = multiMatchWins;
     };
 </script>
 
@@ -55,18 +66,18 @@
             </p>
             <div class="flex flex-row gap-6">
                 <div class="flex-1 flex flex-col gap-6">
-                    <button class="btn flex-1" on:click={() => addMultiMatchTeam(1)}>Team 1</button>
-                    <button class="btn flex-1" on:click={() => addMultiMatchTeam(2)}>Team 2</button>
+                    <button class="btn flex-1" on:click={() => addMultiMatchResult(1)}>Team 1</button>
+                    <button class="btn flex-1" on:click={() => addMultiMatchResult(2)}>Team 2</button>
                 </div>
                 <div class="flex-1">
-                    <select id="multi-match-list" multiple size={8} class="w-full h-full">
+                    <select bind:this={multiMatchList} multiple size={8} class="w-full h-full">
                         {#each multiMatchWins as matchWinner,idx}
                             <option value={idx}>Team {matchWinner} win</option>
                         {/each}
                     </select>
                 </div>
                 <div class="flex-1 flex flex-col gap-6">
-                    <button class="btn btn-neutral flex-1">Remove selected</button>
+                    <button class="btn btn-neutral flex-1" on:click={() => removeSelectedMultiMatches()}>Remove selected</button>
                     <button class="btn btn-primary flex-1">Submit</button>
                 </div>
             </div>
