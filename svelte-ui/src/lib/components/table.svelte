@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-    export interface RowDetail {
+    export interface CellDetail {
         // Type is actually anything that can be implicitly converted to a string.
         text: any;
         url?: string;
@@ -9,7 +9,7 @@
 <script lang="ts">
     export let columnNames: string[];
     export let columnAlignments: string[] = [];
-    export let rows: RowDetail[][];
+    export let rows: CellDetail[][];
 
 </script>
 

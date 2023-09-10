@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { DynamicData, Table, type RowDetail } from '$lib/components';
+	import { DynamicData, Table, type CellDetail } from '$lib/components';
 	import {
 		type Ranking,
 		apiRankings,
 	} from '../../../store';
 
-	let rankingsTable: RowDetail[][] = [];
+	let rankingsTable: CellDetail[][] = [];
 
 	$: rankings = apiRankings[$page.params.activity];
 	$: rankingsTable = $rankings

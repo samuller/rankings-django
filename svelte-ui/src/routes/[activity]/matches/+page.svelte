@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { AddButton, DynamicData, PagingNav, Table, type RowDetail } from '$lib/components';
+	import { AddButton, DynamicData, PagingNav, Table, type CellDetail } from '$lib/components';
 	import {
 		type Matches,
 		apiMatches,
@@ -8,7 +8,7 @@
 
 	$: pageNr = parseInt($page.url.searchParams.get('page') ?? '1');
 
-	let matchesTable: RowDetail[][] = [];
+	let matchesTable: CellDetail[][] = [];
 	$: matches = apiMatches($page.params.activity, pageNr, 10);
 	$: matchesTable = $matches
 		.map((match: Matches) => [

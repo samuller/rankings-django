@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { AddButton, DynamicData, Table, type RowDetail } from '$lib/components';
+	import { AddButton, DynamicData, Table, type CellDetail } from '$lib/components';
 	import AddMatch from '$lib/components/add-match.svelte';
 	import {
 		type Ranking,
@@ -8,7 +8,7 @@
 		players,
 	} from '../../store';
 
-	let rankingsTable: RowDetail[][] = [];
+	let rankingsTable: CellDetail[][] = [];
 	let addMatchModal: HTMLDialogElement;
 
 	$: rankings = apiRankings[$page.params.activity];

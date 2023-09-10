@@ -8,7 +8,7 @@ import Loader from './loader.svelte';
 import Navbar from './navbar.svelte';
 import PagingNav from './paging-nav.svelte';
 import Tabs from './tabs.svelte';
-import Table, { type RowDetail } from './table.svelte';
+import Table, { type CellDetail } from './table.svelte';
 import TimePlot from './time-plot.svelte';
 
-export { AddButton, AddMatch, Card, DynamicData, Footer, GaussianPlot, Loader, Navbar, PagingNav, Tabs, TimePlot, Table, type RowDetail };
+export { AddButton, AddMatch, Card, DynamicData, Footer, GaussianPlot, Loader, Navbar, PagingNav, Tabs, TimePlot, Table, type CellDetail };
