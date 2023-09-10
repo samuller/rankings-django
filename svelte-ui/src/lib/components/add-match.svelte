@@ -24,9 +24,7 @@
     let multiMatchWins: number[] = [];
 
     const addMultiMatchResult = function (teamNr: number) {
-        multiMatchWins.push(teamNr);
-        // Indicate variable has changed to trigger updates.
-        multiMatchWins = multiMatchWins;
+        multiMatchWins = [...multiMatchWins, teamNr];
     };
 
     const removeSelectedMultiMatches = function () {
@@ -35,6 +33,7 @@
             const selected = multiMatchList.selectedOptions[idx];
             multiMatchWins.splice(parseInt(selected.value), 1);
         }
+        // Indicate variable has changed to trigger updates.
         multiMatchWins = multiMatchWins;
     };
 

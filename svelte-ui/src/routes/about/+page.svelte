@@ -37,12 +37,12 @@
 		<img class="m-auto w-[228px] h-[200px]" alt="Normal distribution of skill" src="/images/skill-normal.jpg">
 	</div>
 	<p class="text-justify">
-		By representing skill as a Normal distribution it is therefore described by two values, μ and σ which
-		respectively represent the player's average skill and the degree of uncertainty in the player's skill.
-		After each game result the uncertainty will decrease, although it will never become zero as to allow for
-		player skills that change over time. For ranking purposes the two values are combined into a single
-		'conservative skill estimate' (by using μ-3*σ) which represents a 99% confidence that a player has a skill
-		higher than the given value.
+		By representing skill as a Normal distribution it is therefore described by two values, μ (mu) and
+		σ (sigma) which respectively represent the player's average skill and the degree of uncertainty in the
+		player's skill. After each game result the uncertainty will decrease, although it will never become zero
+		as to allow for player skills that change over time. For ranking purposes the two values are combined
+		into a single 'conservative skill estimate' (by using μ-3*σ) which represents a 99% confidence that a
+		player has a skill higher than the given value.
 	</p>
 	<p class="text-justify">
 		In Trueskill each game type needs to define a few crucial parameters that specify how games vary in skill
