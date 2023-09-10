@@ -3,6 +3,7 @@
         // Type is actually anything that can be implicitly converted to a string.
         text: any;
         url?: string;
+        tooltip?: string;
     }
 </script>
 
@@ -29,11 +30,14 @@
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 {#each row as cell, cell_idx}
                 <td class="px-3 md:px-6 py-4 text-white {columnAlignments[cell_idx]}">
+                    <div class:tooltip={cell.tooltip ?? false} data-tip={cell.tooltip}
+                        class={cell.tooltip ? "has-tip" : ""}>
                     {#if cell.url}
                         <a href="{cell.url}" class="underline">{cell.text}</a>
                     {:else}
                         {cell.text}
                     {/if}
+                    </div>
                 </td>
                 {/each}
             </tr>
@@ -41,3 +45,10 @@
         </tbody>
     </table>
 </div>
+
+<style lang="postcss">
+    .has-tip {
+        @apply font-bold;
+        border-bottom: dotted 1px #cccccc;
+    }
+</style>

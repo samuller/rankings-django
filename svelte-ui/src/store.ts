@@ -101,6 +101,7 @@ export const currentActivity = derived([currentActivityUrl, activities],
 });
 
 export interface Player {
+  id: number;
   name: string;
   email: string;
 }
@@ -125,8 +126,8 @@ export interface Matches {
   datetime: number;
   submittor: string;
   validated: number;
-  games: { id: number, datetime: number }[];
-  teams: { members: { player: { id: number, name: string, email: string } } [] }[];
+  games: { id: number, datetime: number, winning_team: number }[];
+  teams: { id: number, members: { player: { id: number, name: string, email: string } } [] }[];
 }
 export const generateListAPIStore = function<T>(url: string) {
   return readJSONAPI<T[]>([], url);
