@@ -154,7 +154,7 @@ class RankingViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSe
     field_filter_param = FIELD_FILTER_PARAM
 
 
-class GameSerializer(
+class SkillHistoryGameSerializer(
     serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
 ):
     """Serializer for Game."""
@@ -175,7 +175,7 @@ class ResultSerializer(
 ):
     """Serializer for Result."""
 
-    game = GameSerializer(fields=["id", "datetime", "submittor"])
+    game = SkillHistoryGameSerializer(fields=["id", "datetime", "submittor"])
 
     class Meta:
         model = Result
@@ -253,7 +253,30 @@ class AdhocTeamSerializer(
 
     class Meta:
         model = AdhocTeam
-        fields = ["members"]
+        fields = ["id", "members"]
+
+
+class MatchGameSerializer(
+    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
+):
+    """Serializer for Game."""
+
+    # results = MatchResultSerializer(source="result_set", many=True, read_only=True)
+    winning_team = serializers.SerializerMethodField("find_winning_team")
+
+    class Meta:
+        model = Game
+        fields = [
+            "id",
+            "datetime",
+            "submittor",
+            "position",
+            # "results",
+            "winning_team",
+        ]
+
+    def find_winning_team(self, game):
+      return Result.objects.filter(game=game, ranking=1).first().team.id 
 
 
 class MatchSerializer(
@@ -261,7 +284,7 @@ class MatchSerializer(
 ):
     """Serializer for Matches (a GameSet of multiple Games)."""
 
-    games = GameSerializer(source="game_set", many=True, read_only=True)
+    games = MatchGameSerializer(source="game_set", many=True, read_only=True)
     teams = AdhocTeamSerializer(source="adhocteam_set", many=True, read_only=True)
 
     class Meta:
