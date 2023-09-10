@@ -3,12 +3,6 @@
 	import { Card, DynamicData } from "$lib/components";
 
 	navTitle.set("");
-
-	let test_data = [
-		{ title: '⚽ Foosball', url: 'foosball' },
-		{ title: '🏓 Table tennis', url: 'table_tennis' },
-		{ title: '🏆 Table Tennis Tournament 2022', url: 'table_tennis_tournament_2022' }
-	];
 </script>
 
 <svelte:head>
