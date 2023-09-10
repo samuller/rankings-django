@@ -7,6 +7,7 @@
     export let players: { name: string, id: number }[] = [];
 
     let selectedMemberIds = [[0, 0], [0, 0]];
+    $: validMemberSelection = selectedMemberIds[0][0] != 0 && selectedMemberIds[1][0] != 0;
 
     let multiMatchList: HTMLSelectElement;
     let multiMatchWins: number[] = [];
@@ -61,8 +62,12 @@
         <div id="single-match">
             <p class="pt-4">Select the winning team for a single game:</p>
             <div class="flex flex-col sm:flex-row gap-6">
-                <button class="btn btn-primary flex-1">Team 1</button>
-                <button class="btn btn-primary flex-1">Team 2</button>
+                <button class="btn btn-primary flex-1" disabled={!validMemberSelection}>
+                    Team 1
+                </button>
+                <button class="btn btn-primary flex-1" disabled={!validMemberSelection}>
+                    Team 2
+                </button>
             </div>
         </div>
 
@@ -84,7 +89,11 @@
                 </div>
                 <div class="flex-1 flex flex-col gap-6">
                     <button class="btn btn-neutral flex-1" on:click={() => removeSelectedMultiMatches()}>Remove selected</button>
-                    <button class="btn btn-primary flex-1">Submit</button>
+                    <button
+                        class="btn btn-primary flex-1"
+                        disabled={!validMemberSelection || (multiMatchWins.length == 0)}>
+                        Submit
+                    </button>
                 </div>
             </div>
         </div>
