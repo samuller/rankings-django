@@ -1,3 +1,7 @@
+<script lang="ts">
+    export let color = "text-white bg-teal-500 hover:bg-teal-400 focus:ring-teal-600";
+</script>
+
 <div data-dial-init class="fixed right-6 bottom-6 group">
 	<button
 		type="button"
@@ -5,7 +9,7 @@
 		data-dial-toggle="speed-dial-menu-default"
 		aria-controls="speed-dial-menu-default"
 		aria-expanded="false"
-		class="flex items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
+		class={`rounded-full w-14 h-14 flex items-center justify-center ${color} focus:ring-4 focus:outline-none`}
 	>
 		<svg
 			aria-hidden="true"
