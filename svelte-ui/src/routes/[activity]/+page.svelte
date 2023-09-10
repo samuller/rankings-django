@@ -5,6 +5,7 @@
 	import {
 		type Ranking,
 		apiRankings,
+		players,
 	} from '../../store';
 
 	let rankingsTable: RowDetail[][] = [];
@@ -17,6 +18,7 @@
 			{ text: ranking.player.name, url: `/${$page.params.activity}/player/${ranking.player.id}` },
 			{ text: ranking.skill.toFixed(0) }
 		]);
+	$: allPlayers = $players.map((player) => { return { id: player.id, name: player.name } });
 </script>
 
 <DynamicData data={rankings}></DynamicData>
@@ -41,7 +43,7 @@
     <form method="dialog">
 		<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 	</form>
-	<AddMatch></AddMatch>
+	<AddMatch players={allPlayers}></AddMatch>
   </div>
   <form method="dialog" class="modal-backdrop">
     <button>close</button>

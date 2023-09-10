@@ -1,6 +1,10 @@
 <script>
   import "../app.css";
 	import { Footer, Navbar } from "$lib/components";
+	import { players } from "../store";
+
+  // Load player data into the store for whenever it's needed,
+  players.load();
 </script>
 
 <div class="h-screen flex flex-col">
