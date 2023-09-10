@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 	import { AddButton, DynamicData, Table, type RowDetail } from '$lib/components';
+	import AddMatch from '$lib/components/add-match.svelte';
 	import {
 		type Ranking,
 		apiRankings,
 	} from '../../store';
 
 	let rankingsTable: RowDetail[][] = [];
+	let addMatchModal: HTMLDialogElement;
 
 	$: rankings = apiRankings[$page.params.activity];
 	$: rankingsTable = $rankings
@@ -32,4 +34,16 @@
 <a href={`/${$page.params.activity}/players`} class="text-gray-700 text-2xl font-bold underline">View all players</a>
 <a href={`/${$page.params.activity}/matches`} class="text-gray-700 text-2xl font-bold underline">View all matches</a>
 
-<AddButton></AddButton>
+<AddButton on:click={() => addMatchModal.showModal()}></AddButton>
+
+<dialog bind:this={addMatchModal} class="modal">
+  <div class="modal-box w-11/12 max-w-2xl">
+    <form method="dialog">
+		<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+	</form>
+	<AddMatch></AddMatch>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
