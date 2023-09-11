@@ -22,7 +22,6 @@ urlpatterns = [
     re_path(r"^api/id$", api.show_source_id),
     re_path(r"^api/fix_player$", api.replace_player_in_submissions, name="fix_player"),
     re_path(r"^api/validate_all$", api.validate_all_matches),
-    re_path(r"^(?P<activity_url>.+)/api/get_players$", api.get_players),
     re_path(r"^(?P<activity_url>.+)/api/add_matches$", api.submit_match),
     re_path(r"^(?P<activity_url>.+)/api/undo_submission$", api.undo_submit),
     path("api/", include(router.urls)),

@@ -324,12 +324,6 @@ def validate_all_matches(request: Request) -> Response:
     return HttpResponse("")
 
 
-@api_view()
-def get_players(request: Request, activity_url: str) -> Response:
-    """TODO: Get all players for an activity (currently embedded in page HTML)."""
-    return HttpResponse("")
-
-
 @api_view(["POST"])
 def undo_submit(request: Request, activity_url: str) -> Response:
     """TODO: Allow a user to undo their own mistaken submission (within some constraints)."""
