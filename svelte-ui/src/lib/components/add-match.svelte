@@ -27,6 +27,11 @@
     let multiMatchList: HTMLSelectElement;
     let multiMatchWins: number[] = [];
 
+    const isSelected = function (playerId: number) {
+        if (playerId == 0) return false;
+        return selectedMemberIds.flat().includes(playerId);
+    }
+
     const addMultiMatchResult = function (teamNr: number) {
         multiMatchWins = [...multiMatchWins, teamNr];
     };
@@ -113,7 +118,7 @@
                 class="flex-1 m-1 sm:m-3 select select-bordered sm:max-w-xs">
                   <option selected value={0}>[{member}]</option>
                   {#each players as player}
-                  <option value={player.id}>{player.name}</option>
+                  <option value={player.id} disabled={isSelected(player.id)}>{player.name}</option>
                   {/each}
               </select>
               {/each}
