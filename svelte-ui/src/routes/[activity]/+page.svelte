@@ -6,6 +6,7 @@
 		type Ranking,
 		apiRankings,
 		players,
+		currentActivityUrl,
 	} from '../../store';
 
 	let rankingsTable: CellDetail[][] = [];
@@ -43,7 +44,9 @@
     <form method="dialog">
 		<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 	</form>
-	<AddMatch players={allPlayers}></AddMatch>
+	{#if $currentActivityUrl != null}
+	<AddMatch currentActivity={$currentActivityUrl} players={allPlayers} on:submit={() => addMatchModal.close()}></AddMatch>
+	{/if}
   </div>
   <form method="dialog" class="modal-backdrop">
     <button>close</button>

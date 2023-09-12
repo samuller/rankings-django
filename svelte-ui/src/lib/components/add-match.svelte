@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from "svelte";
 	import Tabs from "./tabs.svelte";
 
     interface Player {
@@ -6,6 +7,7 @@
         id: number;
     }
 
+    const dispatch = createEventDispatcher();
     const teamNames = ["Team 1", "Team 2"];
     const defaultNames = [["Player 1", "Player 2"], ["Player 3", "Player 4"]];
 
@@ -76,6 +78,7 @@
             body: JSON.stringify(json)
         })
         .then((response) => {
+            dispatch('submit');
         })
         .catch((err) => {
             console.error(err);
