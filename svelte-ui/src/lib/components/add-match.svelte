@@ -8,6 +8,8 @@
 
     const teamNames = ["Team 1", "Team 2"];
     const defaultNames = [["Player 1", "Player 2"], ["Player 3", "Player 4"]];
+
+    export let currentActivity: string;
     // Full list of all known possible players.
     export let players: Player[] = [];
 
@@ -48,6 +50,43 @@
         roundRobinWinPlayer = 0;
         roundRobinLosePlayer = 0;
     }
+
+    /**
+     * 
+     * @param teams Array of teams, with each team being an array of player IDs.
+     * @param ranking An array of values indicating the corresponding team's ranking in the game.
+     */
+    const submitMatchGames = function(teams: number[][], ranking: number[]) {
+        const allSubmitButtons = document.getElementsByClassName('submit-button');
+        const url = `/${currentActivity}/api/add_matches`;
+        const json = {
+            "teams": [], //teams,
+            "wins": [], //ranking
+        };
+        // Disable all submit buttons during request to prevent double-submissions.
+        for(let element of allSubmitButtons) {
+            (element as HTMLButtonElement).disabled = true;
+        }
+        const response = fetch(url, {
+            method: "post",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(json)
+        })
+        .then((response) => {
+        })
+        .catch((err) => {
+            console.error(err);
+        })
+        .finally(() => {
+            // Re-enable all submit buttons.
+            for(let element of allSubmitButtons) {
+                (element as HTMLButtonElement).disabled = false;
+            }
+        });
+    };
 </script>
 
 <h3 class="font-bold text-2xl">Match results</h3>
@@ -89,10 +128,16 @@
         <div id="single-match">
             <p class="pt-4">Select the winning team for a single game:</p>
             <div class="flex flex-col sm:flex-row gap-6">
-                <button class="btn btn-primary flex-1" disabled={!validMemberSelection}>
+                <button
+                  on:click={() => submitMatchGames([], [])}
+                  class="submit-button btn btn-primary flex-1"
+                  disabled={!validMemberSelection}>
                     Team 1
                 </button>
-                <button class="btn btn-primary flex-1" disabled={!validMemberSelection}>
+                <button
+                  on:click={() => submitMatchGames([], [])}
+                  class="submit-button btn btn-primary flex-1"
+                  disabled={!validMemberSelection}>
                     Team 2
                 </button>
             </div>
@@ -117,8 +162,9 @@
                 <div class="flex-1 flex flex-col gap-6">
                     <button class="btn btn-neutral flex-1" on:click={() => removeSelectedMultiMatches()}>Remove selected</button>
                     <button
-                        class="btn btn-primary flex-1"
-                        disabled={!validMemberSelection || (multiMatchWins.length == 0)}>
+                      on:click={() => submitMatchGames([], [])}
+                      class="submit-button btn btn-primary flex-1"
+                      disabled={!validMemberSelection || (multiMatchWins.length == 0)}>
                         Submit
                     </button>
                 </div>
@@ -153,7 +199,8 @@
                     </select>
                 </span>
                 <button
-                  class="btn btn-primary flex-1 md:w-1/2"
+                  on:click={() => submitMatchGames([], [])}
+                  class="submit-button btn btn-primary flex-1 md:w-1/2"
                   disabled={selectedPlayers.length != 4 || !roundRobinSelected}>
                     Submit
                 </button>
