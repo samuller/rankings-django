@@ -29,8 +29,14 @@
     }
 
     export let data: ITabData[] = [];
+    export let hashPrefix = "tab-";
 
+    $: tabIds = data.map((tab) => `${hashPrefix}${tab.id}`);
+    $: hashUrl = window.location.hash.slice(1);
     let selectedTabIdx = 0;
+    $: if (tabIds.includes(hashUrl)) {
+        selectedTabIdx = tabIds.indexOf(hashUrl);
+    }
 
     const updateVisibleTabs = function (tabs: ITabData[], selectedTabIdx: number) {
         data.forEach((tab, idx) => {
@@ -55,7 +61,7 @@
 {#each data as tab, idx}
     <a
         id="tab_{tab.id}"
-        href="#"
+        href="#{hashPrefix}{tab.id}"
         data-sveltekit-noscroll
         class="tab tab-lg tab-bordered inline-block"
         class:tab-active={selectedTabIdx == idx}
@@ -66,8 +72,9 @@
                 event.target?.scrollIntoView?.({ behavior: "smooth", block: "start", inline: "start" });
             }
             selectedTabIdx = idx;
-        }}>{tab.title}</a
-    >
+    }}>
+        {tab.title}
+    </a>
 {/each}
 </div>
 <!-- Content -->

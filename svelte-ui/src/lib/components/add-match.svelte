@@ -81,7 +81,7 @@
     {/each}
 
     <!-- Multiple ways to select the winnig team or submit multiple match results. -->
-    <Tabs data={[
+    <Tabs  hashPrefix="" data={[
         { title: "Single Match", id: "single-match" },
         { title: "Multiple Matches", id: "multi-match" },
         { title: "Round-Tobin Teams", id: "round-robin" },

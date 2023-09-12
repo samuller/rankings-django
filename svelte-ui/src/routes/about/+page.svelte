@@ -24,7 +24,7 @@
 </script>
 
 <Card class="w-full lg:w-3/4 2xl:w-[calc(0.75*1536px)]">
-    <Tabs data={TABS}></Tabs>
+    <Tabs data={TABS} hashPrefix=""></Tabs>
 </Card>
 
 <template id="about-trueskill">
