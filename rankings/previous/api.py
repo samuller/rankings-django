@@ -276,7 +276,8 @@ class MatchGameSerializer(
         ]
 
     def find_winning_team(self, game):
-      return Result.objects.filter(game=game, ranking=1).first().team.id 
+        """Fetch ID of team with rank of 1 in the current game."""
+        return Result.objects.filter(game=game, ranking=1).first().team.id
 
 
 class MatchSerializer(
@@ -369,7 +370,16 @@ def gen_valid_reason_response(valid: bool, reason: str) -> HttpResponse:
 @api_view(["POST"])
 @authentication_classes([])
 def submit_match(request: Request, activity_url: str) -> Response:
-    """View to submit and record one or matches."""
+    """
+    View to submit and record one or matches.
+
+    Parameters
+    ----------
+    - **teams**:
+        An array of teams which are each specified as an array of player ids.
+    - **wins**:
+        An array of which team won each game, specified with team indexes (1-indexed).
+    """
     submittor = identify_request_source(request)
 
     activity = Activity.objects.get(url=activity_url)
