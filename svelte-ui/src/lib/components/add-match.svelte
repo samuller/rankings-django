@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte";
-	import Tabs from "./tabs.svelte";
+    import { createEventDispatcher } from "svelte";
+    import Tabs from "./tabs.svelte";
 
     interface Player {
         name: string;
@@ -60,15 +60,15 @@
 
     /**
      * 
-     * @param teams Array of teams, with each team being an array of player IDs.
-     * @param ranking An array of values indicating the corresponding team's ranking in the game.
+     * @param teams Array of games, each with an array teams, with each team being an array of player IDs.
+     * @param winners An array of games, each with values for the 1-indexed position of the winning team.
      */
-    const submitMatchGames = function(teams: number[][], ranking: number[]) {
+    const submitMatchGames = function(teams: number[][][], winners: number[]) {
         const allSubmitButtons = document.getElementsByClassName('submit-button');
         const url = `/${currentActivity}/api/add_matches`;
         const json = {
-            "teams": [], //teams,
-            "wins": [], //ranking
+            "teams": teams,
+            "wins": winners
         };
         // Disable all submit buttons during request to prevent double-submissions.
         for(let element of allSubmitButtons) {
@@ -83,10 +83,17 @@
             body: JSON.stringify(json)
         })
         .then((response) => {
+            if (!response.ok) {
+                return Promise.reject(response);
+            }
+            return response.json();
+        })
+        .then(data => {
             dispatch('submit');
         })
         .catch((err) => {
             console.error(err);
+            dispatch('error', err);
         })
         .finally(() => {
             // Re-enable all submit buttons.
@@ -95,6 +102,17 @@
             }
         });
     };
+
+    const submitMultiGames = function(winners: number[]) {
+        const teams = Array.apply(null, Array(winners.length))
+            .map(function() { return selectedMemberIds; });
+        // Todo: add confirmation before submitting multiple matches
+        submitMatchGames(teams, winners);
+    }
+
+    const submitSingleGame = function(winner: number) {
+        submitMultiGames([winner]);
+    }
 </script>
 
 <h3 class="font-bold text-2xl">Match results</h3>
@@ -137,13 +155,13 @@
             <p class="pt-4">Select the winning team for a single game:</p>
             <div class="flex flex-col sm:flex-row gap-6">
                 <button
-                  on:click={() => submitMatchGames([], [])}
+                  on:click={() => submitSingleGame(1)}
                   class="submit-button btn btn-primary flex-1"
                   disabled={!validMemberSelection}>
                     Team 1
                 </button>
                 <button
-                  on:click={() => submitMatchGames([], [])}
+                  on:click={() => submitSingleGame(2)}
                   class="submit-button btn btn-primary flex-1"
                   disabled={!validMemberSelection}>
                     Team 2
@@ -170,7 +188,7 @@
                 <div class="flex-1 flex flex-col gap-6">
                     <button class="btn btn-neutral flex-1" on:click={() => removeSelectedMultiMatches()}>Remove selected</button>
                     <button
-                      on:click={() => submitMatchGames([], [])}
+                      on:click={() => submitMultiGames(multiMatchWins)}
                       class="submit-button btn btn-primary flex-1"
                       disabled={!validMemberSelection || (multiMatchWins.length == 0)}>
                         Submit
