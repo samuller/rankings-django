@@ -302,8 +302,10 @@ class MatchSerializer(
 
 
 class MatchFilter(FilterSet):
-    validated = NumberFilter(field_name='validated')
-    pending = BooleanFilter(field_name='validated', lookup_expr='isnull')
+    """Filter used to select matches on specified fields."""
+
+    validated = NumberFilter(field_name="validated")
+    pending = BooleanFilter(field_name="validated", lookup_expr="isnull")
 
 
 class MatchViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
