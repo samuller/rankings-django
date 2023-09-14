@@ -39,7 +39,7 @@
 	}
 
 	$: pendingMatches = apiPendingMatches($page.params.activity);
-	$: pendingMatchesTable = convertMatchesToTable($pendingMatches, true);
+	$: pendingMatchesTable = convertMatchesToTable($pendingMatches, true).slice(0, 5);
 </script>
 
 <DynamicData data={rankings}></DynamicData>
@@ -56,7 +56,7 @@
 {/if}
 <a href={`/${$page.params.activity}/players`} class="text-gray-700 text-2xl font-bold underline">View all players</a>
 
-<PendingMatches matches={pendingMatches} table={pendingMatchesTable}></PendingMatches>
+<PendingMatches recent={true} matches={pendingMatches} table={pendingMatchesTable}></PendingMatches>
 <a href={`/${$page.params.activity}/matches`} class="text-gray-700 text-2xl font-bold underline">View all matches</a>
 
 <AddButton on:click={() => addMatchModal.showModal()}></AddButton>
