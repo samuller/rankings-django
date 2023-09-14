@@ -134,6 +134,7 @@ export const generateListAPIStore = function<T>(url: string) {
 }
 // The type coercion is needed to use correctly typed indexing on the DefaultDict.
 const _apiMatches = new DefaultDict(generateListAPIStore<Matches>) as { [key: string]: PageableAPIStore<Matches[]> };
+const _apiPendingMatches = new DefaultDict(generateListAPIStore<Matches>) as { [key: string]: PageableAPIStore<Matches[]> };
 
 const addPagingToURL = function(url: string, pageNr: number = 1, limit: number = 100) {
   const pagedUrl = new URL(url, window.location.href);
@@ -150,5 +151,5 @@ export const apiMatches = function(activity_url: string, pageNr: number = 1, lim
 
 export const apiPendingMatches = function(activity_url: string, pageNr: number = 1, limit: number = 100): PageableAPIStore<Matches[]> {
   const url = `/api/matches/${activity_url}/?ordering=-datetime&pending=true`;
-  return _apiMatches[addPagingToURL(url, pageNr, limit)];
+  return _apiPendingMatches[addPagingToURL(url, pageNr, limit)];
 };
