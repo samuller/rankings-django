@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/stores'
+	import { page } from '$app/stores';
+	import { toast } from '@zerodevx/svelte-toast';
 	import { AddButton, DynamicData, Table, type CellDetail } from '$lib/components';
 	import AddMatch from '$lib/components/add-match.svelte';
 	import {
@@ -20,6 +21,18 @@
 			{ text: ranking.skill.toFixed(0) }
 		]);
 	$: allPlayers = $players.map((player) => { return { id: player.id, name: player.name } });
+
+	const onSubmitNewMatch = function() {
+		addMatchModal.close();
+		toast.push("Match submitted!", { classes: ['toast-as-success'] });
+	}
+	const onSubmitNewMatchError = function(err) {
+		const errorMsg = `${err.statusText} (${err.status})`;
+		toast.push(
+			`Failed to submit match. <strong>Error:</strong> ${errorMsg}`,
+			{ classes: ['toast-as-error'], initial: 0 }
+		);
+	}
 </script>
 
 <DynamicData data={rankings}></DynamicData>
@@ -45,7 +58,12 @@
 		<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 	</form>
 	{#if $currentActivityUrl != null}
-	<AddMatch currentActivity={$currentActivityUrl} players={allPlayers} on:submit={() => addMatchModal.close()}></AddMatch>
+	<AddMatch
+		currentActivity={$currentActivityUrl}
+		players={allPlayers}
+		on:submit={onSubmitNewMatch}
+		on:error={onSubmitNewMatchError}
+	></AddMatch>
 	{/if}
   </div>
   <form method="dialog" class="modal-backdrop">
