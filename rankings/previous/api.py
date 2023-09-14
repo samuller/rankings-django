@@ -81,6 +81,7 @@ class ActivitySerializer(
                 fields.pop("about")
         return fields
 
+
 class ActivityViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
     """ViewSet for viewing and editing Activities."""
 
