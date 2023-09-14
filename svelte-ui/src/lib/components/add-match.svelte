@@ -109,7 +109,7 @@
                 // Exclude zero player IDs.
                 .map((team) => team.filter((pid) => pid != 0));
             });
-        
+
         if (winners.length > 1) {
             const count1 = winners.filter((val) => val == 1).length;
             const count2 = winners.filter((val) => val == 2).length;
@@ -209,13 +209,13 @@
             <div class="flex flex-col sm:flex-row gap-6">
                 <button
                   on:click={() => submitSingleGame(1)}
-                  class="submit-button btn btn-primary flex-1"
+                  class="submit-button btn btn-accent flex-1"
                   disabled={!validMemberSelection}>
                     Team 1
                 </button>
                 <button
                   on:click={() => submitSingleGame(2)}
-                  class="submit-button btn btn-primary flex-1"
+                  class="submit-button btn btn-accent flex-1"
                   disabled={!validMemberSelection}>
                     Team 2
                 </button>
@@ -242,7 +242,7 @@
                     <button class="btn btn-neutral flex-1" on:click={() => removeSelectedMultiMatches()}>Remove selected</button>
                     <button
                       on:click={() => submitMultiGames(multiMatchWins)}
-                      class="submit-button btn btn-primary flex-1"
+                      class="submit-button btn btn-accent flex-1"
                       disabled={!validMemberSelection || (multiMatchWins.length == 0)}>
                         Submit
                     </button>
@@ -279,7 +279,7 @@
                 </span>
                 <button
                   on:click={() => submitRoundRobinGames()}
-                  class="submit-button btn btn-primary flex-1 md:w-1/2"
+                  class="submit-button btn btn-accent flex-1 md:w-1/2"
                   disabled={selectedPlayers.length != 4 || !roundRobinSelected}>
                     Submit
                 </button>
