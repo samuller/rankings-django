@@ -113,6 +113,43 @@
     const submitSingleGame = function(winner: number) {
         submitMultiGames([winner]);
     }
+
+    const submitRoundRobinGames = function() {
+        // TODO: handle non-2v2 cases
+        const uniquePlayers =  selectedMemberIds.flat().filter((id) => id != 0).length;
+        if (uniquePlayers != 4) {
+            console.log("Round-robin only supported for 2v2 games");
+            return;
+        }
+        const smi = selectedMemberIds.flat();
+        const teamsPerGame = [
+            [[smi[0], smi[1]],
+             [smi[2], smi[3]]],
+            [[smi[0], smi[2]],
+             [smi[1], smi[3]]],
+            [[smi[0], smi[3]],
+             [smi[2], smi[1]]]
+        ];
+        const indexesOfTeamWithPlayer = function(playerId: number) {
+            return teamsPerGame.map((game) => {
+                if (game[0].indexOf(playerId) != -1) { return 1; }
+                if (game[1].indexOf(playerId) != -1) { return 2; }
+                return -1;
+            });
+        }
+        let winners: number[] = [];
+        if (roundRobinWinPlayer != 0) {
+            winners = indexesOfTeamWithPlayer(roundRobinWinPlayer);
+        }
+        else if (roundRobinLosePlayer != 0) {
+            winners = indexesOfTeamWithPlayer(roundRobinLosePlayer);
+        } else {
+            console.log("No winner/loser selected")
+            return;
+        }
+        // Todo: add confirmation before submitting multiple matches
+        submitMatchGames(teamsPerGame, winners);
+    }
 </script>
 
 <h3 class="font-bold text-2xl">Match results</h3>
@@ -225,7 +262,7 @@
                     </select>
                 </span>
                 <button
-                  on:click={() => submitMatchGames([], [])}
+                  on:click={() => submitRoundRobinGames()}
                   class="submit-button btn btn-primary flex-1 md:w-1/2"
                   disabled={selectedPlayers.length != 4 || !roundRobinSelected}>
                     Submit
