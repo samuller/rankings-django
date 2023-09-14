@@ -106,8 +106,21 @@
     const submitMultiGames = function(winners: number[]) {
         const teams = Array.apply(null, Array(winners.length))
             .map(function() { return selectedMemberIds; });
-        // Todo: add confirmation before submitting multiple matches
-        submitMatchGames(teams, winners);
+        
+        if (winners.length > 1) {
+            const count1 = winners.filter((val) => val == 1).length;
+            const count2 = winners.filter((val) => val == 2).length;
+            const result = count1 == count2 ? "teams tied" :
+                        (count1 > count2 ? "Team 1 won" : "Team 2 won");
+            const resultDetailed = count1 + " vs " + count2;
+            const question = `Confirm that you want to submit a set of ${winners.length}`
+                        + ` matches with results of ${resultDetailed} (${result})?`;
+            if (confirm(question)) {
+                submitMatchGames(teams, winners);
+            }
+        } else {
+            submitMatchGames(teams, winners);
+        }
     }
 
     const submitSingleGame = function(winner: number) {
