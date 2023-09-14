@@ -105,7 +105,10 @@
 
     const submitMultiGames = function(winners: number[]) {
         const teams = Array.apply(null, Array(winners.length))
-            .map(function() { return selectedMemberIds; });
+            .map(function() { return selectedMemberIds
+                // Exclude zero player IDs.
+                .map((team) => team.filter((pid) => pid != 0));
+            });
         
         if (winners.length > 1) {
             const count1 = winners.filter((val) => val == 1).length;
