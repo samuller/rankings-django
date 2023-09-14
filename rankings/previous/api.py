@@ -66,8 +66,20 @@ class ActivitySerializer(
             "max_teams_per_match",
             "min_players_per_team",
             "max_players_per_team",
+            "about"
         ]
 
+    def get_fields(self):
+        """Customise the list of fields to serialize."""
+        fields = super().get_fields()
+        request = self.context.get('request')
+        if request:
+            # We remove the large "about" field by default, and only return it if you use the field_filter to
+            # selectively choose fields (one of which be "about").
+            field_filter = request.query_params.get(FIELD_FILTER_PARAM)
+            if not field_filter:
+                fields.pop("about")
+        return fields
 
 class ActivityViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
     """ViewSet for viewing and editing Activities."""
