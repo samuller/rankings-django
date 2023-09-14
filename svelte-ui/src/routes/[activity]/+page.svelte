@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { toast } from '@zerodevx/svelte-toast';
-	import { AddButton, DynamicData, Table, type CellDetail } from '$lib/components';
+	import { AddButton, DynamicData, Table, type CellDetail, PendingMatches } from '$lib/components';
+	import { convertMatchesToTable } from '$lib/utils';
 	import AddMatch from '$lib/components/add-match.svelte';
 	import {
 		type Ranking,
@@ -36,6 +37,9 @@
 			{ classes: ['toast-as-error'], initial: 0 }
 		);
 	}
+
+	$: pendingMatches = apiPendingMatches($page.params.activity);
+	$: pendingMatchesTable = convertMatchesToTable($pendingMatches, true);
 </script>
 
 <DynamicData data={rankings}></DynamicData>
@@ -51,6 +55,8 @@
 ></Table>
 {/if}
 <a href={`/${$page.params.activity}/players`} class="text-gray-700 text-2xl font-bold underline">View all players</a>
+
+<PendingMatches matches={pendingMatches} table={pendingMatchesTable}></PendingMatches>
 <a href={`/${$page.params.activity}/matches`} class="text-gray-700 text-2xl font-bold underline">View all matches</a>
 
 <AddButton on:click={() => addMatchModal.showModal()}></AddButton>
