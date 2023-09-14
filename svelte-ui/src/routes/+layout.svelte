@@ -34,7 +34,6 @@
   }
 
   :global(.toast-as-error) {
-    /* @apply bg-red-400; */
     --toastBackground: rgb(220, 38, 38);
     --toastBarBackground: rgb(248, 113, 113);
   }

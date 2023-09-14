@@ -113,7 +113,7 @@
 		<a href="https://github.com/moserware/Skills">Skills</a> library.
 	</p>
 	<p>
-		This site was created by me, <a href="https://samuller.net/">Simon Muller</a>. It's source code
+		This site was created by me, <a href="https://samuller.net/">Simon Muller</a>. Its source code
 		is openly available on <a href="https://github.com/samuller/rankings-django">Github</a>.
 	</p>
 </template>

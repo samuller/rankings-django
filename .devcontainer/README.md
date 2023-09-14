@@ -14,6 +14,6 @@ UI development:
 ```shell
 cd svelte-ui/
 npm install
-# Use this for hot reloading in WSL.
-CHOKIDAR_USEPOLLING=1 npm run dev
+# Use polling for hot reloading in WSL, but decrease interval due to extreme CPU usage.
+CHOKIDAR_USEPOLLING=1 CHOKIDAR_INTERVAL=1000 npm run dev
 ```
