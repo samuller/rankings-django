@@ -89,8 +89,10 @@ export const navTitle = writable<string>("");
 export interface Activity {
   url: string;
   name: string;
+  about?: string;
 }
-export const activities = readJSONAPI<Activity[]>([], '/api/activities/?active=true&select=url,name')
+export const activities = readJSONAPI<Activity[]>([], '/api/activities/?active=true&select=url,name');
+export const activitiesAbout = readJSONAPI<Activity[]>([], '/api/activities/?active=true&select=url,name,about');
 
 export const currentActivity = derived([currentActivityUrl, activities], 
   ([$currentActivityUrl , $activities]) => {

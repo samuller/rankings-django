@@ -1,25 +1,32 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Card, Tabs } from "$lib/components";
-	import { navTitle } from '../../store';
+	import { activitiesAbout, navTitle } from '../../store';
 
-	let TABS: any[] = [];
+	let truekskillTab = {
+		id: 'trueskill',
+		title: 'Trueskill',
+		content: 'Loading...',
+	};
+	let websiteTab = {
+		id: 'website',
+		title: 'Website',
+		content: 'Loading...',
+	};
 
 	navTitle.set('');
 
+	$: activityTabs = $activitiesAbout.filter((act) => act.about).map((act) => { return {
+		id: act.url,
+		title: act.name,
+		// Adding some top spacing. 
+		content: `<div class="mt-3"></div>${act.about}`,
+	}});
+	$: TABS = [truekskillTab, ...activityTabs, websiteTab];
+
 	onMount(() => {
-		TABS = [
-			{
-				id: 'trueskill',
-				title: 'Trueskill',
-				content: document.getElementById('about-trueskill')?.innerHTML ?? '',
-			},
-			{
-				id: 'website',
-				title: 'Website',
-				content: document.getElementById('about-website')?.innerHTML ?? '',
-			}
-		];
+		truekskillTab.content = document.getElementById('about-trueskill')?.innerHTML ?? '';
+		websiteTab.content = document.getElementById('about-website')?.innerHTML ?? '';
 	});
 </script>
 
@@ -28,7 +35,7 @@
 </Card>
 
 <template id="about-trueskill">
-	<p class="mt-3 text-justify">
+	<p class="text-justify">
 		These rankings are based on the <a href="http://research.microsoft.com/en-us/projects/trueskill/">Trueskill™</a>
 		algorithm that was developed by Microsoft Research. The system represents skill as a Normal
 		distribution which is updated after every game according to Bayesian probability.
@@ -112,6 +119,10 @@
 </template>
 
 <style lang="postcss">
+	p {
+		@apply mt-3;
+	}
+
 	table {
 		@apply bg-gray-500;
 	}
