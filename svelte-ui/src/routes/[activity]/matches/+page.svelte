@@ -49,6 +49,8 @@
 
 </script>
 
+{#if pageNr == 1}
+
 <div class="w-1/2 text-gray-700">
 	<h2 class="text-2xl font-bold text-left">Pending match results</h2>
 	<p class="text-left">Reported matches which are still pending validation.</p>
@@ -60,6 +62,8 @@
 		columnAlignments={['text-center', 'text-center', 'text-center', 'text-center']}
 		rows={pendingMatchesTable}
 	></Table>
+{/if}
+
 {/if}
 
 <div class="w-1/2 text-gray-700">
