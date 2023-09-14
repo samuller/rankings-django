@@ -8,6 +8,7 @@
 		apiRankings,
 		players,
 		currentActivityUrl,
+		apiPendingMatches,
 	} from '../../store';
 
 	let rankingsTable: CellDetail[][] = [];
@@ -24,6 +25,8 @@
 
 	const onSubmitNewMatch = function() {
 		addMatchModal.close();
+		// Refresh data that's now changed.
+		apiPendingMatches($page.params.activity).reload();
 		toast.push("Match submitted!", { classes: ['toast-as-success'] });
 	}
 	const onSubmitNewMatchError = function(err) {

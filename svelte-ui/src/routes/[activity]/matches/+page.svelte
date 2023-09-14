@@ -13,7 +13,7 @@
 	$: matches = apiMatches($page.params.activity, pageNr, 10);
 	$: matchesTable = convertMatchesToTable($matches);
 
-	$: pendingMatches = apiPendingMatches($page.params.activity, pageNr, 10);
+	$: pendingMatches = apiPendingMatches($page.params.activity);
 	$: pendingMatchesTable = convertMatchesToTable($pendingMatches, true);
 
 	const convertMatchesToTable = function(matches: Matches[], pending=false) {
