@@ -16,6 +16,7 @@ from rest_framework.decorators import (
     permission_classes,
     authentication_classes,
 )
+from django_filters import FilterSet, BooleanFilter, NumberFilter
 
 from .utils import (
     CsrfExemptSessionAuthentication,
@@ -300,13 +301,19 @@ class MatchSerializer(
         ]
 
 
+class MatchFilter(FilterSet):
+    validated = NumberFilter(field_name='validated')
+    pending = BooleanFilter(field_name='validated', lookup_expr='isnull')
+
+
 class MatchViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
     """ViewSet for viewing and editing Matches (a GameSet of multiple Games)."""
 
     queryset = GameSession.objects.all()
     serializer_class = MatchSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filterset_fields = ["validated"]
+    filterset_class = MatchFilter
+    filterset_fields = ["validated", "pending"]
     search_fields: List[str] = []
     field_filter_param = FIELD_FILTER_PARAM
 
