@@ -79,3 +79,7 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm ci
         working-directory: svelte-ui
+      - name: Print out all outdated packages
+        run: npm outdated
+        working-directory: svelte-ui
+        continue-on-error: true
