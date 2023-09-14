@@ -59,6 +59,17 @@
     }
 
     /**
+     * State and functions for submitting matches.
+     */
+    $: singleSubmitDisabledReason = !validMemberSelection ? "Select players in teams" : "";
+    $: multiSubmitDisabledReason = !validMemberSelection ? "Select players in teams" : (
+        multiMatchWins.length == 0 ? "Add match results" : ""
+    );
+    $: roundRobinSubmitDisabledReason = selectedPlayers.length != 4 ? "Select 4 players (2v2)" : (
+        !roundRobinSelected ? "Select player who won/lost" : ""
+    );
+
+    /**
      * 
      * @param teams Array of games, each with an array teams, with each team being an array of player IDs.
      * @param winners An array of games, each with values for the 1-indexed position of the winning team.
@@ -220,6 +231,10 @@
                     Team 2
                 </button>
             </div>
+            <div class="w-full text-center text-sm text-gray-600"
+                class:hidden={!singleSubmitDisabledReason}>
+                [{singleSubmitDisabledReason}]
+            </div>
         </div>
 
         <div id="multi-match">
@@ -247,6 +262,10 @@
                         Submit
                     </button>
                 </div>
+            </div>
+            <div class="w-full text-center text-sm text-gray-600"
+                class:hidden={!multiSubmitDisabledReason}>
+                [{multiSubmitDisabledReason}]
             </div>
         </div>
 
@@ -283,6 +302,10 @@
                   disabled={selectedPlayers.length != 4 || !roundRobinSelected}>
                     Submit
                 </button>
+                <div class="w-full text-center text-sm text-gray-600"
+                    class:hidden={!roundRobinSubmitDisabledReason}>
+                    [{roundRobinSubmitDisabledReason}]
+                </div>
             </div>
         </div>
     </Tabs>
