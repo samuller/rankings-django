@@ -14,7 +14,12 @@ class DefaultDict<T> {
   }
 };
 
-export interface PageableAPIStore<T> extends Reloadable<T> {
+
+export interface HeaderAPIStore<T> extends Reloadable<T> {
+  headers(): Headers | null;
+}
+
+export interface PageableAPIStore<T> extends HeaderAPIStore<T> {
   paged(): boolean;
   pageFromURL(url: string): number;
   prevURL(): string | null;
@@ -24,9 +29,16 @@ export interface PageableAPIStore<T> extends Reloadable<T> {
   linkURL(name: string): string | null;
 }
 
-export const readJSONAPI = function<T = any>(initial: T, url: string): PageableAPIStore<T> {
-  if (!browser) return {} as PageableAPIStore<T>;
-  const pagingURLs: { [key: string]: string } = {};
+/**
+ * Read from API, keeping any headers returned and parsing the response as JSON.
+ */
+export const readJSONAPI = function<T = any>(
+    initial: T,
+    url: string,
+    processHeaders: (_: Headers) => void = () => {}
+  ): HeaderAPIStore<T> {
+  if (!browser) return {} as HeaderAPIStore<T>;
+  let headers: Headers | null = null;
   const store = asyncReadable<T>(
       initial,
       async () => {
@@ -34,33 +46,47 @@ export const readJSONAPI = function<T = any>(initial: T, url: string): PageableA
         if (!response.ok) {
           throw { message: response.statusText, status: response.status }
         }
-        // Link header is used for Github-style pagination.
-        // See: https://docs.github.com/en/rest/guides/traversing-with-pagination
-        if (response.headers.has('link')) {
-          // We use try-catch since this metadata is optional and we'd rather lose it than crash.
-          try {
-            const links = response.headers.get('link')!.split(", ");
-            links.forEach((link) => {
-              const linkTuple = link.split("; ");
-              if (linkTuple.length != 2) {
-                console.log("Unexpected linkTuple value:", linkTuple);
-                return;
-              }
-              const linkURL = new URL(linkTuple[0].slice(1, -1));
-              // Remove hostname/path etc. to make URL relative in-case backend has internally got wrong hostname.
-              const relativeURL = linkURL.pathname + linkURL.search + linkURL.hash;
-              const relation = (/rel="(.*)"/g.exec(linkTuple[1]) ?? ["", ""])[1];
-              pagingURLs[relation] = relativeURL;
-            });
-          } catch(err) {
-            console.log(err);
-          }
-        }
+        headers = response.headers;
+        processHeaders(headers);
         const jsonData: T = await response.json();
         return jsonData;
       },
       { reloadable: true }
-  ) as PageableAPIStore<T>;
+  ) as HeaderAPIStore<T>;
+  store.headers = () => headers;
+  return store;
+}
+
+/**
+ * Read from a JSON API that is expected to return a list of items and potentially be pageable.
+ */
+export const readJSONAPIList = function<T = any>(initial: T, url: string): PageableAPIStore<T> {
+  if (!browser) return {} as PageableAPIStore<T>;
+  const pagingURLs: { [key: string]: string } = {};
+  const store = readJSONAPI<T>(initial, url, (headers) => {
+    // Link header is used for Github-style pagination.
+    // See: https://docs.github.com/en/rest/guides/traversing-with-pagination
+    if (headers != null && headers.has('link')) {
+      // We use try-catch since this metadata is optional and we'd rather lose it than crash.
+      try {
+        const links = headers.get('link')!.split(", ");
+        links.forEach((link) => {
+          const linkTuple = link.split("; ");
+          if (linkTuple.length != 2) {
+            console.log("Unexpected 'link' header value:", linkTuple);
+            return;
+          }
+          const linkURL = new URL(linkTuple[0].slice(1, -1));
+          // Remove hostname/path etc. to make URL relative in-case backend has internally got wrong hostname.
+          const relativeURL = linkURL.pathname + linkURL.search + linkURL.hash;
+          const relation = (/rel="(.*)"/g.exec(linkTuple[1]) ?? ["", ""])[1];
+          pagingURLs[relation] = relativeURL;
+        });
+      } catch(err) {
+        console.log(err);
+      }
+    }
+  }) as PageableAPIStore<T>;
   // Add pagination functions.
   store.paged = () => Object.keys(pagingURLs).length != 0;
   store.pageFromURL = (url: string) => {
@@ -91,8 +117,8 @@ export interface Activity {
   name: string;
   about?: string;
 }
-export const activities = readJSONAPI<Activity[]>([], '/api/activities/?active=true&select=url,name');
-export const activitiesAbout = readJSONAPI<Activity[]>([], '/api/activities/?active=true&select=url,name,about');
+export const activities = readJSONAPIList<Activity[]>([], '/api/activities/?active=true&select=url,name');
+export const activitiesAbout = readJSONAPIList<Activity[]>([], '/api/activities/?active=true&select=url,name,about');
 
 export const currentActivity = derived([currentActivityUrl, activities], 
   ([$currentActivityUrl , $activities]) => {
@@ -107,7 +133,7 @@ export interface Player {
   name: string;
   email: string;
 }
-export const players = readJSONAPI<Player[]>([], '/api/players/?ordering=name')
+export const players = readJSONAPIList<Player[]>([], '/api/players/?ordering=name')
 
 export interface Ranking {
   player: {
@@ -117,7 +143,7 @@ export interface Ranking {
   skill: number;
 }
 export const rankingsAPIStore = function(activity_url: string) {
-  return readJSONAPI<Ranking[]>([], `/api/rankings/?activity=${activity_url}&ordering=-skill&select=player,skill`);
+  return readJSONAPIList<Ranking[]>([], `/api/rankings/?activity=${activity_url}&ordering=-skill&select=player,skill`);
 }
 // A shared store of rankings for each type of activity. Rankings for a new activity will be correctly initialised when
 // accessed for the first time.
@@ -132,7 +158,7 @@ export interface Matches {
   teams: { id: number, members: { player: { id: number, name: string, email: string } } [] }[];
 }
 export const generateListAPIStore = function<T>(url: string) {
-  return readJSONAPI<T[]>([], url);
+  return readJSONAPIList<T[]>([], url);
 }
 // The type coercion is needed to use correctly typed indexing on the DefaultDict.
 const _apiMatches = new DefaultDict(generateListAPIStore<Matches>) as { [key: string]: PageableAPIStore<Matches[]> };

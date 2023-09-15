@@ -3,15 +3,16 @@
 	import { Card, TimePlot, GaussianPlot, DynamicData } from '$lib/components';
 	import {
 		type Player,
-		readJSONAPI
+		readJSONAPI,
+		readJSONAPIList
 	} from '../../../../store';
 
 	const playerInfo = readJSONAPI<Player | null>(null, `/api/players/${$page.params.player_id}/`);
-	const skillHistory = readJSONAPI<{ datetime: number; skill: number }[] | null>(
+	const skillHistory = readJSONAPIList<{ datetime: number; skill: number }[] | null>(
 		null,
 		`/api/skill-history/${$page.params.activity}/${$page.params.player_id}/?select=skill,datetime`
 	);
-	const currentSkill = readJSONAPI<
+	const currentSkill = readJSONAPIList<
 		[{ datetime: number; skill: number; mu: number; sigma: number }] | null
 	>(
 		null,
