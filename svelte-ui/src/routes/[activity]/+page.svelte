@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { toast } from '@zerodevx/svelte-toast';
+	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { AddButton, DynamicData, Table, type CellDetail, PendingMatches } from '$lib/components';
 	import { convertMatchesToTable } from '$lib/utils';
 	import AddMatch from '$lib/components/add-match.svelte';
@@ -11,6 +11,13 @@
 		currentActivityUrl,
 		apiPendingMatches,
 	} from '../../store';
+
+	const dialogToastStyle = {
+		reversed: true,
+		intro: { y: 192 },
+		duration: 10000,
+		pausable: true,
+	};
 
 	let rankingsTable: CellDetail[][] = [];
 	let addMatchModal: HTMLDialogElement;
@@ -78,4 +85,10 @@
   <form method="dialog" class="modal-backdrop">
     <button>close</button>
   </form>
+  <!--
+	In addition to the global toast display, we add another one here (in <dialog>) so that it'll be
+	included in the "top layer" and will display over the dialog modal.
+	See: https://stackoverflow.com/questions/77099074/layering-toast-alerts-above-dialog-modal
+  -->
+  <SvelteToast options={dialogToastStyle} />
 </dialog>
