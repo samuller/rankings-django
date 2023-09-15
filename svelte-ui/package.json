@@ -14,7 +14,7 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"// devDependencies": {
-		"//": "Most dependencies were auto-generated as part of SvelteKit create step, others are explained below",
+		"//": "Most dependencies were auto-generated as part of SvelteKit create step, others are explained below.",
 		"@square/svelte-store": "Used for more powerful async and derived stores.",
 		"@zerodevx/svelte-toast": "UI toast alert for showing messages and errors.",
 		"daisyui": "Framework to assist with UI components & design.",

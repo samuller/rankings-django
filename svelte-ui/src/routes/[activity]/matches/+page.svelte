@@ -21,7 +21,7 @@
 <PendingMatches matches={pendingMatches} table={pendingMatchesTable}></PendingMatches>
 {/if}
 
-<div class="w-1/2 text-gray-700">
+<div class="w-full md:w-1/2 text-gray-700">
 	<h2 class="text-2xl font-bold text-left">Match history</h2>
 	<p class="text-left">Reported matches which have been validated.</p>
 </div>
