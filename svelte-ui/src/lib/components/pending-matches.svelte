@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { DynamicData, Table } from ".";
-	import type { Matches, PageableAPIStore } from "../../store";
+	import type { PageableAPIStore } from '$lib/api';
+	import type { Matches } from "../../store";
 	import type { CellDetail } from "./table.svelte";
 
 	export let matches: PageableAPIStore<Matches[]>;

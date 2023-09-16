@@ -1,11 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Card, TimePlot, GaussianPlot, DynamicData } from '$lib/components';
-	import {
-		type Player,
-		readJSONAPI,
-		readJSONAPIList
-	} from '../../../../store';
+	import { readJSONAPI, readJSONAPIList } from '$lib/api';
+	import type { Player } from '../../../../store';
 
 	const playerInfo = readJSONAPI<Player | null>(null, `/api/players/${$page.params.player_id}/`);
 	const skillHistory = readJSONAPIList<{ datetime: number; skill: number }[] | null>(
