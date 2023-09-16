@@ -1,0 +1,12 @@
+# This file only applies to docker build commands that have the current
+# directory as their context.
+**/.git/
+**/.devcontainer/
+**/tmp/
+# Node
+**/node_modules/
+# Mypy
+**/.mypy_cache/
+# Code coverage
+**/.coverage
+**/htmlcov/
