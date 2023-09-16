@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import { Icon } from ".";
 
     export let color = "text-white bg-teal-500 hover:bg-teal-400 focus:ring-teal-600";
 
@@ -22,20 +23,7 @@
 		aria-expanded="false"
 		class={`${animate} rounded-full w-14 h-14 flex items-center justify-center ${color} focus:ring-4 focus:outline-none`}
 	>
-		<svg
-			aria-hidden="true"
-			class="w-8 h-8 transition-transform group-hover:rotate-45"
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
-			xmlns="http://www.w3.org/2000/svg"
-			><path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-			/></svg
-		>
+		<Icon name="plus" class="w-8 h-8 transition-transform group-hover:rotate-45"></Icon>
 		<span class="sr-only">Open actions menu</span>
 	</button>
 </div>

@@ -9,4 +9,5 @@
     <div class="tooltip" data-tip={new Date().toISOString()}>
         <span>Build date: {buildDate}</span>
     </div>
+    <div class="flex-1"></div>
 </footer>
