@@ -48,7 +48,7 @@
                     </summary>
                     <ul class="dropdown-content bg-base-200 p-2 !mt-0">
                         <li><a href="#">Clear submission</a></li>
-                        !-- <li><hr/></li> --
+                        <div class="divider mt-0 mb-0 h-0"></div>
                         <li><a href="#">New player</a></li>
                         <li><a href="#">New tournament</a></li>
                         <li><a href="#">New activity</a></li>

@@ -11,7 +11,6 @@
     export let columnNames: string[];
     export let columnAlignments: string[] = [];
     export let rows: CellDetail[][];
-
 </script>
 
 <div class="relative overflow-x-auto">

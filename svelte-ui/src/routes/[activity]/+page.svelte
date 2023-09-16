@@ -35,9 +35,9 @@
 		addMatchModal.close();
 		// Refresh data that's now changed.
 		apiPendingMatches($page.params.activity).reload();
-		toast.push("Match submitted!", { classes: ['toast-as-success'] });
+		toast.push("Match/es submitted!", { classes: ['toast-as-success'] });
 	}
-	const onSubmitNewMatchError = function(err) {
+	const onSubmitNewMatchError = function(err: any) {
 		const errorMsg = `${err.statusText} (${err.status})`;
 		toast.push(
 			`Failed to submit match. <strong>Error:</strong> ${errorMsg}`,
