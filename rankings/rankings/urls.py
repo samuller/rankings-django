@@ -33,14 +33,14 @@ def openapi_docs(request: HttpRequest) -> HttpResponse:
         "swagger_favicon_url": "favicon.ico",
         "swagger_css_url": "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css",
         "swagger_js_url": "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js",
-        "openapi_url": "/openapi.json",
+        "openapi_url": "openapi.json",
     }
     return render(request, "swagger.html", context)
 
 
 urlpatterns = [
     path(
-        "openapi.json",
+        "api/openapi.json",
         get_schema_view(
             title="rankings-django",
             version=importlib.metadata.version("rankings-django"),
