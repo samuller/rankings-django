@@ -1,3 +1,12 @@
+<script lang="ts">
+	import { readJSONAPI } from "$lib/api";
+
+    const version = readJSONAPI<any>({}, '/assets/version.json');
+    $: buildDate = ($version["build-date"] ?? "unknown").slice(0, 10);
+</script>
+
 <footer class="footer p-2 flex">
-    <span>Last updated: {new Date().toISOString().slice(0, 10)}</span>
+    <div class="tooltip" data-tip={new Date().toISOString()}>
+        <span>Build date: {buildDate}</span>
+    </div>
 </footer>
