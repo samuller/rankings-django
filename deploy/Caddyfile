@@ -1,0 +1,29 @@
+#
+# For development you can test this file by running (from parent dir):
+#     caddy run --config deploy/Caddyfile --watch
+#
+
+http://localhost:5180 {
+	# We use "route" where order of directives matter so that our complex
+	# routing uses priority rather than needing mutually exclusive rules.
+	route {
+		# Create matcher for all Django URLs.
+		@django {
+			path /api/* /admin/* /static/* /ssr/*
+		}
+		reverse_proxy @django localhost:8000
+
+		# All the following directives route paths handled fully by the
+		# frontend SPA (which handles dynamic URLs).
+
+		# Set root path of the site (used by various matchers and directives).
+		# Development (devcontainer): /workspace/svelte-ui/build
+		# Production: /var/www/html
+		root * /workspace/svelte-ui/build
+		# Return files in root matching URL path. If not found, rewrite to "/".
+		try_files {path} /
+		# Serve files (at "/").
+		file_server
+	}
+
+}
