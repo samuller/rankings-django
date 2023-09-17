@@ -13,6 +13,7 @@ from .models import (
     Result,
     SkillHistory,
 )
+from .urls import SSR_PREFIX
 
 from django.urls import reverse
 from django.test import TestCase, Client
@@ -98,9 +99,9 @@ class BasicDataTestCase(TestCase):
         """Test main page lists activity."""
         act = self.activity_url
         assert Activity.objects.filter(url=act).count() == 1
-        response = self.client.get("/")
+        response = self.client.get(f"/{SSR_PREFIX}")
         assert response.status_code == 200
-        assert f'<li><a href="/{act}">{act}</a></li>' in str(response.content)
+        assert f'<li><a href="/{SSR_PREFIX}{act}/">{act}</a></li>' in str(response.content)
 
     def test_api_get_activity(self) -> None:
         """Test API endpoints for getting activities."""
@@ -130,7 +131,7 @@ class BasicDataTestCase(TestCase):
     def test_gen_activity_summary_page(self) -> None:
         """Test generation of activity summary page."""
         act = self.activity_url
-        response = self.client.get(f"/{act}", follow=True)
+        response = self.client.get(f"/{SSR_PREFIX}{act}", follow=True)
         assert response.status_code == 200, response.status_code
         content = str(response.content)
         assert '<h3 class="title">Top players</h3>' in content
@@ -139,7 +140,7 @@ class BasicDataTestCase(TestCase):
     def test_gen_player_page(self) -> None:
         """Test generation of player page."""
         act = self.activity_url
-        response = self.client.get(f"/{act}/player/1", follow=True)
+        response = self.client.get(f"/{SSR_PREFIX}{act}/player/1", follow=True)
         assert response.status_code == 200, response.status_code
         content = str(response.content)
         for expected_word in [
@@ -152,7 +153,7 @@ class BasicDataTestCase(TestCase):
 
     def test_gen_about_page(self) -> None:
         """Test generation of about page."""
-        response = self.client.get("/about", follow=True)
+        response = self.client.get(f"/{SSR_PREFIX}about", follow=True)
         assert response.status_code == 200, response.status_code
         content = str(response.content)
         for expected_word in [
@@ -166,7 +167,7 @@ class BasicDataTestCase(TestCase):
     def test_activity_page_matches(self) -> None:
         """Test activity page lists matches."""
         act = self.activity_url
-        response = self.client.get(f"/{act}/matches")
+        response = self.client.get(f"/{SSR_PREFIX}{act}/matches")
         assert response.status_code == 200, response.status_code
         content = str(response.content)
         assert '<h3 class="title">Match history</h3>' in content
@@ -175,7 +176,7 @@ class BasicDataTestCase(TestCase):
     def test_activity_page_players(self) -> None:
         """Test activity page lists players."""
         act = self.activity_url
-        response = self.client.get(f"/{act}/players/name")
+        response = self.client.get(f"/{SSR_PREFIX}{act}/players/name")
         assert response.status_code == 200, response.status_code
         all_players = [
             # Skills will still be empty/zero as we haven't calculated them yet.
@@ -185,7 +186,7 @@ class BasicDataTestCase(TestCase):
         all_names = [p["name"] for p in all_players]
         for idx, name in enumerate(self.player_names):
             # Players aren't shown until they've played a few games.
-            assert f'<a href="/{act}/player/{idx}">{name}</a>' not in str(
+            assert f'<a href="/{SSR_PREFIX}{act}/player/{idx}">{name}</a>' not in str(
                 response.content
             )
             assert name in all_names
