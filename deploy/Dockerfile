@@ -25,7 +25,7 @@
 # ```
 #
 ARG UBUNTU_VERSION=22.04
-ARG NODE_MAJOR_VERSION=20
+ARG NODE_VERSION=20.6.1
 ARG PYTHON_VERSION=3.8.18
 ARG POETRY_VERSION=1.4.2
 ARG CADDY_VERSION=2.7.4
@@ -86,6 +86,19 @@ RUN poetry check
 RUN poetry install --no-cache --no-ansi --no-root --without dev
 
 # ---------------------------------------------------------------------------- #
+FROM node:$NODE_VERSION as ui-builder
+ARG UI_WORKDIR
+ARG SRC_UI_DIR
+
+WORKDIR $UI_WORKDIR
+
+COPY $SRC_UI_DIR $UI_WORKDIR
+
+RUN npm ci
+
+RUN npm run build
+
+# ---------------------------------------------------------------------------- #
 # Finally create a new stage for running the app
 FROM python:$PYTHON_VERSION as app
 ARG CADDY_VERSION
@@ -93,8 +106,26 @@ ARG UI_BUILD
 ARG BE_VENV
 ARG SRC_BE_DIR
 ARG APP_BE_DIR
+# Set Python to output to stdout/stderr without buffering so that logs are
+# instantly passed to Docker logs and not easily lost upon crashing.
+ENV PYTHONUNBUFFERED=1
 
+# Install Caddy
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends debian-keyring \
+        debian-archive-keyring apt-transport-https \
+    && curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' \
+       | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg \
+    && curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' \
+       | tee /etc/apt/sources.list.d/caddy-stable.list \
+    && apt-get update \
+    && apt-get install -y caddy=${CADDY_VERSION}
+# Install Caddy plugin for common logging format
+RUN caddy add-package github.com/caddyserver/transform-encoder
 
+WORKDIR /var/www/html
+# Copy the statically built UI files
+COPY --from=ui-builder ${UI_BUILD} .
 
 WORKDIR /app
 # Copy the project venv folder from builder image 
@@ -104,6 +135,6 @@ COPY $SRC_BE_DIR $APP_BE_DIR
 COPY deploy/Caddyfile /app
 
 # Run application
-EXPOSE 5000
+EXPOSE 8080
 # Default command to run if nothing else is specified.
 CMD ["/bin/bash"]

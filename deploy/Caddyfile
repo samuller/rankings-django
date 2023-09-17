@@ -29,7 +29,7 @@
 		# Set root path of the site (used by various matchers and directives).
 		# Development (devcontainer): /workspace/svelte-ui/build
 		# Production: /var/www/html
-		root * /workspace/svelte-ui/build
+		root * /var/www/html
 		# Return files in root matching URL path. If not found, rewrite to "/".
 		try_files {path} /
 		# Serve files (at "/").
