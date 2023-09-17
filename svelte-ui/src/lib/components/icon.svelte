@@ -1,16 +1,20 @@
+<!--
+    See: https://stackoverflow.com/questions/66069647/best-way-to-import-svg-icons-into-a-svelte-app
+-->
 <script lang="ts">
     export let name: keyof typeof customStyle;
-    export let width = '1rem';
-    export let height = '1rem';
+    export let width = '1em';
+    export let height = '1em';
     export let focusable: string | number | null | undefined = undefined;
 
     const customStyle: { [key: string]: any } = {
         "language": {},
+        "plus": {},
         "left-bracket": { stroke: "none" },
         "right-bracket": { stroke: "none" },
         "bolt-slash": {}
     };
-    const iconStyle = customStyle[name] ?? {};
+    const iconStyle = customStyle[name] ?? { stroke: "goldenrod" };
 </script>
 
 <svg
