@@ -35,7 +35,7 @@ class NoDataTestCase(TestCase):
 
     def test_gen_openapi_docs(self):
         """Test generation of OpenAPI JSON."""
-        response = self.client.get("/openapi.json")
+        response = self.client.get("/api/openapi.json")
         assert response.status_code == 200, response.status_code
 
 
