@@ -77,7 +77,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
+        working-directory: svelte-ui
+      - name: Build static site
+        run: npm run build
+        working-directory: svelte-ui
+      - name: Show built files & size
+        run: du -bah build/ && du -sh build/
         working-directory: svelte-ui
       - name: Print out all outdated packages
         run: npm outdated
