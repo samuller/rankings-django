@@ -39,14 +39,14 @@
 	    <!-- Title Area -->
 	    <ul class="title-area">
 		    <li class="name">
-			    <h1><a href="/">Rankings</a></h1>
+			    <h1><a href="{{ url_for('home') }}">Rankings</a></h1>
 		    </li>
 	    </ul>
 	    <section class="top-bar-section">
 		    <ul class="right">
 		        {% for activity in activities %}
 		        <li class="divider"></li>
-                <li><a href="/{{ activity.url|urlencode }}">{{ activity.name }}</a></li>
+                <li><a href="{{ url_for('activity_summary', activity_url=activity.url) }}">{{ activity.name }}</a></li>
                 {% endfor %}
 			    <li class="divider"></li>
 			    <li><a href="{{ url_for('about') }}">About</a></li>
