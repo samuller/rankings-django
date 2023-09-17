@@ -559,6 +559,8 @@ def identify_request_source(request: HttpRequest) -> str:
     # Detect nginx ip forwarding
     if "HTTP_X_REAL_IP" in request.META:
         src = str(request.META["HTTP_X_REAL_IP"])
+    elif "HTTP_X_FORWARDED_FOR" in request.META:
+        src = str(request.META["HTTP_X_FORWARDED_FOR"])
     try:
         # getfqdn() won't throw exception, but then we can't differentiate when it
         # works, and we might generate e.g. "127.0.0.1 (127.0.0.1)"
