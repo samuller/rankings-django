@@ -17,8 +17,6 @@ router.register(r"matches/(?P<activity_url>[^/]+)", api.MatchViewSet)
 
 
 urlpatterns = [
-    re_path(r"^$", views.main_page, name="home"),
-    re_path(r"^about$", views.about, name="about"),
     re_path(r"^api/id$", api.show_source_id),
     re_path(r"^api/fix_player$", api.replace_player_in_submissions, name="fix_player"),
     re_path(r"^api/validate_all$", api.validate_all_matches),
@@ -30,6 +28,14 @@ urlpatterns = [
         views.select_player_to_replace_in_submissions,
         name="select_fix_player",
     ),
+    re_path(r"^(?P<activity_url>.+)/update$", views.update, name="update_rankings"),
+    re_path(
+        r"^(?P<activity_url>.+)/update/(?P<year>[0-9]+)$",
+        views.update,
+        name="update_rankings",
+    ),
+    re_path(r"^$", views.main_page, name="home"),
+    re_path(r"^about$", views.about, name="about"),
     re_path(
         r"^(?P<activity_url>[^/]+)/$", views.activity_summary, name="activity_summary"
     ),
@@ -58,11 +64,5 @@ urlpatterns = [
         r"^(?P<activity_url>.+)/match/(?P<match_id>[0-9]+)$",
         views.list_matches,
         name="list_match",
-    ),
-    re_path(r"^(?P<activity_url>.+)/update$", views.update, name="update_rankings"),
-    re_path(
-        r"^(?P<activity_url>.+)/update/(?P<year>[0-9]+)$",
-        views.update,
-        name="update_rankings",
     ),
 ]
