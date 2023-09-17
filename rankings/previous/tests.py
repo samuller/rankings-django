@@ -101,7 +101,9 @@ class BasicDataTestCase(TestCase):
         assert Activity.objects.filter(url=act).count() == 1
         response = self.client.get(f"/{SSR_PREFIX}")
         assert response.status_code == 200
-        assert f'<li><a href="/{SSR_PREFIX}{act}/">{act}</a></li>' in str(response.content)
+        assert f'<li><a href="/{SSR_PREFIX}{act}/">{act}</a></li>' in str(
+            response.content
+        )
 
     def test_api_get_activity(self) -> None:
         """Test API endpoints for getting activities."""

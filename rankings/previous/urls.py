@@ -40,7 +40,9 @@ urlpatterns = [
     re_path(rf"^{SSR_PREFIX}$", views.main_page, name="home"),
     re_path(rf"^{SSR_PREFIX}about$", views.about, name="about"),
     re_path(
-        rf"^{SSR_PREFIX}(?P<activity_url>[^/]+)/$", views.activity_summary, name="activity_summary"
+        rf"^{SSR_PREFIX}(?P<activity_url>[^/]+)/$",
+        views.activity_summary,
+        name="activity_summary",
     ),
     re_path(
         rf"^{SSR_PREFIX}(?P<activity_url>.+)/players/(?P<sort_by>.*)$",
@@ -56,13 +58,21 @@ urlpatterns = [
         rf"^{SSR_PREFIX}(?P<activity_url>.+)/player/(?P<player_id>[0-9]+)/history$",
         views.player_history,
     ),
-    re_path(rf"^{SSR_PREFIX}(?P<activity_url>.+)/matches$", views.list_matches, name="list_matches"),
+    re_path(
+        rf"^{SSR_PREFIX}(?P<activity_url>.+)/matches$",
+        views.list_matches,
+        name="list_matches",
+    ),
     re_path(
         rf"^{SSR_PREFIX}(?P<activity_url>.+)/matches/(?P<page>[0-9]+)$",
         views.list_matches,
         name="list_matches",
     ),
-    re_path(rf"^{SSR_PREFIX}(?P<activity_url>.+)/match/$", views.list_matches, name="list_match"),
+    re_path(
+        rf"^{SSR_PREFIX}(?P<activity_url>.+)/match/$",
+        views.list_matches,
+        name="list_match",
+    ),
     re_path(
         rf"^{SSR_PREFIX}(?P<activity_url>.+)/match/(?P<match_id>[0-9]+)$",
         views.list_matches,
