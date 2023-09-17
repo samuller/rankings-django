@@ -42,7 +42,7 @@ except ImportError:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS: List[str] = ["localhost", "host.docker.internal"]
+ALLOWED_HOSTS: List[str] = ["*", "localhost", "host.docker.internal"]
 
 APPEND_SLASH = True
 

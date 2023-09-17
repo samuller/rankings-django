@@ -2,20 +2,30 @@
 # For development you can test this file by running (from parent dir):
 #     caddy run --config deploy/Caddyfile --watch
 #
+{
+	# Set CADDY_GLOBAL="debug" to enable debug logging.
+	{$CADDY_GLOBAL:}
+	http_port {$HTTP_PORT:8080}
+	https_port {$HTTPS_PORT:8443}
+}
 
-http://localhost:5180 {
-	# We use "route" where order of directives matter so that our complex
-	# routing uses priority rather than needing mutually exclusive rules.
-	route {
-		# Create matcher for all Django URLs.
-		@django {
-			path /api/* /admin/* /static/* /ssr/*
-		}
-		reverse_proxy @django localhost:8000
+# Defaults support HTTP with any hostname or IP address for host.
+{$PROTOCOL:http}://{$HOST:} {
+	log {
+		# sudo caddy add-package github.com/caddyserver/transform-encoder
+		format transform "{common_log}"
+	}
 
-		# All the following directives route paths handled fully by the
-		# frontend SPA (which handles dynamic URLs).
+	# Create matcher for all Django URLs.
+	@django {
+		path /api/* /admin/* /static/* /ssr/*
+	}
+	handle @django {
+		reverse_proxy localhost:8000		
+	}
 
+	# Dynamic paths handled by frontend SPA.
+	handle {
 		# Set root path of the site (used by various matchers and directives).
 		# Development (devcontainer): /workspace/svelte-ui/build
 		# Production: /var/www/html
@@ -25,5 +35,4 @@ http://localhost:5180 {
 		# Serve files (at "/").
 		file_server
 	}
-
 }
