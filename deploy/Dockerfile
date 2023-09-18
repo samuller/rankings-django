@@ -145,7 +145,6 @@ COPY deploy/Caddyfile /app
 
 # Default supervisor config: /etc/supervisor/conf.d/supervisord.conf
 COPY deploy/supervisord.conf .
-RUN mkdir -p /var/log/supervisor
 
 # Run application
 EXPOSE 8080
