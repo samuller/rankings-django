@@ -29,11 +29,13 @@ ARG NODE_VERSION=20.6.1
 ARG PYTHON_VERSION=3.8.18
 ARG POETRY_VERSION=1.4.2
 ARG CADDY_VERSION=2.7.4
+ARG GUNICORN_VERSION=21.2.0
 # Paths to source code
 ARG SRC_BE_DIR="./rankings/"
 ARG SRC_UI_DIR="./svelte-ui/"
 # Backend (BE) build paths
-ARG BE_WORKDIR="/build-be"
+# We use same workdir as final so virtualenv is created with correct $PATH
+ARG BE_WORKDIR="/app"
 ARG BE_POETRY_VENV="/opt/poetry-venv"
 ARG BE_POETRY_CACHE="/opt/.cache"
 ARG BE_VENV="$BE_WORKDIR/.venv"
@@ -55,6 +57,7 @@ ARG SRC_BE_DIR
 ARG POETRY_VERSION
 ARG BE_POETRY_VENV
 ARG BE_POETRY_CACHE
+ARG GUNICORN_VERSION
 # Configure Poetry
 # https://python-poetry.org/docs#ci-recommendations
 ENV POETRY_HOME="/opt/poetry"
@@ -85,6 +88,9 @@ RUN poetry check
 # Install dependencies
 RUN poetry install --no-cache --no-ansi --no-root --without dev
 
+# Install gunicorn dependency
+RUN poetry run pip install gunicorn==$GUNICORN_VERSION
+
 # ---------------------------------------------------------------------------- #
 FROM node:$NODE_VERSION as ui-builder
 ARG UI_WORKDIR
@@ -100,7 +106,7 @@ RUN npm run build
 
 # ---------------------------------------------------------------------------- #
 # Finally create a new stage for running the app
-FROM python:$PYTHON_VERSION as app
+FROM python:$PYTHON_VERSION as combined-app
 ARG CADDY_VERSION
 ARG UI_BUILD
 ARG BE_VENV
@@ -137,4 +143,4 @@ COPY deploy/Caddyfile /app
 # Run application
 EXPOSE 8080
 # Default command to run if nothing else is specified.
-CMD ["/bin/bash"]
+CMD ["caddy", "run"]
