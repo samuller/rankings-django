@@ -4,6 +4,7 @@
 # ```
 # docker build -t rankings-site:0.0.1 -f deploy/Dockerfile .
 # docker run -it --rm rankings-site:0.0.1 bash
+# docker run -t --rm -p 8081:8080 rankings-site:0.0.1
 # ```
 #
 # Inspect each of the docker layers with dive tool:
@@ -129,6 +130,8 @@ RUN apt-get update \
 # Install Caddy plugin for common logging format
 RUN caddy add-package github.com/caddyserver/transform-encoder
 
+RUN apt-get update && apt-get install -y supervisor
+
 WORKDIR /var/www/html
 # Copy the statically built UI files
 COPY --from=ui-builder ${UI_BUILD} .
@@ -140,7 +143,11 @@ COPY --from=backend-builder ${BE_VENV} ./.venv
 COPY $SRC_BE_DIR $APP_BE_DIR
 COPY deploy/Caddyfile /app
 
+# Default supervisor config: /etc/supervisor/conf.d/supervisord.conf
+COPY deploy/supervisord.conf .
+RUN mkdir -p /var/log/supervisor
+
 # Run application
 EXPOSE 8080
 # Default command to run if nothing else is specified.
-CMD ["caddy", "run"]
+CMD ["/usr/bin/supervisord","-c","/app/supervisord.conf"]
