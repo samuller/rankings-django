@@ -21,7 +21,7 @@
 		path /api/* /admin/* /static/* /ssr/*
 	}
 	handle @django {
-		reverse_proxy localhost:8000		
+		reverse_proxy localhost:8000
 	}
 
 	# Dynamic paths handled by frontend SPA.
