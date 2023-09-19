@@ -85,11 +85,11 @@ WORKDIR $BE_WORKDIR
 # Copy only files that specify dependencies
 COPY $SRC_BE_DIR/poetry.lock $SRC_BE_DIR/pyproject.toml ./
 
-# [OPTIONAL] Validate the project is properly configured
+# Validate the project is properly configured
 RUN poetry check
 
 # Install dependencies
-RUN poetry install --no-cache --no-ansi --no-root --without dev
+RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --no-root --without dev --no-cache --no-ansi
 
 # Install gunicorn dependency
 RUN poetry run pip install gunicorn==$GUNICORN_VERSION
