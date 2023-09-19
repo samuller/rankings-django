@@ -25,7 +25,7 @@
 # docker run -it --rm rankings-site-builder-test bash
 # ```
 #
-ARG UBUNTU_VERSION=22.04
+ARG OS_VERSION=bookworm
 ARG NODE_VERSION=20.6.1
 ARG PYTHON_VERSION=3.8.18
 ARG POETRY_VERSION=1.4.2
@@ -48,11 +48,13 @@ ARG APP_BE_DIR="/app/backend"
 
 # ---------------------------------------------------------------------------- #
 ########
-# Build backend with Python + Poetry.
-# See: https://stackoverflow.com/questions/72465421/how-to-use-poetry-with-docker
-# And: https://gist.github.com/soof-golan/6ebb97a792ccd87816c0bda1e6e8b8c2
+# Install backend dependencies with Poetry. See:
+# - https://stackoverflow.com/questions/72465421/how-to-use-poetry-with-docker
+# - https://gist.github.com/soof-golan/6ebb97a792ccd87816c0bda1e6e8b8c2
+# - https://github.com/orgs/python-poetry/discussions/1879
+# - https://medium.com/@albertazzir/blazing-fast-python-docker-builds-with-poetry-a78a66f5aed0
 ########
-FROM python:$PYTHON_VERSION as backend-builder
+FROM python:$PYTHON_VERSION-$OS_VERSION as backend-builder
 ARG BE_WORKDIR
 ARG SRC_BE_DIR
 ARG POETRY_VERSION
@@ -107,15 +109,18 @@ RUN npm run build
 
 # ---------------------------------------------------------------------------- #
 # Finally create a new stage for running the app
-FROM python:$PYTHON_VERSION as combined-app
+FROM python:$PYTHON_VERSION-slim-$OS_VERSION as combined-app
 ARG CADDY_VERSION
 ARG UI_BUILD
 ARG BE_VENV
 ARG SRC_BE_DIR
 ARG APP_BE_DIR
-# Set Python to output to stdout/stderr without buffering so that logs are
-# instantly passed to Docker logs and not easily lost upon crashing.
+# Set Python to output instantly to Docker logs (also helps prevents crashes losing logs).
 ENV PYTHONUNBUFFERED=1
+
+# Install needed files that are stripped in "slim" OS versions
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends gnupg curl
 
 # Install Caddy
 RUN apt-get update \
