@@ -115,6 +115,7 @@ ARG UI_BUILD
 ARG BE_VENV
 ARG SRC_BE_DIR
 ARG APP_BE_DIR
+ARG POETRY_CACHE_DIR
 # Set Python to output instantly to Docker logs (also helps prevents crashes losing logs).
 ENV PYTHONUNBUFFERED=1
 
@@ -137,21 +138,22 @@ RUN caddy add-package github.com/caddyserver/transform-encoder
 
 RUN apt-get update && apt-get install -y supervisor
 
-WORKDIR /var/www/html
-# Copy the statically built UI files
-COPY --from=ui-builder ${UI_BUILD} .
-
-WORKDIR /app
 # Copy the project venv folder from builder image 
-COPY --from=backend-builder ${BE_VENV} ./.venv
+COPY --from=backend-builder ${BE_VENV} /app/.venv
 # Copy local files for application
 COPY $SRC_BE_DIR $APP_BE_DIR
-COPY deploy/Caddyfile /app
+
+WORKDIR /app
+RUN /app/.venv/bin/pip install -e $APP_BE_DIR
 
 # Default supervisor config: /etc/supervisor/conf.d/supervisord.conf
-COPY deploy/supervisord.conf .
+COPY deploy/supervisord.conf /app
+COPY deploy/Caddyfile /app
+# Copy the statically built UI files
+COPY --from=ui-builder ${UI_BUILD} /var/www/html
 
 # Run application
 EXPOSE 8080
 # Default command to run if nothing else is specified.
+WORKDIR /app
 CMD ["/usr/bin/supervisord","-c","/app/supervisord.conf"]
