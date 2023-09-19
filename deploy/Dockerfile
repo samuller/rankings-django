@@ -5,8 +5,6 @@
 # Config format reference: https://docs.docker.com/engine/reference/builder/
 #
 # Build:
-#     sed 's/^version = ".*"/version = "0"/' rankings/pyproject.toml > rankings/pyproject.nover.toml
-#     svelte-ui/package.json
 #     docker build -t rankings-site:0.0.1 -f deploy/Dockerfile .
 # Run:
 #     docker run -t --rm -p 8081:8080 rankings-site:0.0.1
@@ -18,7 +16,9 @@
 #   - Layers: https://docs.docker.com/build/guide/layers/
 #   - Cache: https://docs.docker.com/build/cache/
 # - Use multi-stages for code re-use and smaller images: https://docs.docker.com/build/guide/multi-stage/
-# - Follow general best practices: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+# - General best practices: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+# - TODO: Reproducible builds: https://medium.com/nttlabs/bit-for-bit-reproducible-builds-with-dockerfile-7cc2b9faed9f
+#   - Especially when just changing app version and even on CI.
 #
 # Inspect each of the docker layers with dive tool:
 # ```
@@ -108,6 +108,7 @@ RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --no-root --witho
 RUN poetry run pip install gunicorn==$GUNICORN_VERSION
 
 # ---------------------------------------------------------------------------- #
+# Stage to generate static website
 FROM node:$NODE_VERSION as ui-builder
 ARG UI_WORKDIR
 ARG SRC_UI_DIR
@@ -115,7 +116,7 @@ ARG SRC_UI_DIR
 WORKDIR $UI_WORKDIR
 
 COPY $SRC_UI_DIR $UI_WORKDIR
-
+# TODO: separate layer for dependencies
 RUN npm ci
 
 RUN npm run build
@@ -170,6 +171,9 @@ COPY --from=backend-builder ${BE_VENV} /app/.venv
 COPY $SRC_BE_DIR $APP_BE_DIR
 
 WORKDIR /app
+# Installing our code as an (editable) package is currently only needed so that
+# we can extract the version at runtime (without duplication) using the
+# approach from: https://stackoverflow.com/questions/67085041/how-to-specify-version-in-only-one-place-when-using-pyproject-toml
 RUN /app/.venv/bin/pip install -e $APP_BE_DIR
 
 # Default supervisor config: /etc/supervisor/conf.d/supervisord.conf

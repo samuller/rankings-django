@@ -26,11 +26,15 @@ lint() {
     # poetry run mypy tests/
     echo "black..."
     poetry run black --check .
+
+    # cd svelte-ui && npm run lint && cd -
+    # cd - && cd deploys && caddy fmt
 }
 
 format() {
-    cd rankings
-    black .
+    cd rankings && black . && cd -
+    # cd svelte-ui && npm run format && cd -
+    # cd deploys && caddy fmt --overwrite && cd -
 }
 
 test() {
