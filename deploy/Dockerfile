@@ -61,22 +61,22 @@ ARG BE_POETRY_CACHE
 ARG GUNICORN_VERSION
 # Configure Poetry
 # https://python-poetry.org/docs#ci-recommendations
-ENV POETRY_HOME="/opt/poetry"
-ENV BE_POETRY_VENV=$BE_POETRY_VENV
-# Tell Poetry where to place its cache and virtual environment
-ENV BE_POETRY_CACHE=$BE_POETRY_CACHE
-# Tell poetry to create virtualenv as .venv directory in root of project
-ENV POETRY_VIRTUALENVS_IN_PROJECT=1
-ENV POETRY_NO_INTERACTION=1
+ENV POETRY_HOME="/opt/poetry" \
+    POETRY_VENV=$BE_POETRY_VENV \
+    # Tell Poetry where to place its cache and virtual environment
+    POETRY_CACHE_DIR=$BE_POETRY_CACHE \
+    # Tell poetry to create virtualenv as .venv directory in root of project
+    POETRY_VIRTUALENVS_IN_PROJECT=1 \
+    POETRY_NO_INTERACTION=1
 
 # Create a virtual environment just for poetry (to install poetry separated
 # from system interpreter) and install it with pip
-RUN python3 -m venv $BE_POETRY_VENV \
-    && $BE_POETRY_VENV/bin/pip install -U pip setuptools \
-    && $BE_POETRY_VENV/bin/pip install poetry==${POETRY_VERSION}
+RUN python3 -m venv $POETRY_VENV \
+    && $POETRY_VENV/bin/pip install -U pip setuptools \
+    && $POETRY_VENV/bin/pip install poetry==${POETRY_VERSION}
 
 # Add "poetry" to PATH
-ENV PATH="${PATH}:${BE_POETRY_VENV}/bin"
+ENV PATH="${PATH}:${POETRY_VENV}/bin"
 
 WORKDIR $BE_WORKDIR
 
