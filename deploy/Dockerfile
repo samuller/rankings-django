@@ -1,11 +1,24 @@
 #
-# Dockerfile for deploying the Ranking site's backend & frontend with Caddy routing server.
+# Dockerfile for deploying the Ranking site's backend & frontend along with a
+# Caddy routing server.
 #
-# ```
-# docker build -t rankings-site:0.0.1 -f deploy/Dockerfile .
-# docker run -it --rm rankings-site:0.0.1 bash
-# docker run -t --rm -p 8081:8080 rankings-site:0.0.1
-# ```
+# Config format reference: https://docs.docker.com/engine/reference/builder/
+#
+# Build:
+#     sed 's/^version = ".*"/version = "0"/' rankings/pyproject.toml > rankings/pyproject.nover.toml
+#     svelte-ui/package.json
+#     docker build -t rankings-site:0.0.1 -f deploy/Dockerfile .
+# Run:
+#     docker run -t --rm -p 8081:8080 rankings-site:0.0.1
+# Debug in container:
+#     docker run -it --rm rankings-site:0.0.1 bash
+#
+# Design:
+# - Follow guidelines to make builds fast with layer caching:
+#   - Layers: https://docs.docker.com/build/guide/layers/
+#   - Cache: https://docs.docker.com/build/cache/
+# - Use multi-stages for code re-use and smaller images: https://docs.docker.com/build/guide/multi-stage/
+# - Follow general best practices: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 #
 # Inspect each of the docker layers with dive tool:
 # ```
@@ -108,7 +121,14 @@ RUN npm ci
 RUN npm run build
 
 # ---------------------------------------------------------------------------- #
-# Finally create a new stage for running the app
+# The "combined-app" image combines all parts of the site into a single
+# container image to simplify getting started easily. The services combined are:
+# - Python Django backend, run via Gunicorn
+# - Static SPA website built with Svelte
+# - Caddy router
+# We follow the one of the suggested recommendations of using supervisor to
+# manage our multiple services within the Docker container.
+# See: https://docs.docker.com/config/containers/multi-service_container/
 FROM python:$PYTHON_VERSION-slim-$OS_VERSION as combined-app
 ARG CADDY_VERSION
 ARG UI_BUILD
@@ -116,7 +136,7 @@ ARG BE_VENV
 ARG SRC_BE_DIR
 ARG APP_BE_DIR
 ARG POETRY_CACHE_DIR
-# Set Python to output instantly to Docker logs (also helps prevents crashes losing logs).
+# Set Python to output instantly to Docker logs (also helps prevents crashes losing logs)
 ENV PYTHONUNBUFFERED=1
 
 # Install generally required packages
@@ -158,8 +178,12 @@ COPY deploy/Caddyfile /app
 # Copy the statically built UI files
 COPY --from=ui-builder ${UI_BUILD} /var/www/html
 
+# Default vars for supervisor
+ENV GUNICORN_WORKERS=5
+ENV GUNICORN_TIMEOUT=30
 # Run application
 EXPOSE 8080
-# Default command to run if nothing else is specified.
+# Set default directory when app starts (or container is entered)
 WORKDIR /app
+# Default command to run if nothing else is specified.
 CMD ["/usr/bin/supervisord","-c","/app/supervisord.conf"]
