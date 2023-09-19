@@ -119,24 +119,30 @@ ARG POETRY_CACHE_DIR
 # Set Python to output instantly to Docker logs (also helps prevents crashes losing logs).
 ENV PYTHONUNBUFFERED=1
 
-# Install needed files that are stripped in "slim" OS versions
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends gnupg curl
+# Install generally required packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # Commands stripped in "slim" OS versions, but needed for further installs
+    curl \
+    gnupg \
+    # Used as the root process manager
+    supervisor \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Caddy
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends debian-keyring \
-        debian-archive-keyring apt-transport-https \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    apt-transport-https \
+    debian-keyring \
+    debian-archive-keyring \
     && curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' \
        | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg \
     && curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' \
        | tee /etc/apt/sources.list.d/caddy-stable.list \
     && apt-get update \
-    && apt-get install -y caddy=${CADDY_VERSION}
+    && apt-get install -y --no-install-recommends \
+    caddy=${CADDY_VERSION} \
+    && rm -rf /var/lib/apt/lists/*
 # Install Caddy plugin for common logging format
 RUN caddy add-package github.com/caddyserver/transform-encoder
-
-RUN apt-get update && apt-get install -y supervisor
 
 # Copy the project venv folder from builder image 
 COPY --from=backend-builder ${BE_VENV} /app/.venv
