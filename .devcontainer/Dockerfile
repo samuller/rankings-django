@@ -87,5 +87,7 @@ RUN curl -sSL https://install.python-poetry.org | python${PYTHON_VERSION} -
 # Needed for cv2.
 RUN sudo apt-get install -y ffmpeg libsm6 libxext6
 
+ENV DJANGO_DEBUG="True"
+
 # Default command to run if nothing else is specified.
 CMD ["/bin/bash"]

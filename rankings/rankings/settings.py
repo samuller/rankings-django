@@ -40,7 +40,7 @@ except ImportError:
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', False)
 
 ALLOWED_HOSTS: List[str] = ["*", "localhost", "host.docker.internal"]
 
