@@ -186,6 +186,9 @@ COPY deploy/Caddyfile /app
 # Copy the statically built UI files
 COPY --from=ui-builder ${UI_BUILD} /app/ui
 
+# Add command scripts that might useful during runtime
+COPY deploy/manage /usr/local/bin
+
 # Default vars for supervisor
 ENV GUNICORN_WORKERS=5
 ENV GUNICORN_TIMEOUT=30
