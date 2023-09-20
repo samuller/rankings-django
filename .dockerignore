@@ -10,3 +10,5 @@
 # Code coverage
 **/.coverage
 **/htmlcov/
+# Database files
+**/*.sqlite*

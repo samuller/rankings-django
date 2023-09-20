@@ -163,6 +163,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     caddy=${CADDY_VERSION} \
     && rm -rf /var/lib/apt/lists/*
 # Install Caddy plugin for common logging format
+# This step can take long or sometimes even hang. See warning at the top of this site:
+# https://caddyserver.com/download?package=github.com%2Fcaddyserver%2Ftransform-encoder
 RUN caddy add-package github.com/caddyserver/transform-encoder
 
 # Copy the project venv folder from builder image 
@@ -175,6 +177,8 @@ WORKDIR /app
 # we can extract the version at runtime (without duplication) using the
 # approach from: https://stackoverflow.com/questions/67085041/how-to-specify-version-in-only-one-place-when-using-pyproject-toml
 RUN /app/.venv/bin/pip install -e $APP_API_DIR
+# Create a new empty database (migrated to the newest schema)
+RUN /app/.venv/bin/python api/manage.py migrate
 
 # Default supervisor config: /etc/supervisor/conf.d/supervisord.conf
 COPY deploy/supervisord.conf /app
