@@ -30,17 +30,23 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # This current settings directory
 SETTINGS_DIR = os.path.abspath(os.path.dirname(__file__))
 
-try:
-    from .secret_key import SECRET_KEY
-except ImportError:
-    generate_secret_key(os.path.join(SETTINGS_DIR, "secret_key.py"))
-    from .secret_key import SECRET_KEY  # noqa: F401
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+if SECRET_KEY is None:
+    try:
+        from .secret_key import SECRET_KEY
+    except ImportError:
+        # We create a new secret key file the first time an import is attempted.
+        # This simplifies setup for new developers and still allows the key to
+        # stay stable in dev environments (useful to maintain sessions even
+        # when server constantly restarts due to hot reloading).
+        generate_secret_key(os.path.join(SETTINGS_DIR, "secret_key.py"))
+        from .secret_key import SECRET_KEY  # noqa: F401
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', False)
+DEBUG = os.getenv("DJANGO_DEBUG", False)
 
 ALLOWED_HOSTS: List[str] = ["*", "localhost", "host.docker.internal"]
 
@@ -122,11 +128,11 @@ REST_FRAMEWORK = {
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
+DB_PATH = os.getenv("DJANGO_DB_PATH")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "NAME": os.path.join(DB_PATH or BASE_DIR, "db.sqlite3"),
     }
 }
 
@@ -169,8 +175,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_ROOT = "/var/www/rankings/static/"
-STATIC_URL = "/static/"
+STATIC_ROOT = os.getenv("DJANGO_STATIC_ROOT", "/var/www/rankings/static/")
+STATIC_URL = os.getenv("DJANGO_STATIC_URL", "/static/")
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),

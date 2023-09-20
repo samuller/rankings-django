@@ -18,10 +18,15 @@
 
 	# Create matcher for all Django URLs.
 	@django {
-		path /api/* /admin/* /static/* /ssr/*
+		path /api/* /admin/* /ssr/*
 	}
 	handle @django {
 		reverse_proxy localhost:8000
+	}
+	# Django static files.
+	handle /static/* {
+		root * /app/api/static-root
+		file_server
 	}
 
 	# Dynamic paths handled by frontend SPA.

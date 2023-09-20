@@ -177,8 +177,14 @@ WORKDIR /app
 # we can extract the version at runtime (without duplication) using the
 # approach from: https://stackoverflow.com/questions/67085041/how-to-specify-version-in-only-one-place-when-using-pyproject-toml
 RUN /app/.venv/bin/pip install -e $APP_API_DIR
+# Create path for database
+RUN mkdir /db
+ENV DJANGO_DB_PATH=/db
 # Create a new empty database (migrated to the newest schema)
 RUN /app/.venv/bin/python api/manage.py migrate
+# Setup static HTML for API
+ENV DJANGO_STATIC_ROOT=/app/api/static-root/static
+RUN /app/.venv/bin/python api/manage.py collectstatic
 
 # Default supervisor config: /etc/supervisor/conf.d/supervisord.conf
 COPY deploy/supervisord.conf /app
