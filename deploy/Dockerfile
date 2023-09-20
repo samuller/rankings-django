@@ -57,11 +57,11 @@ ARG API_VENV="$API_WORKDIR/.venv"
 ARG UI_WORKDIR="/build-ui"
 ARG UI_BUILD="$UI_WORKDIR/build"
 # Paths for final "app" (release container)
-ARG APP_API_DIR="/app/backend"
+ARG APP_API_DIR="/app/api"
 
 # ---------------------------------------------------------------------------- #
 ########
-# Install backend dependencies with Poetry. See:
+# Install backend API dependencies with Poetry. See:
 # - https://stackoverflow.com/questions/72465421/how-to-use-poetry-with-docker
 # - https://gist.github.com/soof-golan/6ebb97a792ccd87816c0bda1e6e8b8c2
 # - https://github.com/orgs/python-poetry/discussions/1879
@@ -124,10 +124,10 @@ RUN npm run build
 # ---------------------------------------------------------------------------- #
 # The "combined-app" image combines all parts of the site into a single
 # container image to simplify getting started easily. The services combined are:
-# - Python Django backend, run via Gunicorn
+# - Python Django backend (API & database), run via Gunicorn
 # - Static SPA website built with Svelte
 # - Caddy router
-# We follow the one of the suggested recommendations of using supervisor to
+# We follow the one of the suggested recommendations of using "supervisor" to
 # manage our multiple services within the Docker container.
 # See: https://docs.docker.com/config/containers/multi-service_container/
 FROM python:$PYTHON_VERSION-slim-$OS_VERSION as combined-app
@@ -180,7 +180,7 @@ RUN /app/.venv/bin/pip install -e $APP_API_DIR
 COPY deploy/supervisord.conf /app
 COPY deploy/Caddyfile /app
 # Copy the statically built UI files
-COPY --from=ui-builder ${UI_BUILD} /var/www/html
+COPY --from=ui-builder ${UI_BUILD} /app/ui
 
 # Default vars for supervisor
 ENV GUNICORN_WORKERS=5
