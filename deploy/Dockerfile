@@ -1,6 +1,6 @@
 #
-# Dockerfile for deploying the Ranking site's backend & frontend along with a
-# Caddy routing server.
+# Dockerfile for deploying the Ranking site's API backend & SPA web UI along
+# with a Caddy routing server.
 #
 # Config format reference: https://docs.docker.com/engine/reference/builder/
 #
@@ -34,7 +34,7 @@
 # Intermediate stages can be built and run separately for debugging by
 # using the "--target" flag with the stage's name:
 # ```
-# docker build --target backend-builder -t rankings-site-builder-test -f deploy/Dockerfile .
+# docker build --target api-builder -t rankings-site-builder-test -f deploy/Dockerfile .
 # docker run -it --rm rankings-site-builder-test bash
 # ```
 #
@@ -45,19 +45,19 @@ ARG POETRY_VERSION=1.4.2
 ARG CADDY_VERSION=2.7.4
 ARG GUNICORN_VERSION=21.2.0
 # Paths to source code
-ARG SRC_BE_DIR="./rankings/"
+ARG SRC_API_DIR="./rankings/"
 ARG SRC_UI_DIR="./svelte-ui/"
-# Backend (BE) build paths
+# Backend API build paths
 # We use same workdir as final so virtualenv is created with correct $PATH
-ARG BE_WORKDIR="/app"
-ARG BE_POETRY_VENV="/opt/poetry-venv"
-ARG BE_POETRY_CACHE="/opt/.cache"
-ARG BE_VENV="$BE_WORKDIR/.venv"
-# User interface (UI) build paths
+ARG API_WORKDIR="/app"
+ARG API_POETRY_VENV="/opt/poetry-venv"
+ARG API_POETRY_CACHE="/opt/.cache"
+ARG API_VENV="$API_WORKDIR/.venv"
+# SPA web User interface (UI) build paths
 ARG UI_WORKDIR="/build-ui"
 ARG UI_BUILD="$UI_WORKDIR/build"
 # Paths for final "app" (release container)
-ARG APP_BE_DIR="/app/backend"
+ARG APP_API_DIR="/app/backend"
 
 # ---------------------------------------------------------------------------- #
 ########
@@ -67,19 +67,19 @@ ARG APP_BE_DIR="/app/backend"
 # - https://github.com/orgs/python-poetry/discussions/1879
 # - https://medium.com/@albertazzir/blazing-fast-python-docker-builds-with-poetry-a78a66f5aed0
 ########
-FROM python:$PYTHON_VERSION-$OS_VERSION as backend-builder
-ARG BE_WORKDIR
-ARG SRC_BE_DIR
+FROM python:$PYTHON_VERSION-$OS_VERSION as api-builder
+ARG API_WORKDIR
+ARG SRC_API_DIR
 ARG POETRY_VERSION
-ARG BE_POETRY_VENV
-ARG BE_POETRY_CACHE
+ARG API_POETRY_VENV
+ARG API_POETRY_CACHE
 ARG GUNICORN_VERSION
 # Configure Poetry
 # https://python-poetry.org/docs#ci-recommendations
 ENV POETRY_HOME="/opt/poetry" \
-    POETRY_VENV=$BE_POETRY_VENV \
+    POETRY_VENV=$API_POETRY_VENV \
     # Tell Poetry where to place its cache and virtual environment
-    POETRY_CACHE_DIR=$BE_POETRY_CACHE \
+    POETRY_CACHE_DIR=$API_POETRY_CACHE \
     # Tell poetry to create virtualenv as .venv directory in root of project
     POETRY_VIRTUALENVS_IN_PROJECT=1 \
     POETRY_NO_INTERACTION=1
@@ -93,10 +93,10 @@ RUN python3 -m venv $POETRY_VENV \
 # Add "poetry" to PATH
 ENV PATH="${PATH}:${POETRY_VENV}/bin"
 
-WORKDIR $BE_WORKDIR
+WORKDIR $API_WORKDIR
 
 # Copy only files that specify dependencies
-COPY $SRC_BE_DIR/poetry.lock $SRC_BE_DIR/pyproject.toml ./
+COPY $SRC_API_DIR/poetry.lock $SRC_API_DIR/pyproject.toml ./
 
 # Validate the project is properly configured
 RUN poetry check
@@ -133,9 +133,9 @@ RUN npm run build
 FROM python:$PYTHON_VERSION-slim-$OS_VERSION as combined-app
 ARG CADDY_VERSION
 ARG UI_BUILD
-ARG BE_VENV
-ARG SRC_BE_DIR
-ARG APP_BE_DIR
+ARG API_VENV
+ARG SRC_API_DIR
+ARG APP_API_DIR
 ARG POETRY_CACHE_DIR
 # Set Python to output instantly to Docker logs (also helps prevents crashes losing logs)
 ENV PYTHONUNBUFFERED=1
@@ -166,15 +166,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN caddy add-package github.com/caddyserver/transform-encoder
 
 # Copy the project venv folder from builder image 
-COPY --from=backend-builder ${BE_VENV} /app/.venv
+COPY --from=api-builder ${API_VENV} /app/.venv
 # Copy local files for application
-COPY $SRC_BE_DIR $APP_BE_DIR
+COPY $SRC_API_DIR $APP_API_DIR
 
 WORKDIR /app
 # Installing our code as an (editable) package is currently only needed so that
 # we can extract the version at runtime (without duplication) using the
 # approach from: https://stackoverflow.com/questions/67085041/how-to-specify-version-in-only-one-place-when-using-pyproject-toml
-RUN /app/.venv/bin/pip install -e $APP_BE_DIR
+RUN /app/.venv/bin/pip install -e $APP_API_DIR
 
 # Default supervisor config: /etc/supervisor/conf.d/supervisord.conf
 COPY deploy/supervisord.conf /app
