@@ -18,7 +18,7 @@
 
 	# Create matcher for all Django URLs.
 	@django {
-		path /api/* /admin/* /ssr/*
+		path */api/* /admin/* /ssr/*
 	}
 	handle @django {
 		reverse_proxy localhost:8000

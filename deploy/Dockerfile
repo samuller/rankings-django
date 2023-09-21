@@ -190,6 +190,10 @@ RUN mkdir /db
 ENV DJANGO_DB_PATH=/db
 # Create a new empty database (migrated to the newest schema)
 RUN /app/.venv/bin/python api/manage.py migrate
+# TODO: command to add example data
+RUN /app/.venv/bin/python api/manage.py loaddata game players
+# Give caddy user rights to write to database
+RUN chown -R caddy: /db && chmod +w /db
 # Setup static HTML for API
 ENV DJANGO_STATIC_ROOT=/app/api/static-root/static
 RUN /app/.venv/bin/python api/manage.py collectstatic
