@@ -45,8 +45,8 @@ ARG POETRY_VERSION=1.4.2
 ARG CADDY_VERSION=2.7.4
 ARG GUNICORN_VERSION=21.2.0
 # Paths to source code
-ARG SRC_API_DIR="./rankings/"
-ARG SRC_UI_DIR="./svelte-ui/"
+ARG SRC_API_DIR="./rankings"
+ARG SRC_UI_DIR="./svelte-ui"
 # Backend API build paths
 # We use same workdir as final so virtualenv is created with correct $PATH
 ARG API_WORKDIR="/app"
@@ -115,10 +115,11 @@ ARG SRC_UI_DIR
 
 WORKDIR $UI_WORKDIR
 
-COPY $SRC_UI_DIR $UI_WORKDIR
-# TODO: separate layer for dependencies
+# Copy only files that specify dependencies
+COPY $SRC_UI_DIR/package-lock.json $SRC_UI_DIR/package.json ./
 RUN npm ci
 
+COPY $SRC_UI_DIR $UI_WORKDIR
 RUN npm run build
 
 # ---------------------------------------------------------------------------- #
@@ -141,7 +142,11 @@ ARG POETRY_CACHE_DIR
 ENV PYTHONUNBUFFERED=1
 
 # Install generally required packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# We follow this advice to cache apt installs: https://stackoverflow.com/a/72851168
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean \
+    && apt-get update && apt-get install -y --no-install-recommends \
     # Commands stripped in "slim" OS versions, but needed for further installs
     curl \
     gnupg \
@@ -150,7 +155,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Caddy
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean \
+    && apt-get update && apt-get install -y --no-install-recommends \
     apt-transport-https \
     debian-keyring \
     debian-archive-keyring \
@@ -167,12 +175,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # https://caddyserver.com/download?package=github.com%2Fcaddyserver%2Ftransform-encoder
 RUN caddy add-package github.com/caddyserver/transform-encoder
 
+WORKDIR /app
+
 # Copy the project venv folder from builder image 
 COPY --from=api-builder ${API_VENV} /app/.venv
 # Copy local files for application
 COPY $SRC_API_DIR $APP_API_DIR
-
-WORKDIR /app
 # Installing our code as an (editable) package is currently only needed so that
 # we can extract the version at runtime (without duplication) using the
 # approach from: https://stackoverflow.com/questions/67085041/how-to-specify-version-in-only-one-place-when-using-pyproject-toml
@@ -185,15 +193,15 @@ RUN /app/.venv/bin/python api/manage.py migrate
 # Setup static HTML for API
 ENV DJANGO_STATIC_ROOT=/app/api/static-root/static
 RUN /app/.venv/bin/python api/manage.py collectstatic
+# Add command scripts that might useful during runtime
+COPY deploy/manage /usr/local/bin
+
+# Copy the statically built UI files
+COPY --from=ui-builder ${UI_BUILD} /app/ui
 
 # Default supervisor config: /etc/supervisor/conf.d/supervisord.conf
 COPY deploy/supervisord.conf /app
 COPY deploy/Caddyfile /app
-# Copy the statically built UI files
-COPY --from=ui-builder ${UI_BUILD} /app/ui
-
-# Add command scripts that might useful during runtime
-COPY deploy/manage /usr/local/bin
 
 # Default vars for supervisor
 ENV GUNICORN_WORKERS=5
