@@ -16,6 +16,7 @@
 #   - Layers: https://docs.docker.com/build/guide/layers/
 #   - Cache: https://docs.docker.com/build/cache/
 # - Use multi-stages for code re-use and smaller images: https://docs.docker.com/build/guide/multi-stage/
+#   - Use `docker build --target <stage-name> ...` to build specific stages.
 # - General best practices: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 # - TODO: Reproducible builds: https://medium.com/nttlabs/bit-for-bit-reproducible-builds-with-dockerfile-7cc2b9faed9f
 #   - Especially when just changing app version and even on CI.
@@ -68,6 +69,8 @@ ARG APP_API_DIR="/app/api"
 # - https://medium.com/@albertazzir/blazing-fast-python-docker-builds-with-poetry-a78a66f5aed0
 ########
 FROM python:$PYTHON_VERSION-$OS_VERSION as api-builder
+# FROM creates a new build stage, so we need to redeclare any arguments we want to keep.
+# See: https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG API_WORKDIR
 ARG SRC_API_DIR
 ARG POETRY_VERSION
@@ -143,6 +146,7 @@ ENV PYTHONUNBUFFERED=1
 
 # Install generally required packages
 # We follow this advice to cache apt installs: https://stackoverflow.com/a/72851168
+ENV DEBIAN_FRONTEND=noninteractive
 RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     --mount=target=/var/cache/apt,type=cache,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean \
@@ -190,8 +194,6 @@ RUN mkdir /db
 ENV DJANGO_DB_PATH=/db
 # Create a new empty database (migrated to the newest schema)
 RUN /app/.venv/bin/python api/manage.py migrate
-# TODO: command to add example data
-RUN /app/.venv/bin/python api/manage.py loaddata game players
 # Give caddy user rights to write to database
 RUN chown -R caddy: /db && chmod +w /db
 # Setup static HTML for API
@@ -216,3 +218,9 @@ EXPOSE 8080
 WORKDIR /app
 # Default command to run if nothing else is specified.
 CMD ["/usr/bin/supervisord","-c","/app/supervisord.conf"]
+
+# ---------------------------------------------------------------------------- #
+# A test version of "combined-app" that starts with example data.
+FROM combined-app as test-app
+
+RUN /app/.venv/bin/python api/manage.py loaddata game players
