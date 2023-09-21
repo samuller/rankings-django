@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { AddButton, DynamicData, PagingNav, PendingMatches, Table, type CellDetail } from '$lib/components';
+	import { DynamicData, PagingNav, PendingMatches, Table, type CellDetail } from '$lib/components';
 	import { convertMatchesToTable } from '$lib/utils';
 	import {
 		apiMatches,

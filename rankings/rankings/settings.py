@@ -30,8 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # This current settings directory
 SETTINGS_DIR = os.path.abspath(os.path.dirname(__file__))
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-if SECRET_KEY is None:
+if os.getenv("DJANGO_SECRET_KEY") is None:
     try:
         from .secret_key import SECRET_KEY
     except ImportError:
@@ -41,6 +40,8 @@ if SECRET_KEY is None:
         # when server constantly restarts due to hot reloading).
         generate_secret_key(os.path.join(SETTINGS_DIR, "secret_key.py"))
         from .secret_key import SECRET_KEY  # noqa: F401
+else:
+    SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
