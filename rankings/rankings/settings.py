@@ -41,7 +41,7 @@ if os.getenv("DJANGO_SECRET_KEY") is None:
         generate_secret_key(os.path.join(SETTINGS_DIR, "secret_key.py"))
         from .secret_key import SECRET_KEY  # noqa: F401
 else:
-    SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+    SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
