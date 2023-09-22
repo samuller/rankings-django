@@ -22,7 +22,7 @@ Jinja2 = "2.11.3"
 markupsafe = "2.0.1"
 # Add support for the Admin tool to do editing of multiple rows at once
 django-mass-edit = "3.5.0"
-# Use DRF to easily generate REST/JSON APIs 
+# Use DRF to easily generate REST/JSON APIs
 djangorestframework = "3.14.0"
 # Recommended by DRF for filtering capabilities
 django-filter = "23.2"

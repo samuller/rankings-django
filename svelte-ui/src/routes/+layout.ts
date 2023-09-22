@@ -4,3 +4,5 @@ export const ssr = false;
 // will also allow you to do things that make it harder to start using SSR in the future.
 // export const prerender = false;
 
+// See: https://learn.svelte.dev/tutorial/trailingslash
+// export const trailingSlash = 'always';

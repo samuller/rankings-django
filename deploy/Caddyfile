@@ -11,7 +11,7 @@
 
 # Defaults support HTTP with any hostname or IP address for host.
 {$PROTOCOL:http}://{$HOST:} {
-	log {
+	log access {
 		# sudo caddy add-package github.com/caddyserver/transform-encoder
 		format transform "{common_log}"
 	}

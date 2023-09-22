@@ -192,6 +192,10 @@ RUN /app/.venv/bin/pip install -e $APP_API_DIR
 # Create path for database
 RUN mkdir /db
 ENV DJANGO_DB_PATH=/db
+# We choose not to define database as a volume during build due to some downsides
+# See: https://boxboat.com/2017/01/23/volumes-and-dockerfiles-dont-mix/
+# Rather do this at runtime with `docker run` or `docker-compose`.
+# VOLUME ["/db"]
 # Create a new empty database (migrated to the newest schema)
 RUN /app/.venv/bin/python api/manage.py migrate
 # Give caddy user rights to write to database
