@@ -12,7 +12,31 @@ on:
   - cron: '7 14 * * fri'
 
 jobs:
+  # We check which files have changed and then run only the required tests
+  change-detection:
+    runs-on: ubuntu-latest
+    # Required permissions
+    permissions:
+      pull-requests: read
+    steps:
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          backend:
+            - 'rankings/**'
+          frontend:
+            - 'svelte-ui/**'
+    # Set job outputs to values from filter step
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+
   test-backend:
+    needs: change-detection
+    if: ${{ needs.change-detection.outputs.backend == 'true' }}
+
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -59,6 +83,9 @@ jobs:
         continue-on-error: true
 
   test-ui:
+    needs: change-detection
+    if: ${{ needs.change-detection.outputs.frontend == 'true' }}
+
     runs-on: ${{ matrix.os }}
 
     strategy:
