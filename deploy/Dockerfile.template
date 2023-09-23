@@ -144,12 +144,19 @@ ENV EDGE_REPO=https://dl-cdn.alpinelinux.org/alpine/edge/community
 ENV PYTHONDONTWRITEBYTECODE=1
 
 # The --no-cache includes `apk update` and means we don't have to clear cache afterwards.
+# RUN apk add --no-cache supervisor
+# We install supervisor with pip so it uses the system-wide Python instead of bringing its own.
+RUN pip install supervisor
+
 # Alpine's Caddy package details:
 # - package versions: https://pkgs.alpinelinux.org/packages?name=caddy&branch=v3.18&repo=&arch=&maintainer=
 # - package repo:
 #   - https://git.alpinelinux.org/aports/tree/community/caddy
 #   - https://gitlab.alpinelinux.org/alpine/aports/-/tree/master/community/caddy
 RUN apk add --no-cache --repository=$EDGE_REPO caddy \
+# Install Caddy plugin for common logging format
+# This step can take long or sometimes even hang. See warning at the top of this site:
+# https://caddyserver.com/download?package=github.com%2Fcaddyserver%2Ftransform-encoder
     && caddy add-package github.com/caddyserver/transform-encoder \
 # See: https://caddy.community/t/caddy-service-wont-stay-running-or-start-with-boot-alpine-openrc/20912/9
     && apk add --no-cache libcap-utils \
@@ -160,6 +167,7 @@ RUN apk add --no-cache --repository=$EDGE_REPO caddy \
 # Import templated app setup code
 #
 #:-- IMPORT: setup-app.Dockerfile --:#
+
 
 # ---------------------------------------------------------------------------- #
 # The "combined-app" image combines all parts of the site into a single
@@ -222,11 +230,8 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
 #
 #:-- IMPORT: setup-app.Dockerfile --:#
 
-# Default command to run if nothing else is specified.
-CMD ["/usr/bin/supervisord","-c","/app/supervisord.conf"]
-
 # ---------------------------------------------------------------------------- #
 # A test version of "combined-app" that starts with example data.
-FROM combined-app-debian as test-app
+FROM combined-app-alpine as test-app
 
 RUN /app/.venv/bin/python api/manage.py loaddata game players

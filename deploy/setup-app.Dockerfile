@@ -39,3 +39,5 @@ ENV GUNICORN_TIMEOUT=30
 EXPOSE 8080
 # Set default directory when app starts (or container is entered)
 WORKDIR /app
+# Default command to run if nothing else is specified.
+CMD ["/usr/bin/supervisord","-c","/app/supervisord.conf"]
