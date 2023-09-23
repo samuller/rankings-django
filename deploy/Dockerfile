@@ -5,7 +5,7 @@
 # Config format reference: https://docs.docker.com/engine/reference/builder/
 #
 # Build:
-#     docker build -t rankings-site:0.0.1 -f deploy/Dockerfile .
+#     time docker build --progress=plain -t rankings-site:0.0.1 -f deploy/Dockerfile .
 # Run:
 #     docker run -t --rm -p 8081:8080 rankings-site:0.0.1
 # Debug in container:
@@ -134,7 +134,7 @@ RUN npm run build
 # We follow the one of the suggested recommendations of using "supervisor" to
 # manage our multiple services within the Docker container.
 # See: https://docs.docker.com/config/containers/multi-service_container/
-FROM python:$PYTHON_VERSION-slim-$OS_VERSION as combined-app
+FROM python:$PYTHON_VERSION-slim-$OS_VERSION as combined-app-debian
 ARG CADDY_VERSION
 ARG UI_BUILD
 ARG API_VENV
@@ -142,7 +142,9 @@ ARG SRC_API_DIR
 ARG APP_API_DIR
 ARG POETRY_CACHE_DIR
 # Set Python to output instantly to Docker logs (also helps prevents crashes losing logs)
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONUNBUFFERED=1 \
+    # Prevent Python creating .pyc files or __pycache__ folders
+    PYTHONDONTWRITEBYTECODE=1
 
 # Install generally required packages
 # We follow this advice to cache apt installs: https://stackoverflow.com/a/72851168
@@ -173,11 +175,11 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
     caddy=${CADDY_VERSION} \
-    && rm -rf /var/lib/apt/lists/*
 # Install Caddy plugin for common logging format
 # This step can take long or sometimes even hang. See warning at the top of this site:
 # https://caddyserver.com/download?package=github.com%2Fcaddyserver%2Ftransform-encoder
-RUN caddy add-package github.com/caddyserver/transform-encoder
+    && caddy add-package github.com/caddyserver/transform-encoder \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
