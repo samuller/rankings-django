@@ -126,6 +126,38 @@ COPY $SRC_UI_DIR $UI_WORKDIR
 RUN npm run build
 
 # ---------------------------------------------------------------------------- #
+# This is an experiment to see how much build size would decrease if the image
+# was based on Alpine. The result was a decrease from 300mb to 140mb.
+FROM python:$PYTHON_VERSION-alpine3.18 as combined-app-alpine
+ARG API_VENV
+ARG SRC_API_DIR
+ARG APP_API_DIR
+ARG UI_BUILD
+# Use "Edge" package repo when you want to get the newest version of packages (instead of stable)
+# See: https://stackoverflow.com/questions/52899227/alpine-add-package-from-edge-repository
+ENV EDGE_REPO=https://dl-cdn.alpinelinux.org/alpine/edge/community
+# Prevent Python creating .pyc files or __pycache__ folders
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# The --no-cache includes `apk update` and means we don't have to clear cache afterwards.
+# Alpine's Caddy package details:
+# - package versions: https://pkgs.alpinelinux.org/packages?name=caddy&branch=v3.18&repo=&arch=&maintainer=
+# - package repo:
+#   - https://git.alpinelinux.org/aports/tree/community/caddy
+#   - https://gitlab.alpinelinux.org/alpine/aports/-/tree/master/community/caddy
+RUN apk add --no-cache --repository=$EDGE_REPO caddy \
+    && caddy add-package github.com/caddyserver/transform-encoder \
+# See: https://caddy.community/t/caddy-service-wont-stay-running-or-start-with-boot-alpine-openrc/20912/9
+    && apk add --no-cache libcap-utils \
+    && setcap cap_net_bind_service=+ep $(which caddy) \
+    && apk del libcap-utils
+
+#
+# Import templated app setup code
+#
+#:-- IMPORT: setup-app.Dockerfile --:#
+
+# ---------------------------------------------------------------------------- #
 # The "combined-app" image combines all parts of the site into a single
 # container image to simplify getting started easily. The services combined are:
 # - Python Django backend (API & database), run via Gunicorn
@@ -181,47 +213,11 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     && caddy add-package github.com/caddyserver/transform-encoder \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+#
+# Import templated app setup code
+#
+#:-- IMPORT: setup-app.Dockerfile --:#
 
-# Copy the project venv folder from builder image 
-COPY --from=api-builder ${API_VENV} /app/.venv
-# Copy local files for application
-COPY $SRC_API_DIR $APP_API_DIR
-# Installing our code as an (editable) package is currently only needed so that
-# we can extract the version at runtime (without duplication) using the
-# approach from: https://stackoverflow.com/questions/67085041/how-to-specify-version-in-only-one-place-when-using-pyproject-toml
-RUN . /app/.venv/bin/activate && pip install -e $APP_API_DIR && deactivate
-# Create path for database
-RUN mkdir /db
-ENV DJANGO_DB_PATH=/db
-# We choose not to define database as a volume during build due to some downsides
-# See: https://boxboat.com/2017/01/23/volumes-and-dockerfiles-dont-mix/
-# Rather do this at runtime with `docker run` or `docker-compose`.
-# VOLUME ["/db"]
-# Create a new empty database (migrated to the newest schema)
-RUN /app/.venv/bin/python api/manage.py migrate
-# Give caddy user rights to write to database
-RUN chown -R caddy: /db && chmod +w /db
-# Setup static HTML for API
-ENV DJANGO_STATIC_ROOT=/app/api/static-root/static
-RUN /app/.venv/bin/python api/manage.py collectstatic
-# Add command scripts that might useful during runtime
-COPY deploy/manage /usr/local/bin
-
-# Copy the statically built UI files
-COPY --from=ui-builder ${UI_BUILD} /app/ui
-
-# Default supervisor config: /etc/supervisor/conf.d/supervisord.conf
-COPY deploy/supervisord.conf /app
-COPY deploy/Caddyfile /app
-
-# Default vars for supervisor
-ENV GUNICORN_WORKERS=5
-ENV GUNICORN_TIMEOUT=30
-# Run application
-EXPOSE 8080
-# Set default directory when app starts (or container is entered)
-WORKDIR /app
 # Default command to run if nothing else is specified.
 CMD ["/usr/bin/supervisord","-c","/app/supervisord.conf"]
 

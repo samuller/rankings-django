@@ -47,6 +47,12 @@ test() {
     poetry run coverage report --fail-under=75
 }
 
+gen-docker() {
+    cd deploy
+    # cat Dockerfile > Dockerfile.new
+    sed -e '/#:-- IMPORT: setup-app.Dockerfile --:#/{r setup-app.Dockerfile' -e 'd;}' Dockerfile > Dockerfile.new
+}
+
 if [ "$#" -gt 1 ]; then
     echo -n "Too many args. "
     help
