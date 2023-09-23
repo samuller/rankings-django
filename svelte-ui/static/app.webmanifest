@@ -1,0 +1,14 @@
+{
+    "name": "Rankings",
+    "short_name": "Rankings",
+    "description": "Rankings.",
+    "icons": [
+      {
+        "src": "favicon.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ],
+    "display": "minimal-ui",
+    "start_url": "/"
+}
