@@ -49,8 +49,7 @@ test() {
 
 gen-docker() {
     cd deploy
-    # cat Dockerfile > Dockerfile.new
-    sed -e '/#:-- IMPORT: setup-app.Dockerfile --:#/{r setup-app.Dockerfile' -e 'd;}' Dockerfile > Dockerfile.new
+    sed -e '/#:-- IMPORT: setup-app.Dockerfile --:#/{r setup-app.Dockerfile' -e 'd;}' Dockerfile.template > Dockerfile
 }
 
 if [ "$#" -gt 1 ]; then
