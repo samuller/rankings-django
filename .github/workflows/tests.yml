@@ -35,7 +35,7 @@ jobs:
 
   test-backend:
     needs: change-detection
-    if: ${{ needs.change-detection.outputs.backend == 'true' || GITHUB_EVENT_NAME == 'workflow_dispatch' }}
+    if: ${{ needs.change-detection.outputs.backend == 'true' || $GITHUB_EVENT_NAME == 'workflow_dispatch' }}
 
     runs-on: ${{ matrix.os }}
 
@@ -84,7 +84,7 @@ jobs:
 
   test-ui:
     needs: change-detection
-    if: ${{ needs.change-detection.outputs.frontend == 'true' || GITHUB_EVENT_NAME == 'workflow_dispatch' }}
+    if: ${{ needs.change-detection.outputs.frontend == 'true' || $GITHUB_EVENT_NAME == 'workflow_dispatch' }}
 
     runs-on: ${{ matrix.os }}
 
