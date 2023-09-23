@@ -190,7 +190,7 @@ COPY $SRC_API_DIR $APP_API_DIR
 # Installing our code as an (editable) package is currently only needed so that
 # we can extract the version at runtime (without duplication) using the
 # approach from: https://stackoverflow.com/questions/67085041/how-to-specify-version-in-only-one-place-when-using-pyproject-toml
-RUN /app/.venv/bin/pip install -e $APP_API_DIR
+RUN . /app/.venv/bin/activate && pip install -e $APP_API_DIR && deactivate
 # Create path for database
 RUN mkdir /db
 ENV DJANGO_DB_PATH=/db
