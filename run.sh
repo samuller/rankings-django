@@ -50,6 +50,16 @@ test() {
 gen-docker() {
     cd deploy
     sed -e '/#:-- IMPORT: setup-app.Dockerfile --:#/{r setup-app.Dockerfile' -e 'd;}' Dockerfile.template > Dockerfile
+    cd -
+}
+
+build() {
+    # TODO: Cached builds:
+    # - https://docs.gitlab.com/ee/ci/docker/docker_layer_caching.html
+    # - https://stackoverflow.com/questions/52646303/is-it-possible-to-cache-multi-stage-docker-builds/68459169#68459169
+    # - https://docs.docker.com/engine/reference/commandline/build/#cache-from
+    gen-docker
+    time docker build -t rankings-site:0.0.1 -f deploy/Dockerfile .
 }
 
 if [ "$#" -gt 1 ]; then

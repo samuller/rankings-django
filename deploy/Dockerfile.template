@@ -5,7 +5,7 @@
 # Config format reference: https://docs.docker.com/engine/reference/builder/
 #
 # Build:
-#     time docker build --progress=plain -t rankings-site:0.0.1 -f deploy/Dockerfile .
+#     ./run.sh build
 # Run:
 #     docker run -t --rm -p 8081:8080 rankings-site:0.0.1
 # Debug in container:
