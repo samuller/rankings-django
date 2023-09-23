@@ -44,7 +44,7 @@ test() {
     # Generate HTML coverage report
     poetry run coverage html --show-contexts
     # Print coverage report
-    poetry run coverage report --fail-under=75
+    poetry run coverage report --fail-under=80
 }
 
 gen-docker() {
