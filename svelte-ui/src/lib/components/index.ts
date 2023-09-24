@@ -2,6 +2,7 @@ import AddButton from './add-button.svelte';
 import AddMatch from './add-match.svelte';
 import Card from './card.svelte';
 import DynamicData from './dynamic-data.svelte';
+import Flag from './flag.svelte';
 import Footer from './footer.svelte';
 import GaussianPlot from './gaussian-plot.svelte'
 import Icon from './icon.svelte'
@@ -14,6 +15,6 @@ import Table, { type CellDetail } from './table.svelte';
 import TimePlot from './time-plot.svelte';
 
 export {
-    AddButton, AddMatch, Card, DynamicData, Footer, GaussianPlot, Icon, Loader, Navbar,
+    AddButton, AddMatch, Card, DynamicData, Flag, Footer, GaussianPlot, Icon, Loader, Navbar,
     PagingNav, PendingMatches, Tabs, TimePlot, Table, type CellDetail
 };
