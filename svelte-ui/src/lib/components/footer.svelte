@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { readJSONAPI } from "$lib/api";
+    import { dateToLocalISOWithTZ } from '$lib/utils';
 
     // See vite.config.ts.
     const version = __APP_VERSION__;
-    $: shortBuildDate = (version.buildDate ?? "unknown").slice(0, 10);
-    $: longBuildDate = (version.buildDate ?? "unknown").replaceAll(/[TZ]/g, " ");
+    // Convert ISO formatted UTC date string to local Date and then back to ISO string that has local timezone.
+    const buildDate = dateToLocalISOWithTZ(new Date(version.buildDate));
+    $: shortBuildDate = buildDate.slice(0, 10);
+    $: longBuildDate = buildDate.replaceAll(/[TZ]/g, " ");
 </script>
 
 <footer class="footer p-2 flex">
