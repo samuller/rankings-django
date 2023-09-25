@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Card, Tabs } from "$lib/components";
+	import { Card, TableWrap, Tabs } from "$lib/components";
 	import { activitiesAbout, navTitle } from '../../store';
 
 	let truekskillTab = {
@@ -55,47 +55,21 @@
 		In Trueskill each game type needs to define a few crucial parameters that specify how games vary in skill
 		level and how player progression and skill values are represented. These parameters are as follows:
 	</p>
-	<table>
-		<thead>
-		  <tr class="text-left">
-			<th>Parameter</th>
-			<th class="w-40 text-center">Default Value</th>
-			<th>Meaning</th>
-		  </tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>Skill value</td>
-				<td>0 to 50</td>
-				<td>The skill value is defined to vary within this range so that values are more comfortable for people to work with (as opposed to values such as 0.008746 or 783,139).</td>
-			</tr>
-			<tr>
-				<td>Initial mean (𝛍<span style="vertical-align: bottom; font-size: 0.4em;">O</span>)</td>
-				<td>25</td>
-				<td>The mean of an average player and which is also assigned as the initial mean value to all new players.</td>
-			</tr>
-			<tr>
-				<td>Initial standard deviation (𝛔<span style="vertical-align: bottom; font-size: 0.4em;">O</span>)</td>
-				<td><sup>25</sup>&frasl;<sub>3</sub> = 8.333...</td>
-				<td>The standard deviation of a completely new player about which no information is yet known.</td>
-			</tr>
-			<tr>
-				<td>Dynamics factor (𝛕)</td>
-				<td><sup>25</sup>&frasl;<sub>300</sub> = 0.08333...</td>
-				<td>A variable added to a player's standard deviation before every game to account for the fact that player's skills change over time.</td>
-			</tr>
-			<tr>
-				<td>Skill chain (𝛃)</td>
-				<td><sup>25</sup>&frasl;<sub>6</sub> = 4.1667...</td>
-				<td>Defines the level of skill of a game. The skill chain defines the skill difference between the lowest and highest possible skill levels that can be achieved.</td>
-			</tr>
-			<tr>
-				<td>Draw probability (𝛆)</td>
-				<td>10%</td>
-				<td>The chance of a draw occuring. Even for games where draws are technically impossible, this value is still needed for calculations such as finding match set-ups that are likely to be very close to drawing.</td>
-			</tr>
-		</tbody>
-	</table>
+	<TableWrap
+		columns={[
+			{title: 'Parameter', classes: 'flex-1 pr-2'},
+			{title: 'Default Value', classes: 'flex-1 pr-2 text-center'},
+			{title: 'Meaning', classes: 'flex-[5_5_0%]', headerClasses: 'max-sm:hidden'}
+		]}
+		rows={[
+			['Skill value', '0 to 50', 'The skill value is defined to vary within this range so that values are more comfortable for people to work with (as opposed to values such as 0.008746 or 783,139).'],
+			['Initial mean (𝛍<span class="align-bottom text-[0.4em]">O</span>)', '25', 'The mean of an average player and which is also assigned as the initial mean value to all new players.'],
+			['Initial standard deviation (𝛔<span class="align-bottom text-[0.4em]">O</span>)', '<sup>25</sup>&frasl;<sub>3</sub> = 8.333...', 'The standard deviation of a completely new player about which no information is yet known.'],
+			['Dynamics factor (𝛕)', '<sup>25</sup>&frasl;<sub>300</sub> = 0.08333...', "A variable added to a player's standard deviation before every game to account for the fact that player's skills change over time."],
+			['Skill chain (𝛃)', '<sup>25</sup>&frasl;<sub>6</sub> = 4.1667...', 'Defines the level of skill of a game. The skill chain defines the skill difference between the lowest and highest possible skill levels that can be achieved.'],
+			['Draw probability (𝛆)', '10%', 'The chance of a draw occuring. Even for games where draws are technically impossible, this value is still needed for calculations such as finding match set-ups that are likely to be very close to drawing.'],
+		]}
+	></TableWrap>
 </template>
 
 <template id="about-website">
@@ -121,26 +95,5 @@
 <style lang="postcss">
 	p {
 		@apply mt-3;
-	}
-
-	table {
-		@apply bg-gray-500;
-	}
-
-	th {
-		@apply bg-gray-900;
-		color: white;
-	}
-
-	tr:nth-of-type(odd) {
-		@apply bg-gray-700;
-	}
-
-	td, th {
-		padding: 10px;
-	}
-
-	td:nth-child(2) {
-		text-align:center;
 	}
 </style>
