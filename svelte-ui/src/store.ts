@@ -1,3 +1,4 @@
+import { error } from '@sveltejs/kit';
 import { writable } from 'svelte/store';
 import { derived } from '@square/svelte-store';
 import { DefaultDict, readJSONAPIList, type PageableAPIStore } from '$lib/api';
@@ -16,11 +17,13 @@ export const activitiesAbout = readJSONAPIList<Activity[]>([], '/api/activities/
 
 export const currentActivity = derived([currentActivityUrl, activities], 
   ([$currentActivityUrl , $activities]) => {
-    if ($currentActivityUrl == null) {
+    if ($currentActivityUrl == null || $activities.length == 0) {
       return null;
     }
-    return $activities?.find((act: Activity) => act.url == $currentActivityUrl!)
-});
+    const found = $activities?.find((act: Activity) => act.url == $currentActivityUrl!)
+    // if (!found) { throw error(404, 'Not Found'); }
+    return found;
+}, null);
 
 export interface Player {
   id: number;
