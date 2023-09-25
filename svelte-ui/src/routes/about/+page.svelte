@@ -59,7 +59,7 @@
 		columns={[
 			{title: 'Parameter', classes: 'flex-1 pr-2'},
 			{title: 'Default Value', classes: 'flex-1 pr-2 text-center'},
-			{title: 'Meaning', classes: 'flex-[5_5_0%]', headerClasses: 'max-sm:hidden'}
+			{title: 'Meaning', classes: 'flex-[5_5_0%]'}
 		]}
 		rows={[
 			['Skill value', '0 to 50', 'The skill value is defined to vary within this range so that values are more comfortable for people to work with (as opposed to values such as 0.008746 or 783,139).'],
