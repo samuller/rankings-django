@@ -9,4 +9,7 @@ declare global {
 	}
 }
 
+// Compile-time definitions defined in vite.config.ts.
+declare const __APP_VERSION__: { name: string, buildDate: string };
+
 export {};
