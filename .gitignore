@@ -2,6 +2,9 @@
 db.sqlite3.*
 rankings/db.sqlite3
 rankings/rankings/secret_key.py
+tmp/
+*bash_history*
+deploy/Dockerfile
 
 # https://github.com/github/gitignore/blob/master/Python.gitignore
 
