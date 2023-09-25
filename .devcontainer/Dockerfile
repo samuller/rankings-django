@@ -24,10 +24,21 @@ ENV DEBIAN_FRONTEND=noninteractive
 ########
 # Install Node
 ########
-RUN apt-get update && apt-get -y install software-properties-common build-essential curl wget unzip sudo
+RUN apt-get update \
+    && apt-get -y install \
+        ca-certificates \
+        curl \
+        gnupg \
+        sudo
 
-RUN curl -sSL "https://deb.nodesource.com/setup_$NODE_MAJOR_VERSION.x" | sudo -E bash - && \
-    apt-get install -y nodejs
+# 30s
+RUN mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+    | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR_VERSION.x nodistro main" \
+    | sudo tee /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update \
+    && apt-get install -y nodejs
 
 ########
 # Install Python
@@ -38,10 +49,16 @@ RUN echo python${PYTHON_VERSION}
 # Install build dependencies.
 # This will bloat the image, but is necessary to "poetry install" the dependencies
 # then install specific Python version.
-RUN apt-get update && apt-get -y upgrade && apt-get install -y --no-install-recommends build-essential \
- && apt-get install -y curl software-properties-common git \
- && add-apt-repository ppa:deadsnakes/ppa && apt-get install -y \
- python${PYTHON_VERSION} python${PYTHON_VERSION}-venv python${PYTHON_VERSION}-dev
+# 288s
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    git \
+    software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa && apt-get install -y \
+    python${PYTHON_VERSION} \
+    python${PYTHON_VERSION}-venv \
+    python${PYTHON_VERSION}-dev
 RUN python${PYTHON_VERSION} -m venv /opt/venv
 # Make sure we use the virtualenv
 ENV PATH="/opt/venv/bin:$PATH"
@@ -77,7 +94,7 @@ ENV HOME=/home/vscode
 ########
 # Install Poetry
 ########
-
+# 60s
 RUN curl -sSL https://install.python-poetry.org | python${PYTHON_VERSION} -
 
 ########
@@ -85,7 +102,8 @@ RUN curl -sSL https://install.python-poetry.org | python${PYTHON_VERSION} -
 ########
 
 # Needed for cv2.
-RUN sudo apt-get install -y ffmpeg libsm6 libxext6
+# 270s
+# RUN sudo apt-get install -y ffmpeg libsm6 libxext6
 
 ENV DJANGO_DEBUG="True"
 
