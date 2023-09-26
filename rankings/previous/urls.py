@@ -5,7 +5,7 @@ from rest_framework import routers
 from . import views, api
 
 # Prefix for paths that generate HTML (server-side rendered)
-SSR_PREFIX = ""
+SSR_PREFIX = "ssr/"
 
 router = routers.DefaultRouter()
 router.register("activities", api.ActivityViewSet)
