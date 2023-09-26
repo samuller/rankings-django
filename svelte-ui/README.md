@@ -3,7 +3,8 @@
 
 ## Initial creation of project
 
-This Svelte project was created by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte). 
+This Svelte project was created by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+
 ```bash
 # Create a new project SvelteKit project in "svelte-ui" folder.
 # Interactive options will appear. Chosen options were:
