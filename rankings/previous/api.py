@@ -83,7 +83,7 @@ class ActivitySerializer(
 
 
 class ActivityViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
-    """ViewSet for viewing and editing Activities."""
+    """API for handling all known activities."""
 
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
@@ -126,7 +126,7 @@ class PlayerSerializer(
 
 
 class PlayerViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
-    """ViewSet for viewing and editing players."""
+    """API for handling all known players."""
 
     queryset = Player.objects.filter(active=True)
     serializer_class = PlayerSerializer
@@ -156,7 +156,7 @@ class RankingSerializer(
 
 
 class RankingViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
-    """ViewSet for viewing and editing Rankings."""
+    """API for handling rankings of players per activity."""
 
     queryset = Ranking.objects.annotate(skill=SKILL_EXPRESSION).filter(
         player__active=True, skill__gt=0
@@ -164,7 +164,7 @@ class RankingViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSe
     serializer_class = RankingSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filterset_fields = ["activity"]
-    search_fields: List[str] = []  # "activity.name", "player.name"]
+    search_fields: List[str] = ["skill"]  # "activity.name", "player.name"]
     field_filter_param = FIELD_FILTER_PARAM
 
 
@@ -225,7 +225,7 @@ class SkillHistorySerializer(
 
 
 class SkillHistoryViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
-    """ViewSet for viewing and editing SkillHistory."""
+    """API for handling the historical record of a player's skill over time (per activity)."""
 
     queryset = SkillHistory.objects.annotate(skill=SKILL_EXPRESSION).filter(
         player__active=True
@@ -322,14 +322,14 @@ class MatchFilter(FilterSet):
 
 
 class MatchViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
-    """ViewSet for viewing and editing Matches (a GameSet of multiple Games)."""
+    """API for handling matches (potentially a set of multiple games) per activity."""
 
     queryset = GameSession.objects.all()
     serializer_class = MatchSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filterset_class = MatchFilter
     filterset_fields = ["validated", "pending"]
-    search_fields: List[str] = []
+    search_fields: List[str] = ["submittor"]
     field_filter_param = FIELD_FILTER_PARAM
 
     def get_queryset(self):
@@ -349,7 +349,11 @@ def validate_all_matches(request: Request) -> Response:
 
 @api_view(["POST"])
 def undo_submit(request: Request, activity_url: str) -> Response:
-    """TODO: Allow a user to undo their own mistaken submission (within some constraints)."""
+    """
+    (Not yet implemented) API to undo submitted matches.
+
+    TODO: Allow a user to undo their own mistaken submission (within some constraints).
+    """
     submittor = identify_request_source(request)
 
     activity = Activity.objects.get(url=activity_url)
@@ -393,7 +397,7 @@ def gen_valid_reason_response(valid: bool, reason: str) -> HttpResponse:
 @authentication_classes([])
 def submit_match(request: Request, activity_url: str) -> Response:
     """
-    View to submit and record one or matches.
+    Submit or record one or more matches.
 
     Parameters
     ----------
