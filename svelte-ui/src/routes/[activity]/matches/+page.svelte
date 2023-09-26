@@ -21,16 +21,24 @@
 <PendingMatches matches={pendingMatches} table={pendingMatchesTable}></PendingMatches>
 {/if}
 
-<div class="w-full md:w-1/2 text-gray-700">
-	<h2 class="text-2xl font-bold text-left">Match history</h2>
-	<p class="text-left">Reported matches which have been validated.</p>
-</div>
-<PagingNav {pageNr} pageable={matches}></PagingNav>
 <DynamicData data={matches}></DynamicData>
 {#if matchesTable.length > 0}
+	<div class="w-full md:w-1/2 text-gray-700">
+		<h2 class="text-2xl font-bold text-left">Match history</h2>
+		<p class="text-left">Reported matches which have been validated.</p>
+	</div>
+	<PagingNav {pageNr} pageable={matches}></PagingNav>
 	<Table
 		columnNames={['ID #', 'Date', 'Team 1', 'Team 2']}
 		columnAlignments={['text-center', 'text-center', 'text-center', 'text-center']}
 		rows={matchesTable}
 	></Table>
+{:else}
+	<div class="w-full md:w-1/2 text-gray-700">
+		<h2 class="text-2xl font-bold text-left">Match history</h2>
+		<p class="text-left">
+			There are no matches that have been validated. Go to the
+			<a href={`/${$page.params.activity}`} class="text-sky-500">summary page</a> to submit new matches.
+		</p>
+	</div>
 {/if}

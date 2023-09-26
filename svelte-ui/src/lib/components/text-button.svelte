@@ -18,6 +18,6 @@
     }
 </script>
 
-<span class="underline" on:click={triggerPress} on:keyup={triggerPress} tabindex="0" role="button">
+<span class="underline text-sky-500" on:click={triggerPress} on:keyup={triggerPress} tabindex="0" role="button">
     <slot></slot>
 </span>

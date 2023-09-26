@@ -11,7 +11,11 @@
 
 <div class="w-full md:w-1/2 text-gray-700">
 	<h2 class="text-2xl font-bold text-left">{recent ? "Recent pending" : "Pending"} match results</h2>
+	{#if table.length > 0}
 	<p class="text-left">{recent ? "Recently reported" : "Reported"} matches which are still pending validation.</p>
+	{:else}
+	<p class="text-left">There are no recent matches pending validation.</p>
+	{/if}
 </div>
 <DynamicData data={matches}></DynamicData>
 {#if table.length > 0}

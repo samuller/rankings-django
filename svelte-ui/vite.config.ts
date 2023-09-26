@@ -22,7 +22,6 @@ export default defineConfig({
 		  },
 		},
 	},
-	// server: { hmr: false }
 	// Define these variables carefully as they get replaced directly in the code and can easily break it
 	// (e.g. string values need to be quoted in the code else code will look for variables by that name).
 	define: {

@@ -11,6 +11,7 @@
 		currentActivityUrl,
 		apiPendingMatches,
 	} from '../../store';
+	import TextButton from '$lib/components/text-button.svelte';
 
 	const dialogToastStyle = {
 		reversed: true,
@@ -60,8 +61,16 @@
 	columnAlignments={['text-left', 'text-right']}
 	rows={rankingsTable.slice(0, 5)}
 ></Table>
-{/if}
 <a href={`/${$page.params.activity}/players`} class="text-gray-700 text-2xl font-bold underline">View all players</a>
+{:else}
+<div class="w-full md:w-1/2 text-gray-700">
+	<h2 class="text-2xl font-bold text-left">Top players</h2>
+	<p class="text-left">
+		No ranked active players have been found - submit and validate some
+		<TextButton on:click={() => addMatchModal.showModal()}><span>new matches</span></TextButton>.
+	</p>
+</div>
+{/if}
 
 <PendingMatches recent={true} matches={pendingMatches} table={pendingMatchesTable}></PendingMatches>
 <a href={`/${$page.params.activity}/matches`} class="text-gray-700 text-2xl font-bold underline">View all matches</a>

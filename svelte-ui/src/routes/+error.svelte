@@ -3,6 +3,7 @@
 
     const url = new URL($page.url);
     const relativeUrl = url.pathname + url.search + url.hash;
+    // TODO: would be nice if we could direct user to first valid parent URL.
     const parentUrl = url.pathname.split('/').slice(0, -1).join("/");
 </script>
 
