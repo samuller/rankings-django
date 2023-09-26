@@ -21,7 +21,7 @@
 
 {#each $activities ?? [] as activity}
 	<a href="/{activity.url}">
-		<Card class="w-96 md:w-[600px] hover:bg-sky-500 hover:ring-sky-500 flex justify-center" style="tight">
+		<Card class="w-96 md:w-[600px] hover:bg-sky-500 hover:ring-sky-500 flex justify-center" variant="tight">
 				<span class="text-white group-hover:[text-shadow:_0_0_3px_blue] text-2xl">{activity.name}</span>
 		</Card>
 	</a>

@@ -26,7 +26,7 @@
 
 {#if $currentActivity}
     {#if !viewingPlayerProfile}
-        <Card class="w-full md:w-1/2 2xl:w-[calc(0.5*1536px)] flex justify-center" style="tight">
+        <Card class="w-full md:w-1/2 2xl:w-[calc(0.5*1536px)] flex justify-center" variant="tight">
             <span class="normal-case text-xl font-semibold">{$currentActivity.name}</span>
         </Card>
     {/if}

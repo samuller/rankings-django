@@ -4,10 +4,10 @@
     // Creates a `class` property, even though it is a reserved word
     // See: https://svelte.dev/docs/svelte-components#script-1-export-creates-a-component-prop
     export { classes as class };
-    export let style: "normal" | "tight" = "normal";
+    export let variant: "normal" | "tight" = "normal";
 
     let padding = "p-6";
-    if (style === "tight") {
+    if (variant === "tight") {
         padding = "px-6 py-4";
     }
 </script>
