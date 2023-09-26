@@ -31,7 +31,7 @@
     {/if}
 
 	<slot />
-{:else if $currentActivity === undefined}
+{:else if $currentActivity === null}
 	<div class="text-red-500">
 		<h3>Invalid activity: <code>{$currentActivityUrl}</code></h3>
 		<p>See list of activities <code><a href="/" class="underline text-sky-500">here</a></code>.</p>

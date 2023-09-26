@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { writable } from 'svelte/store';
-import { derived } from '@square/svelte-store';
+import { asyncDerived } from '@square/svelte-store';
 import { DefaultDict, readJSONAPIList, type PageableAPIStore } from '$lib/api';
 
 export const currentActivityUrl = writable<string | null>(null);
@@ -14,16 +14,18 @@ export interface Activity {
 }
 export const activities = readJSONAPIList<Activity[]>([], '/api/activities/?active=true&select=url,name');
 export const activitiesAbout = readJSONAPIList<Activity[]>([], '/api/activities/?active=true&select=url,name,about');
-
-export const currentActivity = derived([currentActivityUrl, activities], 
-  ([$currentActivityUrl , $activities]) => {
-    if ($currentActivityUrl == null || $activities.length == 0) {
+// AsycnDerive waits until after all of the async parents have finished loading.
+export const currentActivity = asyncDerived([currentActivityUrl, activities], 
+  // We return null to indicate error.
+  async ([$currentActivityUrl , $activities]) => {
+    if ($currentActivityUrl == null) {
       return null;
     }
-    const found = $activities?.find((act: Activity) => act.url == $currentActivityUrl!)
-    // if (!found) { throw error(404, 'Not Found'); }
+    const found = $activities.find((act: Activity) => act.url == $currentActivityUrl!);
+    // Return null instead of undefined (which can't be differentiated from initial state).
+    if (!found) { return null; }
     return found;
-}, null);
+});
 
 export interface Player {
   id: number;
