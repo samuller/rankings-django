@@ -13,6 +13,7 @@
     $: viewingPlayerProfile = $page.url.pathname.includes("/player/");
 </script>
 
+<!-- We put this here in +layout as it should be inherited. -->
 <svelte:head>
 {#if $currentActivity}
 	<title>Rankings - {$navTitle}</title>

@@ -5,11 +5,19 @@
 	navTitle.set("");
 </script>
 
+<!-- We don't put this in +layout as it shouldn't be inherited. -->
 <svelte:head>
     <title>Rankings</title> 
 </svelte:head>
 
-<DynamicData data={activities}></DynamicData>
+<DynamicData data={activities} let:data={loaded}>
+	{#if loaded.length == 0}
+	<div class="text-black text-center">
+		<h4>Currently there are no activities.</h4>
+		<p>You can go to <a data-sveltekit-reload href="/admin/">admin tools</a> to add some.</p>
+	</div>
+	{/if}
+</DynamicData>
 
 {#each $activities ?? [] as activity}
 	<a href="/{activity.url}">

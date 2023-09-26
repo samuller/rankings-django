@@ -31,6 +31,8 @@
 
 {#await dataLoadPromise}
 	<Loader></Loader>
+{:then data}
+    <slot {data}></slot>
 {:catch error}
     <div class="flex flex-col">
         <p class="text-red-500">{error.message}</p>
