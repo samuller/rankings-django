@@ -116,6 +116,9 @@ jobs:
       - name: Show built files & size
         run: du -sh build/ && du -bah build/
         working-directory: svelte-ui
+      - name: Check for linting issues
+        run: npm run lint
+        working-directory: svelte-ui
       - name: Print out all outdated packages
         run: npm outdated
         working-directory: svelte-ui
