@@ -47,7 +47,7 @@ Usage:
 		};
 	});
 
-	const gaussian = function (mu: number, sigma: number, stepCount: number = 100) {
+	const gaussian = function (mu: number, sigma: number, stepCount = 100) {
 		var step = (limits[1] - limits[0]) / stepCount;
 		var dataX = [];
 		let dataY = [];

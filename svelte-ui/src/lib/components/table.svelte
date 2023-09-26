@@ -27,7 +27,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each rows as row, row_idx}
+			{#each rows as row}
 				<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 					{#each row as cell, cell_idx}
 						<td class="px-3 md:px-6 py-4 text-white {columnAlignments[cell_idx]}">

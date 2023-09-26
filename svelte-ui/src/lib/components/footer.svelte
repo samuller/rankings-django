@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { readJSONAPI } from '$lib/api';
 	import { dateToLocalISOWithTZ } from '$lib/utils';
 
 	// See vite.config.ts.
+	// eslint-disable-next-line  no-undef
 	const version = __APP_VERSION__;
 	// Convert ISO formatted UTC date string to local Date and then back to ISO string that has local timezone.
 	const buildDate = dateToLocalISOWithTZ(new Date(version.buildDate));

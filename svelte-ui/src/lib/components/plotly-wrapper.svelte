@@ -105,7 +105,7 @@ Usage:
 		const max_y_data = Math.max(...data_y_subset);
 
 		const yRangeMin = yRangeMinMax[0];
-		const yRangeMax = yRangeMinMax[1];
+		// const yRangeMax = yRangeMinMax[1];
 		// Add 10% buffer if near edge of y-axes.
 		const y_axis_buffer_dist = (max_y_data - min_y_data) * axisMargin;
 		const min_y = min_y_data - y_axis_buffer_dist;

@@ -79,7 +79,7 @@ const _apiPendingMatches = new DefaultDict(generateListAPIStore<Matches>) as {
 	[key: string]: PageableAPIStore<Matches[]>;
 };
 
-const addPagingToURL = function (url: string, pageNr: number = 1, limit: number = 100) {
+const addPagingToURL = function (url: string, pageNr = 1, limit = 100) {
 	const pagedUrl = new URL(url, window.location.href);
 	const offset = (pageNr - 1) * limit;
 	pagedUrl.searchParams.set('offset', offset.toString());
@@ -89,8 +89,8 @@ const addPagingToURL = function (url: string, pageNr: number = 1, limit: number 
 
 export const apiMatches = function (
 	activity_url: string,
-	pageNr: number = 1,
-	limit: number = 100
+	pageNr = 1,
+	limit = 100
 ): PageableAPIStore<Matches[]> {
 	const url = `/api/matches/${activity_url}/?ordering=-datetime&validated=1`;
 	return _apiMatches[addPagingToURL(url, pageNr, limit)];
@@ -98,8 +98,8 @@ export const apiMatches = function (
 
 export const apiPendingMatches = function (
 	activity_url: string,
-	pageNr: number = 1,
-	limit: number = 100
+	pageNr = 1,
+	limit = 100
 ): PageableAPIStore<Matches[]> {
 	const url = `/api/matches/${activity_url}/?ordering=-datetime&pending=true`;
 	return _apiPendingMatches[addPagingToURL(url, pageNr, limit)];

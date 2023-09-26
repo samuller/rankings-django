@@ -99,7 +99,7 @@
 		for (let element of allSubmitButtons) {
 			(element as HTMLButtonElement).disabled = true;
 		}
-		const response = fetch(url, {
+		fetch(url, {
 			method: 'post',
 			headers: {
 				Accept: 'application/json',
@@ -114,7 +114,7 @@
 				return response.json();
 			})
 			.then((data) => {
-				dispatch('submit');
+				dispatch('submit', data);
 			})
 			.catch((err) => {
 				console.error(err);

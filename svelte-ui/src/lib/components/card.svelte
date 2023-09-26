@@ -1,5 +1,5 @@
 <script lang="ts">
-	let classes: String = '';
+	let classes = '';
 
 	// Creates a `class` property, even though it is a reserved word
 	// See: https://svelte.dev/docs/svelte-components#script-1-export-creates-a-component-prop

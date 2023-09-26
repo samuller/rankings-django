@@ -8,7 +8,7 @@
   ```
 -->
 <script lang="ts">
-	export let country: string = '';
+	export let country = '';
 	$: unicodePoints = [...country].map(
 		(char) => char.toUpperCase().charCodeAt(0) - 'A'.charCodeAt(0)
 	);

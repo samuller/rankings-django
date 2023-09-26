@@ -34,6 +34,7 @@ export interface PageableAPIStore<T> extends HeaderAPIStore<T> {
 export const readJSONAPI = function <T = any>(
 	initial: T,
 	url: string,
+	// eslint-disable-next-line  @typescript-eslint/no-empty-function
 	processHeaders: (_: Headers) => void = () => {}
 ): HeaderAPIStore<T> {
 	if (!browser) return {} as HeaderAPIStore<T>;

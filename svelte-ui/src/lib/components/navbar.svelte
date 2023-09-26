@@ -8,6 +8,7 @@
 	 * This function is only needed when you want to use DaisyUI's dropdown menu based on the <details> tag.
 	 * See: https://daisyui.com/components/dropdown/#dropdown-menu-using-details-tag
 	 */
+	// eslint-disable-next-line  @typescript-eslint/no-unused-vars
 	function closeMenuIfOpen(event: Event) {
 		if (!(event?.target instanceof HTMLElement)) {
 			return;
