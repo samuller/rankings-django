@@ -14,29 +14,29 @@ Usage:
 	import { onMount } from 'svelte';
 
 	// Data to plot.
-	export let data: { x: number[], y: number[] } = { x: [], y: [] };
+	export let data: { x: number[]; y: number[] } = { x: [], y: [] };
 	// Options for hard-coding or auto-scaling axes.
 	export let initRangeX: [number | null, number | null] | null = [null, null];
-	export let yRangeMinMax: (number|null)[] = [null, null];
+	export let yRangeMinMax: (number | null)[] = [null, null];
 	// Plot titles.
-	export let title = "";
-	export let xAxisTitle = "";
-	export let yAxisTitle = "";
+	export let title = '';
+	export let xAxisTitle = '';
+	export let yAxisTitle = '';
 
-    export let showRangeSlider = false;
-    export let xAxisFixedRange = false;
-    export let chartType = "lines+markers";
-    export let fill = "";
-    export let shapes: any[] = [];
-    export let annotations: any[] = [];
-    export let smoothing = 0;
+	export let showRangeSlider = false;
+	export let xAxisFixedRange = false;
+	export let chartType = 'lines+markers';
+	export let fill = '';
+	export let shapes: any[] = [];
+	export let annotations: any[] = [];
+	export let smoothing = 0;
 	export let dtick = 1;
 
-	let loadingMessage = "Loading charting library...";
+	let loadingMessage = 'Loading charting library...';
 
 	// Add 10% marging if near edge of axes.
 	const axisMargin = 0.1;
-	const gridColor =  '#bbb';
+	const gridColor = '#bbb';
 	const bgColor = 'rgba(0,0,0,0)';
 
 	let loadingPlotlyLibrary = true;
@@ -66,10 +66,10 @@ Usage:
 		return [sorted_array[lo], sorted_array[hi]];
 	};
 
-    const getClosestValid = function (sorted_array: number[], value: number): number {
-        const closest = getClosestValues(sorted_array, value);
-        return closest[0] ?? closest[1];
-    }
+	const getClosestValid = function (sorted_array: number[], value: number): number {
+		const closest = getClosestValues(sorted_array, value);
+		return closest[0] ?? closest[1];
+	};
 
 	/**
 	 * We do our own custom updating of range limits.
@@ -110,15 +110,20 @@ Usage:
 		const y_axis_buffer_dist = (max_y_data - min_y_data) * axisMargin;
 		const min_y = min_y_data - y_axis_buffer_dist;
 		const max_y = max_y_data + y_axis_buffer_dist;
-		new_layout['yaxis.range'] = [(yRangeMin != null) ? (yRangeMin - y_axis_buffer_dist) : min_y, max_y];
+		new_layout['yaxis.range'] = [yRangeMin != null ? yRangeMin - y_axis_buffer_dist : min_y, max_y];
 
 		return new_layout;
-	}
+	};
 
 	/**
 	 * Our custom handling when user scrolls interface.
 	 */
-	const onRelayout = async function (Plotly: any, data_x: number[], data_y: number[], relayoutData: any) {
+	const onRelayout = async function (
+		Plotly: any,
+		data_x: number[],
+		data_y: number[],
+		relayoutData: any
+	) {
 		// We currently only have handling for changes to the x-axis.
 		if (!('xaxis.range[0]' in relayoutData && 'xaxis.range[1]' in relayoutData)) {
 			return;
@@ -134,7 +139,7 @@ Usage:
 		}
 	};
 
-	const setupPlot = async function() {
+	const setupPlot = async function () {
 		// @ts-ignore
 		const Plotly = window?.Plotly;
 		// Check if library has been loaded.
@@ -151,8 +156,8 @@ Usage:
 				x: data_x,
 				y: data_y,
 				mode: chartType,
-                ...(fill && { fill: fill }),
-                ...(smoothing && { line: {shape: 'spline', smoothing: smoothing} }),
+				...(fill && { fill: fill }),
+				...(smoothing && { line: { shape: 'spline', smoothing: smoothing } })
 			}
 		];
 		const layout = {
@@ -175,25 +180,24 @@ Usage:
 				...(true && { range: initRangeX }),
 				...(xAxisTitle && { title: { text: xAxisTitle } }),
 				...(showRangeSlider && { rangeslider: { visible: true } }),
-				...(xAxisFixedRange && { fixedrange: true }),
-                
+				...(xAxisFixedRange && { fixedrange: true })
 			},
 			// , autorange: true
 			yaxis: {
 				gridcolor: gridColor,
 				fixedrange: true,
 				hoverformat: '.2f',
-				...(yAxisTitle && { title: { text: yAxisTitle } }),
+				...(yAxisTitle && { title: { text: yAxisTitle } })
 			},
-            ...(shapes && { shapes: shapes }),
-            ...(annotations && { annotations: annotations }),
+			...(shapes && { shapes: shapes }),
+			...(annotations && { annotations: annotations })
 		};
 		const config = {
 			// staticPlot: true,
 			responsive: true,
 			showAxisDragHandles: false,
 			scrollZoom: false,
-			displayModeBar: false,
+			displayModeBar: false
 		};
 		Plotly.newPlot(plotElement, traces, layout, config);
 
@@ -209,24 +213,30 @@ Usage:
 	};
 
 	// Update plot if "data" prop changes.
-	$: if (data && plotElement) { setupPlot(); }
+	$: if (data && plotElement) {
+		setupPlot();
+	}
 
 	// Ensure code only runs in browser (and not on server).
 	onMount(() => {
 		// When charting library takes very long to load, we try to suggest that something's up.
 		// It might just be very slow, but it could also be blocked or require a page refresh.
 		setTimeout(() => {
-			loadingMessage = "Loading charting library... hopefully...";
+			loadingMessage = 'Loading charting library... hopefully...';
 		}, 10000);
 	});
 </script>
 
 <svelte:head>
-	<script on:load|once={setupPlot} src="https://cdn.plot.ly/plotly-2.26.0.min.js" charset="utf-8"></script>
+	<script
+		on:load|once={setupPlot}
+		src="https://cdn.plot.ly/plotly-2.26.0.min.js"
+		charset="utf-8"
+	></script>
 </svelte:head>
 
 {#if browser && !('Plotly' in window) && loadingPlotlyLibrary}
-<div>{loadingMessage}</div>
+	<div>{loadingMessage}</div>
 {/if}
 <!-- style="width:600px;height:250px;" -->
 <div bind:this={plotElement} />
@@ -249,19 +259,18 @@ Usage:
 	  See: https://community.plotly.com/t/hide-the-handler-grabarea-of-rangeslider/17437/2
 	*/
 	:global(.plotly .rangeslider-grabber-min) {
-    	display: none;
+		display: none;
 	}
 	:global(.plotly .rangeslider-grabber-max) {
-    	display: none;
+		display: none;
 	}
 	/* rangeslider-container */
 	:global(.rangeslider-mask-min) {
-    	user-select: none;
+		user-select: none;
 		pointer-events: none;
 	}
 	:global(.rangeslider-mask-max) {
-    	user-select: none;
+		user-select: none;
 		pointer-events: none;
 	}
-	
 </style>

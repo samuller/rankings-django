@@ -23,7 +23,7 @@
 	};
 </script>
 
-<DynamicData data={playerInfo}></DynamicData>
+<DynamicData data={playerInfo} />
 {#if $playerInfo}
 	<Card
 		class="w-full md:w-1/2 2xl:w-[calc(0.5*1536px)] flex flex-col items-center justify-center"
@@ -36,26 +36,26 @@
 	</Card>
 
 	<div class="w-[110%] md:w-[90%]">
-	{#if skillPlotData}
-		<TimePlot
-			title="Skill progress"
-			xAxisTitle="Matches played"
-			yAxisTitle="Skill level"
-			data={skillPlotData}
-			initRangeX={[Math.max(skillPlotData.x.length - 15, 0), skillPlotData.x.length]}
-			yRangeMinMax={[-2, null]}
-		/>
-	{/if}
-	{#if $currentSkill && $currentSkill.length == 1}
-		<GaussianPlot
-			title="Current skill estimate"
-			xAxisTitle="Skill level"
-			yAxisTitle="Likelihood of actual skill (%)"
-			mu={$currentSkill[0].mu}
-			sigma={$currentSkill[0].sigma}
-			limits={[0, 50]}
-			verticalIndicators={[{ xPos: $currentSkill[0].skill, title: 'Skill value' }]}
-		/>
-	{/if}
+		{#if skillPlotData}
+			<TimePlot
+				title="Skill progress"
+				xAxisTitle="Matches played"
+				yAxisTitle="Skill level"
+				data={skillPlotData}
+				initRangeX={[Math.max(skillPlotData.x.length - 15, 0), skillPlotData.x.length]}
+				yRangeMinMax={[-2, null]}
+			/>
+		{/if}
+		{#if $currentSkill && $currentSkill.length == 1}
+			<GaussianPlot
+				title="Current skill estimate"
+				xAxisTitle="Skill level"
+				yAxisTitle="Likelihood of actual skill (%)"
+				mu={$currentSkill[0].mu}
+				sigma={$currentSkill[0].sigma}
+				limits={[0, 50]}
+				verticalIndicators={[{ xPos: $currentSkill[0].skill, title: 'Skill value' }]}
+			/>
+		{/if}
 	</div>
 {/if}

@@ -4,10 +4,10 @@
 
 /* See: https://stackoverflow.com/questions/75079019/tailwind-css-fallback-for-new-screen-length-types-such-as-lvh-svh */
 @layer utilities {
-    .h-screen {
-        /* See: https://stackoverflow.com/questions/37112218/css3-100vh-not-constant-in-mobile-browser */
-        height: 100dvh;
-    }
+	.h-screen {
+		/* See: https://stackoverflow.com/questions/37112218/css3-100vh-not-constant-in-mobile-browser */
+		height: 100dvh;
+	}
 }
 
 /*
@@ -15,16 +15,16 @@
   Especially needed for "About" page or anywhere that formatted html is dynamically injected.
 */
 p {
-    @apply text-base;
-    @apply mb-5;
+	@apply text-base;
+	@apply mb-5;
 }
 
 p a {
-    @apply text-emerald-400;
-    /* @apply link; */
+	@apply text-emerald-400;
+	/* @apply link; */
 }
 
 p ~ ul {
-    @apply leading-relaxed;
-    @apply list-disc;
+	@apply leading-relaxed;
+	@apply list-disc;
 }

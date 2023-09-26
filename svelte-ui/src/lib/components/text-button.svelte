@@ -9,15 +9,21 @@
   ```
 -->
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
-    const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 
-    function triggerPress() {
-        dispatch('click', {});
-    }
+	function triggerPress() {
+		dispatch('click', {});
+	}
 </script>
 
-<span class="underline text-sky-500" on:click={triggerPress} on:keyup={triggerPress} tabindex="0" role="button">
-    <slot></slot>
+<span
+	class="underline text-sky-500"
+	on:click={triggerPress}
+	on:keyup={triggerPress}
+	tabindex="0"
+	role="button"
+>
+	<slot />
 </span>

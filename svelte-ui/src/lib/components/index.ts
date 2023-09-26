@@ -5,8 +5,8 @@ import Dropdown from './dropdown.svelte';
 import DynamicData from './dynamic-data.svelte';
 import Flag from './flag.svelte';
 import Footer from './footer.svelte';
-import GaussianPlot from './gaussian-plot.svelte'
-import Icon from './icon.svelte'
+import GaussianPlot from './gaussian-plot.svelte';
+import Icon from './icon.svelte';
 import Loader from './loader.svelte';
 import Navbar from './navbar.svelte';
 import PagingNav from './paging-nav.svelte';
@@ -17,6 +17,22 @@ import Tabs from './tabs.svelte';
 import TimePlot from './time-plot.svelte';
 
 export {
-    AddButton, AddMatch, Card, Dropdown, DynamicData, Flag, Footer, GaussianPlot, Icon, Loader,
-    Navbar, PagingNav, PendingMatches, Table, TableWrap, Tabs, TimePlot, type CellDetail
+	AddButton,
+	AddMatch,
+	Card,
+	Dropdown,
+	DynamicData,
+	Flag,
+	Footer,
+	GaussianPlot,
+	Icon,
+	Loader,
+	Navbar,
+	PagingNav,
+	PendingMatches,
+	Table,
+	TableWrap,
+	Tabs,
+	TimePlot,
+	type CellDetail
 };

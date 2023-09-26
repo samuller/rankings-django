@@ -2,10 +2,7 @@
 	import { page } from '$app/stores';
 	import { DynamicData, PagingNav, PendingMatches, Table, type CellDetail } from '$lib/components';
 	import { convertMatchesToTable } from '$lib/utils';
-	import {
-		apiMatches,
-		apiPendingMatches,
-	} from '../../../store';
+	import { apiMatches, apiPendingMatches } from '../../../store';
 
 	$: pageNr = parseInt($page.url.searchParams.get('page') ?? '1');
 
@@ -18,21 +15,21 @@
 </script>
 
 {#if pageNr == 1}
-<PendingMatches matches={pendingMatches} table={pendingMatchesTable}></PendingMatches>
+	<PendingMatches matches={pendingMatches} table={pendingMatchesTable} />
 {/if}
 
-<DynamicData data={matches}></DynamicData>
+<DynamicData data={matches} />
 {#if matchesTable.length > 0}
 	<div class="w-full md:w-1/2 text-gray-700">
 		<h2 class="text-2xl font-bold text-left">Match history</h2>
 		<p class="text-left">Reported matches which have been validated.</p>
 	</div>
-	<PagingNav {pageNr} pageable={matches}></PagingNav>
+	<PagingNav {pageNr} pageable={matches} />
 	<Table
 		columnNames={['ID #', 'Date', 'Team 1', 'Team 2']}
 		columnAlignments={['text-center', 'text-center', 'text-center', 'text-center']}
 		rows={matchesTable}
-	></Table>
+	/>
 {:else}
 	<div class="w-full md:w-1/2 text-gray-700">
 		<h2 class="text-2xl font-bold text-left">Match history</h2>

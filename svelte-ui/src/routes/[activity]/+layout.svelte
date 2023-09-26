@@ -1,35 +1,32 @@
 <script lang="ts">
-	import { page } from '$app/stores'
+	import { page } from '$app/stores';
 	import { Card, DynamicData } from '$lib/components';
-	import {
-		currentActivityUrl,
-		currentActivity,
-		navTitle,
-		activities,
-	} from '../../store';
+	import { currentActivityUrl, currentActivity, navTitle, activities } from '../../store';
 
 	currentActivityUrl.set($page.params.activity);
-	$: if ($currentActivity) { navTitle.set($currentActivity.name); }
-    $: viewingPlayerProfile = $page.url.pathname.includes("/player/");
+	$: if ($currentActivity) {
+		navTitle.set($currentActivity.name);
+	}
+	$: viewingPlayerProfile = $page.url.pathname.includes('/player/');
 </script>
 
 <!-- We put this here in +layout as it should be inherited. -->
 <svelte:head>
-{#if $currentActivity}
-	<title>Rankings - {$navTitle}</title>
-{:else}
-	<title>Rankings</title>
-{/if}
+	{#if $currentActivity}
+		<title>Rankings - {$navTitle}</title>
+	{:else}
+		<title>Rankings</title>
+	{/if}
 </svelte:head>
 
-<DynamicData data={activities}></DynamicData>
+<DynamicData data={activities} />
 
 {#if $currentActivity}
-    {#if !viewingPlayerProfile}
-        <Card class="w-full md:w-1/2 2xl:w-[calc(0.5*1536px)] flex justify-center" variant="tight">
-            <span class="normal-case text-xl font-semibold">{$currentActivity.name}</span>
-        </Card>
-    {/if}
+	{#if !viewingPlayerProfile}
+		<Card class="w-full md:w-1/2 2xl:w-[calc(0.5*1536px)] flex justify-center" variant="tight">
+			<span class="normal-case text-xl font-semibold">{$currentActivity.name}</span>
+		</Card>
+	{/if}
 
 	<slot />
 {:else if $currentActivity === null}
