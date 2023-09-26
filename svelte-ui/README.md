@@ -1,6 +1,5 @@
 # Rankings Svelte UI
 
-
 ## Initial creation of project
 
 This Svelte project was created by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
