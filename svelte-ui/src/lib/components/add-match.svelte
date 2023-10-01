@@ -95,6 +95,7 @@
 			teams: teams,
 			wins: winners
 		};
+		const gameCount = teams.length;
 		// Disable all submit buttons during request to prevent double-submissions.
 		for (let element of allSubmitButtons) {
 			(element as HTMLButtonElement).disabled = true;
@@ -114,6 +115,7 @@
 				return response.json();
 			})
 			.then((data) => {
+				data["gameCount"] = gameCount;
 				dispatch('submit', data);
 			})
 			.catch((err) => {

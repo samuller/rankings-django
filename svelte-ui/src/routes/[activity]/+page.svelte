@@ -34,11 +34,16 @@
 		return { id: player.id, name: player.name };
 	});
 
-	const onSubmitNewMatch = function () {
+	const onSubmitNewMatch = function (event) {
+		const data: { gameCount: number } = event.detail;
 		addMatchModal.close();
 		// Refresh data that's now changed.
 		apiPendingMatches($page.params.activity).reload();
-		toast.push('Match/es submitted!', { classes: ['toast-as-success'] });
+		let msg = 'Matches submitted!';
+		if (data.gameCount) {
+			msg = data.gameCount == 1 ? 'Match submitted!' : `${data.gameCount} matches submitted!`;
+		}
+		toast.push(msg, { classes: ['toast-as-success'] });
 	};
 	const onSubmitNewMatchError = function (err: any) {
 		const errorMsg = `${err.statusText} (${err.status})`;
