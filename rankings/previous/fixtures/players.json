@@ -3,7 +3,7 @@
     "model": "previous.player",
     "pk": 1,
     "fields": {
-      "name": "Zeus",
+      "name": "Zeus⚡",
       "email": "zeus@mtolympus.example.com",
       "active": true
     }
@@ -12,7 +12,7 @@
     "model": "previous.player",
     "pk": 2,
     "fields": {
-      "name": "Hera",
+      "name": "Hera 🤰",
       "email": "hera@mtolympus.example.com",
       "active": true
     }
@@ -21,7 +21,7 @@
     "model": "previous.player",
     "pk": 3,
     "fields": {
-      "name": "Poseidon",
+      "name": "Poseidon 🔱",
       "email": "poseidon@mtolympus.example.com",
       "active": true
     }
@@ -102,7 +102,7 @@
     "model": "previous.player",
     "pk": 12,
     "fields": {
-      "name": "Hades",
+      "name": "Hades 💀",
       "email": "hades@mtolympus.example.com",
       "active": true
     }
