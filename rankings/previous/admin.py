@@ -82,7 +82,7 @@ class GameSessionAdmin(admin.ModelAdmin):
     """Admin view for GameSessions."""
 
     list_display = ("__str__", "result_summary", "validation")
-    list_filter = ("validated",)
+    list_filter = ("validated", "activity")
     # date_hierarchy = 'datetime'
     actions = [
         "validate_matches_and_update_skill",

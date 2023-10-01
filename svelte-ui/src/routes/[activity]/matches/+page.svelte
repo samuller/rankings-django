@@ -15,7 +15,11 @@
 </script>
 
 {#if pageNr == 1}
-	<PendingMatches matches={pendingMatches} table={pendingMatchesTable} />
+	<PendingMatches
+		matches={pendingMatches}
+		table={pendingMatchesTable}
+		validationLink={`/admin/previous/gamesession/?activity__id__exact=${$page.params.activity}&validated__isnull=True`}
+	/>
 {/if}
 
 <DynamicData data={matches} />

@@ -7,6 +7,7 @@
 	export let matches: PageableAPIStore<Matches[]>;
 	export let table: CellDetail[][];
 	export let recent = false;
+	export let validationLink: string = null;
 </script>
 
 <div class="w-full md:w-1/2 text-gray-700">
@@ -15,7 +16,12 @@
 	</h2>
 	{#if table.length > 0}
 		<p class="text-left">
-			{recent ? 'Recently reported' : 'Reported'} matches which are still pending validation.
+			{recent ? 'Recently reported' : 'Reported'} matches which are still pending
+			{#if validationLink}
+				<a data-sveltekit-reload href={validationLink}>validation</a>.
+			{:else}
+				validation.
+			{/if}
 		</p>
 	{:else}
 		<p class="text-left">There are no recent matches pending validation.</p>
