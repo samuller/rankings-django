@@ -48,7 +48,12 @@ test() {
 }
 
 gen-docker() {
+    # Official docker builds do templating with `gawk` script (and variables read from JSON with `jq` and
+    # set with `eval`).
+    # See: https://github.com/docker-library/python/blob/master/apply-templates.sh
+    # And: https://github.com/docker-library/bashbrew/blob/master/scripts/jq-template.awk
     cd deploy
+    # https://askubuntu.com/questions/1442884/replace-a-line-of-text-in-a-file-with-the-contents-of-another-file
     sed -e '/#:-- IMPORT: setup-app.Dockerfile --:#/{r setup-app.Dockerfile' -e 'd;}' Dockerfile.template > Dockerfile
     cd -
 }
@@ -58,8 +63,13 @@ build() {
     # - https://docs.gitlab.com/ee/ci/docker/docker_layer_caching.html
     # - https://stackoverflow.com/questions/52646303/is-it-possible-to-cache-multi-stage-docker-builds/68459169#68459169
     # - https://docs.docker.com/engine/reference/commandline/build/#cache-from
+    VERSION=$(cat rankings/pyproject.toml | grep "^version = " | cut -d' ' -f3 | tr -d '"')
     gen-docker
-    time docker build -t rankings-site:0.0.1 -f deploy/Dockerfile .
+    time docker build \
+        --label "org.opencontainers.image.version=$VERSION" \
+        --tag "rankings-site:0.0.1" \
+        -f deploy/Dockerfile \
+        .
 }
 
 if [ "$#" -gt 1 ]; then

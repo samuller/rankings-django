@@ -32,6 +32,11 @@ COPY --from=ui-builder ${UI_BUILD} /app/ui
 COPY deploy/supervisord.conf /app
 COPY deploy/Caddyfile /app
 
+# https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
+# LABEL org.opencontainers.image.version="$VERSION"
+LABEL org.opencontainers.image.title=Rankings-site
+LABEL org.opencontainers.image.source="https://github.com/samuller/rankings-django"
+
 # Default vars for supervisor
 ENV GUNICORN_WORKERS=5
 ENV GUNICORN_TIMEOUT=30
