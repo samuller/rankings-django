@@ -63,11 +63,15 @@ build() {
     # - https://docs.gitlab.com/ee/ci/docker/docker_layer_caching.html
     # - https://stackoverflow.com/questions/52646303/is-it-possible-to-cache-multi-stage-docker-builds/68459169#68459169
     # - https://docs.docker.com/engine/reference/commandline/build/#cache-from
+    IMAGE="docker.io/library/rankings-site-test"
     VERSION=$(cat rankings/pyproject.toml | grep "^version = " | cut -d' ' -f3 | tr -d '"')
+    GIT_HASH=$(git rev-parse HEAD)
     gen-docker
     time docker build \
         --label "org.opencontainers.image.version=$VERSION" \
-        --tag "rankings-site:0.0.1" \
+        --label "org.opencontainers.image.revision=$GIT_HASH" \
+        --tag "$IMAGE:0.9.0" \
+        --tag "$IMAGE:latest" \
         -f deploy/Dockerfile \
         .
 }
