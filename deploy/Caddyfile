@@ -7,13 +7,25 @@
 	{$CADDY_GLOBAL:}
 	http_port {$HTTP_PORT:8080}
 	https_port {$HTTPS_PORT:8443}
+	log {
+		format console {
+			time_format "2006-01-02 15:04:05.000 -0700"
+			# Requires tzdata to be installed - but still seems to ignore TZ?
+			time_local
+		}
+	}
 }
 
 # Defaults support HTTP with any hostname or IP address for host.
 {$PROTOCOL:http}://{$HOST:} {
 	log access {
-		# sudo caddy add-package github.com/caddyserver/transform-encoder
-		format transform "{common_log}"
+		# See: https://github.com/caddyserver/transform-encoder
+		# Install: sudo caddy add-package github.com/caddyserver/transform-encoder
+		format transform `{request>remote_ip} - {request>user_id} [{ts}] "{request>method} {request>uri} {request>proto}" {status} {size} "{request>headers>Referer>[0]}" "{request>headers>User-Agent>[0]}"` {
+			# https://caddyserver.com/docs/caddyfile/directives/log#format-modules
+			time_format "2006-01-02 15:04:05.000 -0700"
+			time_local
+		}
 	}
 
 	# Create matcher for all Django URLs.
