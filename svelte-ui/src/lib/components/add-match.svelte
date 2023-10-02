@@ -115,7 +115,7 @@
 				return response.json();
 			})
 			.then((data) => {
-				data["gameCount"] = gameCount;
+				data['gameCount'] = gameCount;
 				dispatch('submit', data);
 			})
 			.catch((err) => {
