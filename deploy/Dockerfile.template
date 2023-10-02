@@ -133,6 +133,8 @@ RUN npm run build
 # This is an experiment to see how much build size would decrease if the image
 # was based on Alpine. The result was a decrease from 300mb to 140mb.
 FROM python:$PYTHON_VERSION-alpine$ALPINE_VERSION as combined-app-alpine
+ARG PYTHON_VERSION
+ARG ALPINE_VERSION
 ARG API_VENV
 ARG SRC_API_DIR
 ARG APP_API_DIR
@@ -168,7 +170,7 @@ RUN apk add --no-cache --repository=$EDGE_REPO caddy \
 #
 #:-- IMPORT: setup-app.Dockerfile --:#
 
-
+LABEL org.opencontainers.image.base.name="docker.io/library/python:$PYTHON_VERSION-alpine$ALPINE_VERSION"
 # ---------------------------------------------------------------------------- #
 # The "combined-app" image combines all parts of the site into a single
 # container image to simplify getting started easily. The services combined are:
@@ -179,6 +181,8 @@ RUN apk add --no-cache --repository=$EDGE_REPO caddy \
 # manage our multiple services within the Docker container.
 # See: https://docs.docker.com/config/containers/multi-service_container/
 FROM python:$PYTHON_VERSION-slim-$DEBIAN_VERSION as combined-app-debian
+ARG PYTHON_VERSION
+ARG DEBIAN_VERSION
 ARG CADDY_VERSION
 ARG UI_BUILD
 ARG API_VENV
@@ -230,6 +234,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
 #
 #:-- IMPORT: setup-app.Dockerfile --:#
 
+LABEL org.opencontainers.image.base.name="docker.io/library/python:$PYTHON_VERSION-slim-$DEBIAN_VERSION"
 # ---------------------------------------------------------------------------- #
 # A test version of "combined-app" that starts with example data.
 FROM combined-app-alpine as test-app
