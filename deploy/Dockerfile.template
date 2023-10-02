@@ -103,7 +103,9 @@ ENV PATH="${PATH}:${POETRY_VENV}/bin"
 WORKDIR $API_WORKDIR
 
 # Copy only files that specify dependencies
-COPY $SRC_API_DIR/poetry.lock $SRC_API_DIR/pyproject.toml ./
+COPY $SRC_API_DIR/poetry.lock ./
+# We use stripped-down pyproject.toml to separate dependency layer from our own app's layer
+COPY $SRC_API_DIR/pyproject.nover.toml ./pyproject.toml
 
 # Validate the project is properly configured
 RUN poetry check

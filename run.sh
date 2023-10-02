@@ -48,6 +48,14 @@ test() {
 }
 
 gen-docker() {
+    # Create stripped-down version of pyproject.toml (no version and comments) for use with Dockerfile so
+    # meaningless changes to it won't invalidate the following caching layers.
+    cat rankings/pyproject.toml \
+        | sed 's/^version = ".*"/version = "0"/' \
+        | sed 's/^\s*#.*//' \
+        | sed '/^$/d' \
+        > rankings/pyproject.nover.toml
+
     # Official docker builds do templating with `gawk` script (and variables read from JSON with `jq` and
     # set with `eval`).
     # See: https://github.com/docker-library/python/blob/master/apply-templates.sh

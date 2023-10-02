@@ -5,6 +5,7 @@ rankings/rankings/secret_key.py
 tmp/
 *bash_history*
 deploy/Dockerfile
+pyproject.nover.toml
 
 # https://github.com/github/gitignore/blob/master/Python.gitignore
 
