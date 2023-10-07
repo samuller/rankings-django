@@ -241,4 +241,4 @@ LABEL org.opencontainers.image.base.name="docker.io/library/python:$PYTHON_VERSI
 # A test version of "combined-app" that starts with example data.
 FROM combined-app-alpine as test-app
 
-RUN /app/.venv/bin/python api/manage.py loaddata game players
+RUN /app/.venv/bin/python api/manage.py loaddata api/previous/fixtures/example/*.json
