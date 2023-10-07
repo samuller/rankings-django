@@ -1,0 +1,758 @@
+[
+{
+  "model": "previous.adhocteam",
+  "pk": 1,
+  "fields": {
+    "session": 1
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 2,
+  "fields": {
+    "session": 1
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 3,
+  "fields": {
+    "session": 2
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 4,
+  "fields": {
+    "session": 2
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 5,
+  "fields": {
+    "session": 3
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 6,
+  "fields": {
+    "session": 3
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 7,
+  "fields": {
+    "session": 4
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 8,
+  "fields": {
+    "session": 4
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 9,
+  "fields": {
+    "session": 5
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 10,
+  "fields": {
+    "session": 5
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 11,
+  "fields": {
+    "session": 6
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 12,
+  "fields": {
+    "session": 6
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 13,
+  "fields": {
+    "session": 7
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 14,
+  "fields": {
+    "session": 7
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 15,
+  "fields": {
+    "session": 8
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 16,
+  "fields": {
+    "session": 8
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 17,
+  "fields": {
+    "session": 9
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 18,
+  "fields": {
+    "session": 9
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 19,
+  "fields": {
+    "session": 10
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 20,
+  "fields": {
+    "session": 10
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 21,
+  "fields": {
+    "session": 11
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 22,
+  "fields": {
+    "session": 11
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 23,
+  "fields": {
+    "session": 12
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 24,
+  "fields": {
+    "session": 12
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 25,
+  "fields": {
+    "session": 13
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 26,
+  "fields": {
+    "session": 13
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 27,
+  "fields": {
+    "session": 14
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 28,
+  "fields": {
+    "session": 14
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 29,
+  "fields": {
+    "session": 15
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 30,
+  "fields": {
+    "session": 15
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 31,
+  "fields": {
+    "session": 16
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 32,
+  "fields": {
+    "session": 16
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 33,
+  "fields": {
+    "session": 17
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 34,
+  "fields": {
+    "session": 17
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 35,
+  "fields": {
+    "session": 18
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 36,
+  "fields": {
+    "session": 18
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 37,
+  "fields": {
+    "session": 19
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 38,
+  "fields": {
+    "session": 19
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 39,
+  "fields": {
+    "session": 20
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 40,
+  "fields": {
+    "session": 20
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 41,
+  "fields": {
+    "session": 21
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 42,
+  "fields": {
+    "session": 21
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 43,
+  "fields": {
+    "session": 22
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 44,
+  "fields": {
+    "session": 22
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 45,
+  "fields": {
+    "session": 23
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 46,
+  "fields": {
+    "session": 23
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 47,
+  "fields": {
+    "session": 24
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 48,
+  "fields": {
+    "session": 24
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 49,
+  "fields": {
+    "session": 25
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 50,
+  "fields": {
+    "session": 25
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 51,
+  "fields": {
+    "session": 26
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 52,
+  "fields": {
+    "session": 26
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 53,
+  "fields": {
+    "session": 27
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 54,
+  "fields": {
+    "session": 27
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 55,
+  "fields": {
+    "session": 28
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 56,
+  "fields": {
+    "session": 28
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 57,
+  "fields": {
+    "session": 29
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 58,
+  "fields": {
+    "session": 29
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 59,
+  "fields": {
+    "session": 30
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 60,
+  "fields": {
+    "session": 30
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 61,
+  "fields": {
+    "session": 31
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 62,
+  "fields": {
+    "session": 31
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 63,
+  "fields": {
+    "session": 32
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 64,
+  "fields": {
+    "session": 32
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 65,
+  "fields": {
+    "session": 33
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 66,
+  "fields": {
+    "session": 33
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 67,
+  "fields": {
+    "session": 34
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 68,
+  "fields": {
+    "session": 34
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 69,
+  "fields": {
+    "session": 35
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 70,
+  "fields": {
+    "session": 35
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 71,
+  "fields": {
+    "session": 36
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 72,
+  "fields": {
+    "session": 36
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 73,
+  "fields": {
+    "session": 37
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 74,
+  "fields": {
+    "session": 37
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 75,
+  "fields": {
+    "session": 38
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 76,
+  "fields": {
+    "session": 38
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 77,
+  "fields": {
+    "session": 39
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 78,
+  "fields": {
+    "session": 39
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 79,
+  "fields": {
+    "session": 40
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 80,
+  "fields": {
+    "session": 40
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 81,
+  "fields": {
+    "session": 41
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 82,
+  "fields": {
+    "session": 41
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 83,
+  "fields": {
+    "session": 42
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 84,
+  "fields": {
+    "session": 42
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 85,
+  "fields": {
+    "session": 43
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 86,
+  "fields": {
+    "session": 43
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 87,
+  "fields": {
+    "session": 44
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 88,
+  "fields": {
+    "session": 44
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 89,
+  "fields": {
+    "session": 45
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 90,
+  "fields": {
+    "session": 45
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 91,
+  "fields": {
+    "session": 46
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 92,
+  "fields": {
+    "session": 46
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 93,
+  "fields": {
+    "session": 47
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 94,
+  "fields": {
+    "session": 47
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 95,
+  "fields": {
+    "session": 48
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 96,
+  "fields": {
+    "session": 48
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 97,
+  "fields": {
+    "session": 49
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 98,
+  "fields": {
+    "session": 49
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 99,
+  "fields": {
+    "session": 50
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 100,
+  "fields": {
+    "session": 50
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 101,
+  "fields": {
+    "session": 51
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 102,
+  "fields": {
+    "session": 51
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 103,
+  "fields": {
+    "session": 52
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 104,
+  "fields": {
+    "session": 52
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 105,
+  "fields": {
+    "session": 53
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 106,
+  "fields": {
+    "session": 53
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 107,
+  "fields": {
+    "session": 54
+  }
+},
+{
+  "model": "previous.adhocteam",
+  "pk": 108,
+  "fields": {
+    "session": 54
+  }
+}
+]

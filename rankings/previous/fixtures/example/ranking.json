@@ -1,0 +1,211 @@
+[
+{
+  "model": "previous.ranking",
+  "pk": 1,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 1,
+    "active": null,
+    "mu": 29.063209420531777,
+    "sigma": 2.108950718505637
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 2,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 2,
+    "active": null,
+    "mu": 25.0,
+    "sigma": 8.333333333333334
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 3,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 3,
+    "active": null,
+    "mu": 23.898658277461156,
+    "sigma": 2.2579518407869728
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 4,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 4,
+    "active": null,
+    "mu": 22.11386190029529,
+    "sigma": 6.809496719730957
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 5,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 5,
+    "active": null,
+    "mu": 21.371272426971466,
+    "sigma": 5.5055752561132145
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 6,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 6,
+    "active": null,
+    "mu": 25.0,
+    "sigma": 8.333333333333334
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 7,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 7,
+    "active": null,
+    "mu": 32.20605735603353,
+    "sigma": 5.62886944131735
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 8,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 8,
+    "active": null,
+    "mu": 30.4170042733668,
+    "sigma": 5.5055752561132145
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 9,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 9,
+    "active": null,
+    "mu": 21.261508800693953,
+    "sigma": 5.912252828200929
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 10,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 10,
+    "active": null,
+    "mu": 25.0,
+    "sigma": 8.333333333333334
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 11,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 11,
+    "active": null,
+    "mu": 20.906992660967553,
+    "sigma": 5.125586924370795
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 12,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 12,
+    "active": null,
+    "mu": 26.439565893931622,
+    "sigma": 1.646148238600265
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 13,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 13,
+    "active": null,
+    "mu": 21.260998715689297,
+    "sigma": 4.822480316828437
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 14,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 14,
+    "active": null,
+    "mu": 25.784325027663066,
+    "sigma": 4.085340408556247
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 15,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 15,
+    "active": null,
+    "mu": 27.268424573789463,
+    "sigma": 5.5055752561132145
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 16,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 16,
+    "active": null,
+    "mu": 22.626353845075418,
+    "sigma": 4.7988457663921205
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 17,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 17,
+    "active": null,
+    "mu": 25.0,
+    "sigma": 8.333333333333334
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 18,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 18,
+    "active": null,
+    "mu": 25.0,
+    "sigma": 8.333333333333334
+  }
+},
+{
+  "model": "previous.ranking",
+  "pk": 19,
+  "fields": {
+    "activity": "table_tennis",
+    "player": 19,
+    "active": null,
+    "mu": 20.86180774705996,
+    "sigma": 4.455321669322785
+  }
+}
+]

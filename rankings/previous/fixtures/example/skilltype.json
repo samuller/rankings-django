@@ -1,0 +1,15 @@
+[
+{
+  "model": "previous.skilltype",
+  "pk": "default",
+  "fields": {
+    "min_skill_range": 0.0,
+    "max_skill_range": 50.0,
+    "initial_mean": 25.0,
+    "initial_std_dev": 8.333333333333334,
+    "dynamics_factor": 0.08333333333333333,
+    "skill_chain": 4.166666666666667,
+    "draw_chance": 0.1
+  }
+}
+]

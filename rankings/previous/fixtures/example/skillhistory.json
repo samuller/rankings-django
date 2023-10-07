@@ -1,0 +1,1718 @@
+[
+{
+  "model": "previous.skillhistory",
+  "pk": 1,
+  "fields": {
+    "result": 1,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 29.39583201999916,
+    "sigma": 7.171475587326195
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 2,
+  "fields": {
+    "result": 2,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 20.604167980000835,
+    "sigma": 7.171475587326195
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 3,
+  "fields": {
+    "result": 3,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 31.22962902960427,
+    "sigma": 6.523414342272063
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 4,
+  "fields": {
+    "result": 4,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 18.770370970395735,
+    "sigma": 6.523414342272063
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 5,
+  "fields": {
+    "result": 5,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 24.650324187487364,
+    "sigma": 5.487859595643864
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 6,
+  "fields": {
+    "result": 6,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.349675812512633,
+    "sigma": 5.487859595643864
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 7,
+  "fields": {
+    "result": 7,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 27.414581560390303,
+    "sigma": 4.872870111139272
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 8,
+  "fields": {
+    "result": 8,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 22.58541843960969,
+    "sigma": 4.872870111139272
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 9,
+  "fields": {
+    "result": 9,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 24.20414207243184,
+    "sigma": 4.313929863870432
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 10,
+  "fields": {
+    "result": 10,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.795857927568164,
+    "sigma": 4.313929863870432
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 11,
+  "fields": {
+    "result": 11,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 22.590785964617783,
+    "sigma": 3.9571063657616703
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 12,
+  "fields": {
+    "result": 12,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 27.409214035382217,
+    "sigma": 3.9571063657616703
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 13,
+  "fields": {
+    "result": 13,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 25.05475431358361,
+    "sigma": 3.583705085183268
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 14,
+  "fields": {
+    "result": 14,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 24.945245686416385,
+    "sigma": 3.583705085183268
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 15,
+  "fields": {
+    "result": 15,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 26.460340711075382,
+    "sigma": 3.32608212553308
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 16,
+  "fields": {
+    "result": 16,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 23.53965928892461,
+    "sigma": 3.32608212553308
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 17,
+  "fields": {
+    "result": 17,
+    "player": 4,
+    "activity_id": "table_tennis",
+    "mu": 21.891677369701625,
+    "sigma": 7.7743633497703355
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 18,
+  "fields": {
+    "result": 17,
+    "player": 11,
+    "activity_id": "table_tennis",
+    "mu": 21.891677369701625,
+    "sigma": 7.7743633497703355
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 19,
+  "fields": {
+    "result": 18,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 28.108322630298364,
+    "sigma": 7.7743633497703355
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 20,
+  "fields": {
+    "result": 18,
+    "player": 19,
+    "activity_id": "table_tennis",
+    "mu": 28.108322630298364,
+    "sigma": 7.7743633497703355
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 21,
+  "fields": {
+    "result": 19,
+    "player": 4,
+    "activity_id": "table_tennis",
+    "mu": 24.756310548422675,
+    "sigma": 7.268023107364075
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 22,
+  "fields": {
+    "result": 19,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 30.972955809019417,
+    "sigma": 7.268023107364075
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 23,
+  "fields": {
+    "result": 20,
+    "player": 11,
+    "activity_id": "table_tennis",
+    "mu": 19.027044190980583,
+    "sigma": 7.268023107364075
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 24,
+  "fields": {
+    "result": 20,
+    "player": 19,
+    "activity_id": "table_tennis",
+    "mu": 25.24368945157732,
+    "sigma": 7.268023107364075
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 25,
+  "fields": {
+    "result": 21,
+    "player": 4,
+    "activity_id": "table_tennis",
+    "mu": 22.11386190029529,
+    "sigma": 6.809496719730957
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 26,
+  "fields": {
+    "result": 21,
+    "player": 19,
+    "activity_id": "table_tennis",
+    "mu": 22.60124080344994,
+    "sigma": 6.809496719730957
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 27,
+  "fields": {
+    "result": 22,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 33.615404457146795,
+    "sigma": 6.809496719730957
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 28,
+  "fields": {
+    "result": 22,
+    "player": 11,
+    "activity_id": "table_tennis",
+    "mu": 21.66949283910796,
+    "sigma": 6.809496719730957
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 29,
+  "fields": {
+    "result": 23,
+    "player": 7,
+    "activity_id": "table_tennis",
+    "mu": 22.90008795990908,
+    "sigma": 7.7835063406593
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 30,
+  "fields": {
+    "result": 23,
+    "player": 11,
+    "activity_id": "table_tennis",
+    "mu": 20.267275815725842,
+    "sigma": 6.513205532994036
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 31,
+  "fields": {
+    "result": 24,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 35.0176214805289,
+    "sigma": 6.513205532994036
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 32,
+  "fields": {
+    "result": 24,
+    "player": 19,
+    "activity_id": "table_tennis",
+    "mu": 24.003457826832047,
+    "sigma": 6.513205532994036
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 33,
+  "fields": {
+    "result": 25,
+    "player": 7,
+    "activity_id": "table_tennis",
+    "mu": 24.312097181809065,
+    "sigma": 7.376109261694766
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 34,
+  "fields": {
+    "result": 25,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 36.006397309499626,
+    "sigma": 6.276694308782079
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 35,
+  "fields": {
+    "result": 26,
+    "player": 11,
+    "activity_id": "table_tennis",
+    "mu": 19.27849998675511,
+    "sigma": 6.276694308782079
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 36,
+  "fields": {
+    "result": 26,
+    "player": 19,
+    "activity_id": "table_tennis",
+    "mu": 23.014681997861317,
+    "sigma": 6.276694308782079
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 37,
+  "fields": {
+    "result": 27,
+    "player": 7,
+    "activity_id": "table_tennis",
+    "mu": 22.42961960486032,
+    "sigma": 6.924291555589201
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 38,
+  "fields": {
+    "result": 27,
+    "player": 19,
+    "activity_id": "table_tennis",
+    "mu": 21.65148631626718,
+    "sigma": 6.000999960816738
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 39,
+  "fields": {
+    "result": 28,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 37.36959299109376,
+    "sigma": 6.000999960816738
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 40,
+  "fields": {
+    "result": 28,
+    "player": 11,
+    "activity_id": "table_tennis",
+    "mu": 20.64169566834925,
+    "sigma": 6.000999960816738
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 41,
+  "fields": {
+    "result": 29,
+    "player": 7,
+    "activity_id": "table_tennis",
+    "mu": 27.641091343012178,
+    "sigma": 6.2955201432655
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 42,
+  "fields": {
+    "result": 29,
+    "player": 11,
+    "activity_id": "table_tennis",
+    "mu": 24.556209069333956,
+    "sigma": 5.596895816920782
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 43,
+  "fields": {
+    "result": 30,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 33.45507959010906,
+    "sigma": 5.596895816920782
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 44,
+  "fields": {
+    "result": 30,
+    "player": 19,
+    "activity_id": "table_tennis",
+    "mu": 17.736972915282486,
+    "sigma": 5.596895816920782
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 45,
+  "fields": {
+    "result": 31,
+    "player": 7,
+    "activity_id": "table_tennis",
+    "mu": 28.212518432081172,
+    "sigma": 6.1101154107335915
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 46,
+  "fields": {
+    "result": 31,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 33.906740196537186,
+    "sigma": 5.4672566763223225
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 47,
+  "fields": {
+    "result": 32,
+    "player": 11,
+    "activity_id": "table_tennis",
+    "mu": 24.10454846290583,
+    "sigma": 5.4672566763223225
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 48,
+  "fields": {
+    "result": 32,
+    "player": 19,
+    "activity_id": "table_tennis",
+    "mu": 17.28531230885436,
+    "sigma": 5.4672566763223225
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 49,
+  "fields": {
+    "result": 33,
+    "player": 7,
+    "activity_id": "table_tennis",
+    "mu": 32.20605735603353,
+    "sigma": 5.62886944131735
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 50,
+  "fields": {
+    "result": 33,
+    "player": 19,
+    "activity_id": "table_tennis",
+    "mu": 20.482868110792644,
+    "sigma": 5.125586924370795
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 51,
+  "fields": {
+    "result": 34,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 30.709184394598914,
+    "sigma": 5.125586924370795
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 52,
+  "fields": {
+    "result": 34,
+    "player": 11,
+    "activity_id": "table_tennis",
+    "mu": 20.906992660967553,
+    "sigma": 5.125586924370795
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 53,
+  "fields": {
+    "result": 35,
+    "player": 9,
+    "activity_id": "table_tennis",
+    "mu": 29.735886696029393,
+    "sigma": 7.282250909234919
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 54,
+  "fields": {
+    "result": 35,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 24.29450612380157,
+    "sigma": 3.263834442333015
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 55,
+  "fields": {
+    "result": 36,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 28.91724896033426,
+    "sigma": 4.8916007499224134
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 56,
+  "fields": {
+    "result": 36,
+    "player": 19,
+    "activity_id": "table_tennis",
+    "mu": 18.690932676527993,
+    "sigma": 4.8916007499224134
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 57,
+  "fields": {
+    "result": 37,
+    "player": 9,
+    "activity_id": "table_tennis",
+    "mu": 22.94549957150919,
+    "sigma": 6.339203119062639
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 58,
+  "fields": {
+    "result": 37,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 25.85292680523547,
+    "sigma": 4.617065400371769
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 59,
+  "fields": {
+    "result": 38,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.65923272544314,
+    "sigma": 3.1844007577490476
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 60,
+  "fields": {
+    "result": 38,
+    "player": 19,
+    "activity_id": "table_tennis",
+    "mu": 21.755254831626782,
+    "sigma": 4.617065400371769
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 61,
+  "fields": {
+    "result": 39,
+    "player": 9,
+    "activity_id": "table_tennis",
+    "mu": 21.261508800693953,
+    "sigma": 5.912252828200929
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 62,
+  "fields": {
+    "result": 39,
+    "player": 19,
+    "activity_id": "table_tennis",
+    "mu": 20.86180774705996,
+    "sigma": 4.455321669322785
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 63,
+  "fields": {
+    "result": 40,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 26.746373889802296,
+    "sigma": 4.455321669322785
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 64,
+  "fields": {
+    "result": 40,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 26.084388498775088,
+    "sigma": 3.132650247635097
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 65,
+  "fields": {
+    "result": 41,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 29.341765894974188,
+    "sigma": 7.450720200498839
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 66,
+  "fields": {
+    "result": 41,
+    "player": 13,
+    "activity_id": "table_tennis",
+    "mu": 29.341765894974188,
+    "sigma": 7.450720200498839
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 67,
+  "fields": {
+    "result": 42,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 25.505020288914345,
+    "sigma": 4.326369006833362
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 68,
+  "fields": {
+    "result": 42,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.47046182414078,
+    "sigma": 3.088974290960014
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 69,
+  "fields": {
+    "result": 43,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 32.581227706085436,
+    "sigma": 6.774842112701204
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 70,
+  "fields": {
+    "result": 43,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 26.597542431508312,
+    "sigma": 4.198813914230745
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 71,
+  "fields": {
+    "result": 44,
+    "player": 13,
+    "activity_id": "table_tennis",
+    "mu": 26.102304083862936,
+    "sigma": 6.774842112701204
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 72,
+  "fields": {
+    "result": 44,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 24.91331894960763,
+    "sigma": 3.043699073878666
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 73,
+  "fields": {
+    "result": 45,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 34.69786495948024,
+    "sigma": 6.284115216287125
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 74,
+  "fields": {
+    "result": 45,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.340794448368058,
+    "sigma": 3.001563239540858
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 75,
+  "fields": {
+    "result": 46,
+    "player": 14,
+    "activity_id": "table_tennis",
+    "mu": 25.784325027663066,
+    "sigma": 4.085340408556247
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 76,
+  "fields": {
+    "result": 46,
+    "player": 13,
+    "activity_id": "table_tennis",
+    "mu": 23.98566683046814,
+    "sigma": 6.284115216287124
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 77,
+  "fields": {
+    "result": 47,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 26.78635155816556,
+    "sigma": 3.2841795652261383
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 78,
+  "fields": {
+    "result": 47,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 35.86107521749896,
+    "sigma": 5.990192263064158
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 79,
+  "fields": {
+    "result": 48,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.075258574911185,
+    "sigma": 2.97118887211602
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 80,
+  "fields": {
+    "result": 48,
+    "player": 16,
+    "activity_id": "table_tennis",
+    "mu": 22.954617596366692,
+    "sigma": 7.633811871916647
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 81,
+  "fields": {
+    "result": 49,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 27.749774148914547,
+    "sigma": 3.2122611909186936
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 82,
+  "fields": {
+    "result": 49,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.863910787873166,
+    "sigma": 2.918420149585228
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 83,
+  "fields": {
+    "result": 50,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 32.65739563948875,
+    "sigma": 5.535906039972362
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 84,
+  "fields": {
+    "result": 50,
+    "player": 16,
+    "activity_id": "table_tennis",
+    "mu": 17.75204483312436,
+    "sigma": 6.667465876372266
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 85,
+  "fields": {
+    "result": 51,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 29.047117923204624,
+    "sigma": 3.129793671834855
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 86,
+  "fields": {
+    "result": 51,
+    "player": 16,
+    "activity_id": "table_tennis",
+    "mu": 23.33842681676887,
+    "sigma": 5.885209301085111
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 87,
+  "fields": {
+    "result": 52,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 24.792907573322516,
+    "sigma": 2.857087615607256
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 88,
+  "fields": {
+    "result": 52,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 28.806009982244106,
+    "sigma": 5.097320804636901
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 89,
+  "fields": {
+    "result": 53,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 29.374225148236523,
+    "sigma": 3.083452077133953
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 90,
+  "fields": {
+    "result": 53,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 29.67327321877026,
+    "sigma": 4.890481099930472
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 91,
+  "fields": {
+    "result": 54,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 24.520281511669282,
+    "sigma": 2.8222444652218464
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 92,
+  "fields": {
+    "result": 54,
+    "player": 16,
+    "activity_id": "table_tennis",
+    "mu": 22.182416164935216,
+    "sigma": 5.564152332640788
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 93,
+  "fields": {
+    "result": 55,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 29.969955877040306,
+    "sigma": 3.019949238330948
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 94,
+  "fields": {
+    "result": 55,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.0194259564356,
+    "sigma": 2.7739935079640032
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 95,
+  "fields": {
+    "result": 56,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 28.17535620352066,
+    "sigma": 4.629192661044483
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 96,
+  "fields": {
+    "result": 56,
+    "player": 16,
+    "activity_id": "table_tennis",
+    "mu": 20.24352278395594,
+    "sigma": 5.175674848614374
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 97,
+  "fields": {
+    "result": 57,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 30.78162039676058,
+    "sigma": 2.947900107118816
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 98,
+  "fields": {
+    "result": 57,
+    "player": 16,
+    "activity_id": "table_tennis",
+    "mu": 22.626353845075418,
+    "sigma": 4.7988457663921205
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 99,
+  "fields": {
+    "result": 58,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 24.334490975812436,
+    "sigma": 2.7186114862903095
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 100,
+  "fields": {
+    "result": 58,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 26.269026838715703,
+    "sigma": 4.361903290284578
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 101,
+  "fields": {
+    "result": 59,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 28.912832005871618,
+    "sigma": 2.739254978599096
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 102,
+  "fields": {
+    "result": 60,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.924098294606,
+    "sigma": 2.556212801120223
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 103,
+  "fields": {
+    "result": 61,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 27.658879182966473,
+    "sigma": 2.5803367100877463
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 104,
+  "fields": {
+    "result": 62,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 27.016217019538523,
+    "sigma": 2.4278895500227655
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 105,
+  "fields": {
+    "result": 63,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 28.441008244554663,
+    "sigma": 2.4625469924749877
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 106,
+  "fields": {
+    "result": 64,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 26.32368139692485,
+    "sigma": 2.3303303413839473
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 107,
+  "fields": {
+    "result": 65,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 29.042460541686168,
+    "sigma": 2.366556119975824
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 108,
+  "fields": {
+    "result": 66,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.785008555534183,
+    "sigma": 2.2494407639929053
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 109,
+  "fields": {
+    "result": 67,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 28.035365212796663,
+    "sigma": 2.256242432424244
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 110,
+  "fields": {
+    "result": 68,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 26.69501306945051,
+    "sigma": 2.1552000732546714
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 111,
+  "fields": {
+    "result": 69,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 28.60217965121851,
+    "sigma": 2.176538628831417
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 112,
+  "fields": {
+    "result": 70,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 26.177762070421426,
+    "sigma": 2.0861030698237233
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 113,
+  "fields": {
+    "result": 71,
+    "player": 1,
+    "activity_id": "table_tennis",
+    "mu": 29.063209420531777,
+    "sigma": 2.108950718505637
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 114,
+  "fields": {
+    "result": 72,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.754193191899354,
+    "sigma": 2.0269236689400665
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 115,
+  "fields": {
+    "result": 73,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 24.002704496548173,
+    "sigma": 3.851310646221416
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 116,
+  "fields": {
+    "result": 74,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 26.244219485884656,
+    "sigma": 1.9796418881028819
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 117,
+  "fields": {
+    "result": 75,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 22.639222399977225,
+    "sigma": 3.5231569090323083
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 118,
+  "fields": {
+    "result": 76,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 26.604940309984453,
+    "sigma": 1.9380568918525272
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 119,
+  "fields": {
+    "result": 77,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 24.832245303590977,
+    "sigma": 3.1824919867977095
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 120,
+  "fields": {
+    "result": 78,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.94047617608832,
+    "sigma": 1.8848497605505763
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 121,
+  "fields": {
+    "result": 79,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 23.71862788554816,
+    "sigma": 2.9680506254041124
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 122,
+  "fields": {
+    "result": 80,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 26.331591900965368,
+    "sigma": 1.8428392763627903
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 123,
+  "fields": {
+    "result": 81,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 25.17703460058676,
+    "sigma": 2.7582338908065975
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 124,
+  "fields": {
+    "result": 82,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.768659940158262,
+    "sigma": 1.795260541666471
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 125,
+  "fields": {
+    "result": 83,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 26.223439203467137,
+    "sigma": 2.598610241180836
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 126,
+  "fields": {
+    "result": 84,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.32481533328851,
+    "sigma": 1.7535152144568613
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 127,
+  "fields": {
+    "result": 85,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 25.250851323253723,
+    "sigma": 2.4608139233037085
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 128,
+  "fields": {
+    "result": 86,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 25.76821870504595,
+    "sigma": 1.7133047442917144
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 129,
+  "fields": {
+    "result": 87,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 24.499537185353763,
+    "sigma": 2.349748071770036
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 130,
+  "fields": {
+    "result": 88,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 26.132856522372688,
+    "sigma": 1.677757682433419
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 131,
+  "fields": {
+    "result": 89,
+    "player": 3,
+    "activity_id": "table_tennis",
+    "mu": 23.898658277461156,
+    "sigma": 2.2579518407869728
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 132,
+  "fields": {
+    "result": 90,
+    "player": 12,
+    "activity_id": "table_tennis",
+    "mu": 26.439565893931622,
+    "sigma": 1.646148238600265
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 133,
+  "fields": {
+    "result": 91,
+    "player": 8,
+    "activity_id": "table_tennis",
+    "mu": 21.59623739694526,
+    "sigma": 7.70724883120787
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 134,
+  "fields": {
+    "result": 91,
+    "player": 5,
+    "activity_id": "table_tennis",
+    "mu": 21.59623739694526,
+    "sigma": 7.70724883120787
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 135,
+  "fields": {
+    "result": 92,
+    "player": 15,
+    "activity_id": "table_tennis",
+    "mu": 28.403762603054723,
+    "sigma": 7.70724883120787
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 136,
+  "fields": {
+    "result": 92,
+    "player": 13,
+    "activity_id": "table_tennis",
+    "mu": 25.921388761340655,
+    "sigma": 6.020528967733632
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 137,
+  "fields": {
+    "result": 93,
+    "player": 8,
+    "activity_id": "table_tennis",
+    "mu": 24.22101025535358,
+    "sigma": 7.19242456515433
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 138,
+  "fields": {
+    "result": 93,
+    "player": 15,
+    "activity_id": "table_tennis",
+    "mu": 31.028535461463044,
+    "sigma": 7.19242456515433
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 139,
+  "fields": {
+    "result": 94,
+    "player": 5,
+    "activity_id": "table_tennis",
+    "mu": 18.971464538536946,
+    "sigma": 7.19242456515433
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 140,
+  "fields": {
+    "result": 94,
+    "player": 13,
+    "activity_id": "table_tennis",
+    "mu": 24.31963890080692,
+    "sigma": 5.778804227577916
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 141,
+  "fields": {
+    "result": 95,
+    "player": 8,
+    "activity_id": "table_tennis",
+    "mu": 21.703647633644966,
+    "sigma": 6.722557295354017
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 142,
+  "fields": {
+    "result": 95,
+    "player": 13,
+    "activity_id": "table_tennis",
+    "mu": 22.69445273046074,
+    "sigma": 5.53837437197233
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 143,
+  "fields": {
+    "result": 96,
+    "player": 15,
+    "activity_id": "table_tennis",
+    "mu": 33.54589808317166,
+    "sigma": 6.722557295354017
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 144,
+  "fields": {
+    "result": 96,
+    "player": 5,
+    "activity_id": "table_tennis",
+    "mu": 21.48882716024556,
+    "sigma": 6.722557295354017
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 145,
+  "fields": {
+    "result": 97,
+    "player": 8,
+    "activity_id": "table_tennis",
+    "mu": 26.001548586868843,
+    "sigma": 6.192230684302404
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 146,
+  "fields": {
+    "result": 97,
+    "player": 5,
+    "activity_id": "table_tennis",
+    "mu": 25.786728113469437,
+    "sigma": 6.192230684302404
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 147,
+  "fields": {
+    "result": 98,
+    "player": 15,
+    "activity_id": "table_tennis",
+    "mu": 29.247997129947784,
+    "sigma": 6.192230684302404
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 148,
+  "fields": {
+    "result": 98,
+    "player": 13,
+    "activity_id": "table_tennis",
+    "mu": 19.777136026758498,
+    "sigma": 5.246114085178493
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 149,
+  "fields": {
+    "result": 99,
+    "player": 8,
+    "activity_id": "table_tennis",
+    "mu": 27.219490152038667,
+    "sigma": 5.913056044866246
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 150,
+  "fields": {
+    "result": 99,
+    "player": 15,
+    "activity_id": "table_tennis",
+    "mu": 30.465938695117607,
+    "sigma": 5.913056044866246
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 151,
+  "fields": {
+    "result": 100,
+    "player": 5,
+    "activity_id": "table_tennis",
+    "mu": 24.56878654829961,
+    "sigma": 5.913056044866246
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 152,
+  "fields": {
+    "result": 100,
+    "player": 13,
+    "activity_id": "table_tennis",
+    "mu": 18.902880107776916,
+    "sigma": 5.077772388963563
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 153,
+  "fields": {
+    "result": 101,
+    "player": 8,
+    "activity_id": "table_tennis",
+    "mu": 30.4170042733668,
+    "sigma": 5.5055752561132145
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 154,
+  "fields": {
+    "result": 101,
+    "player": 13,
+    "activity_id": "table_tennis",
+    "mu": 21.260998715689297,
+    "sigma": 4.822480316828437
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 155,
+  "fields": {
+    "result": 102,
+    "player": 15,
+    "activity_id": "table_tennis",
+    "mu": 27.268424573789463,
+    "sigma": 5.5055752561132145
+  }
+},
+{
+  "model": "previous.skillhistory",
+  "pk": 156,
+  "fields": {
+    "result": 102,
+    "player": 5,
+    "activity_id": "table_tennis",
+    "mu": 21.371272426971466,
+    "sigma": 5.5055752561132145
+  }
+}
+]

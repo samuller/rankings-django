@@ -1,0 +1,1190 @@
+[
+{
+  "model": "previous.result",
+  "pk": 1,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 1,
+    "team": 1,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 2,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 1,
+    "team": 2,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 3,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 2,
+    "team": 3,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 4,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 2,
+    "team": 4,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 5,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 3,
+    "team": 5,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 6,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 3,
+    "team": 6,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 7,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 4,
+    "team": 7,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 8,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 4,
+    "team": 8,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 9,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 5,
+    "team": 9,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 10,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 5,
+    "team": 10,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 11,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 6,
+    "team": 11,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 12,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 6,
+    "team": 12,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 13,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 7,
+    "team": 13,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 14,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 7,
+    "team": 14,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 15,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 8,
+    "team": 15,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 16,
+  "fields": {
+    "datetime": 1696702855,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 8,
+    "team": 16,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 17,
+  "fields": {
+    "datetime": 1696702881,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 9,
+    "team": 17,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 18,
+  "fields": {
+    "datetime": 1696702881,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 9,
+    "team": 18,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 19,
+  "fields": {
+    "datetime": 1696702881,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 10,
+    "team": 19,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 20,
+  "fields": {
+    "datetime": 1696702881,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 10,
+    "team": 20,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 21,
+  "fields": {
+    "datetime": 1696702881,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 11,
+    "team": 21,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 22,
+  "fields": {
+    "datetime": 1696702881,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 11,
+    "team": 22,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 23,
+  "fields": {
+    "datetime": 1696702894,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 12,
+    "team": 23,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 24,
+  "fields": {
+    "datetime": 1696702894,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 12,
+    "team": 24,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 25,
+  "fields": {
+    "datetime": 1696702894,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 13,
+    "team": 25,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 26,
+  "fields": {
+    "datetime": 1696702894,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 13,
+    "team": 26,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 27,
+  "fields": {
+    "datetime": 1696702894,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 14,
+    "team": 27,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 28,
+  "fields": {
+    "datetime": 1696702894,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 14,
+    "team": 28,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 29,
+  "fields": {
+    "datetime": 1696702904,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 15,
+    "team": 29,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 30,
+  "fields": {
+    "datetime": 1696702904,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 15,
+    "team": 30,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 31,
+  "fields": {
+    "datetime": 1696702904,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 16,
+    "team": 31,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 32,
+  "fields": {
+    "datetime": 1696702904,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 16,
+    "team": 32,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 33,
+  "fields": {
+    "datetime": 1696702904,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 17,
+    "team": 33,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 34,
+  "fields": {
+    "datetime": 1696702904,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 17,
+    "team": 34,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 35,
+  "fields": {
+    "datetime": 1696702913,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 18,
+    "team": 35,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 36,
+  "fields": {
+    "datetime": 1696702913,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 18,
+    "team": 36,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 37,
+  "fields": {
+    "datetime": 1696702913,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 19,
+    "team": 37,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 38,
+  "fields": {
+    "datetime": 1696702913,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 19,
+    "team": 38,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 39,
+  "fields": {
+    "datetime": 1696702914,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 20,
+    "team": 39,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 40,
+  "fields": {
+    "datetime": 1696702914,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 20,
+    "team": 40,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 41,
+  "fields": {
+    "datetime": 1696702935,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 21,
+    "team": 41,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 42,
+  "fields": {
+    "datetime": 1696702935,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 21,
+    "team": 42,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 43,
+  "fields": {
+    "datetime": 1696702935,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 22,
+    "team": 43,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 44,
+  "fields": {
+    "datetime": 1696702935,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 22,
+    "team": 44,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 45,
+  "fields": {
+    "datetime": 1696702935,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 23,
+    "team": 45,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 46,
+  "fields": {
+    "datetime": 1696702935,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 23,
+    "team": 46,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 47,
+  "fields": {
+    "datetime": 1696703281,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 24,
+    "team": 47,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 48,
+  "fields": {
+    "datetime": 1696703281,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 24,
+    "team": 48,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 49,
+  "fields": {
+    "datetime": 1696703281,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 25,
+    "team": 49,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 50,
+  "fields": {
+    "datetime": 1696703281,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 25,
+    "team": 50,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 51,
+  "fields": {
+    "datetime": 1696703281,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 26,
+    "team": 51,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 52,
+  "fields": {
+    "datetime": 1696703281,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 26,
+    "team": 52,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 53,
+  "fields": {
+    "datetime": 1696703286,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 27,
+    "team": 53,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 54,
+  "fields": {
+    "datetime": 1696703286,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 27,
+    "team": 54,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 55,
+  "fields": {
+    "datetime": 1696703287,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 28,
+    "team": 55,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 56,
+  "fields": {
+    "datetime": 1696703287,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 28,
+    "team": 56,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 57,
+  "fields": {
+    "datetime": 1696703287,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 29,
+    "team": 57,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 58,
+  "fields": {
+    "datetime": 1696703287,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 29,
+    "team": 58,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 59,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 30,
+    "team": 59,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 60,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 30,
+    "team": 60,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 61,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 31,
+    "team": 61,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 62,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 31,
+    "team": 62,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 63,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 32,
+    "team": 63,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 64,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 32,
+    "team": 64,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 65,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 33,
+    "team": 65,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 66,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 33,
+    "team": 66,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 67,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 34,
+    "team": 67,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 68,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 34,
+    "team": 68,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 69,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 35,
+    "team": 69,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 70,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 35,
+    "team": 70,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 71,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 36,
+    "team": 71,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 72,
+  "fields": {
+    "datetime": 1696703342,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 36,
+    "team": 72,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 73,
+  "fields": {
+    "datetime": 1696703365,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 37,
+    "team": 73,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 74,
+  "fields": {
+    "datetime": 1696703365,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 37,
+    "team": 74,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 75,
+  "fields": {
+    "datetime": 1696703365,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 38,
+    "team": 75,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 76,
+  "fields": {
+    "datetime": 1696703365,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 38,
+    "team": 76,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 77,
+  "fields": {
+    "datetime": 1696703365,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 39,
+    "team": 77,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 78,
+  "fields": {
+    "datetime": 1696703365,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 39,
+    "team": 78,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 79,
+  "fields": {
+    "datetime": 1696703365,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 40,
+    "team": 79,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 80,
+  "fields": {
+    "datetime": 1696703365,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 40,
+    "team": 80,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 81,
+  "fields": {
+    "datetime": 1696703365,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 41,
+    "team": 81,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 82,
+  "fields": {
+    "datetime": 1696703365,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 41,
+    "team": 82,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 83,
+  "fields": {
+    "datetime": 1696703366,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 42,
+    "team": 83,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 84,
+  "fields": {
+    "datetime": 1696703366,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 42,
+    "team": 84,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 85,
+  "fields": {
+    "datetime": 1696703366,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 43,
+    "team": 85,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 86,
+  "fields": {
+    "datetime": 1696703366,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 43,
+    "team": 86,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 87,
+  "fields": {
+    "datetime": 1696703366,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 44,
+    "team": 87,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 88,
+  "fields": {
+    "datetime": 1696703366,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 44,
+    "team": 88,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 89,
+  "fields": {
+    "datetime": 1696703366,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 45,
+    "team": 89,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 90,
+  "fields": {
+    "datetime": 1696703366,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 45,
+    "team": 90,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 91,
+  "fields": {
+    "datetime": 1696703424,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 46,
+    "team": 91,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 92,
+  "fields": {
+    "datetime": 1696703424,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 46,
+    "team": 92,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 93,
+  "fields": {
+    "datetime": 1696703424,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 47,
+    "team": 93,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 94,
+  "fields": {
+    "datetime": 1696703424,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 47,
+    "team": 94,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 95,
+  "fields": {
+    "datetime": 1696703424,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 48,
+    "team": 95,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 96,
+  "fields": {
+    "datetime": 1696703424,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 48,
+    "team": 96,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 97,
+  "fields": {
+    "datetime": 1696703434,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 49,
+    "team": 97,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 98,
+  "fields": {
+    "datetime": 1696703434,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 49,
+    "team": 98,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 99,
+  "fields": {
+    "datetime": 1696703434,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 50,
+    "team": 99,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 100,
+  "fields": {
+    "datetime": 1696703434,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 50,
+    "team": 100,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 101,
+  "fields": {
+    "datetime": 1696703434,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 51,
+    "team": 101,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 102,
+  "fields": {
+    "datetime": 1696703434,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 51,
+    "team": 102,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 103,
+  "fields": {
+    "datetime": 1696703477,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 52,
+    "team": 103,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 104,
+  "fields": {
+    "datetime": 1696703477,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 52,
+    "team": 104,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 105,
+  "fields": {
+    "datetime": 1696703477,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 53,
+    "team": 105,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 106,
+  "fields": {
+    "datetime": 1696703477,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 53,
+    "team": 106,
+    "ranking": 2
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 107,
+  "fields": {
+    "datetime": 1696703477,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 54,
+    "team": 107,
+    "ranking": 1
+  }
+},
+{
+  "model": "previous.result",
+  "pk": 108,
+  "fields": {
+    "datetime": 1696703477,
+    "submittor": "172.17.0.1 (172.17.0.1)",
+    "game": 54,
+    "team": 108,
+    "ranking": 2
+  }
+}
+]
