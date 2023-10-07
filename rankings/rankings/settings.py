@@ -49,7 +49,7 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", False)
 
-ALLOWED_HOSTS: List[str] = ["*", "localhost", "host.docker.internal"]
+ALLOWED_HOSTS: List[str] = os.getenv("DJANGO_ALLOWED_HOSTS", "*,localhost,host.docker.internal").split(",")
 
 APPEND_SLASH = True
 
