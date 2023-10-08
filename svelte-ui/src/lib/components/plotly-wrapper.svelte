@@ -230,7 +230,7 @@ Usage:
 <svelte:head>
 	<script
 		on:load|once={setupPlot}
-		src="https://cdn.plot.ly/plotly-2.26.0.min.js"
+		src="/js/plotly-2.26.0.min.js"
 		charset="utf-8"
 	></script>
 </svelte:head>

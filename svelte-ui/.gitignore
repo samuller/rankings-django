@@ -1,3 +1,5 @@
+static/js/*.js
+
 .DS_Store
 node_modules
 /build

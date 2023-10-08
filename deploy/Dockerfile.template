@@ -129,6 +129,7 @@ COPY $SRC_UI_DIR/package-lock.json $SRC_UI_DIR/package.json ./
 RUN npm ci
 
 COPY $SRC_UI_DIR $UI_WORKDIR
+RUN npm run dljs
 RUN npm run build
 
 # ---------------------------------------------------------------------------- #
