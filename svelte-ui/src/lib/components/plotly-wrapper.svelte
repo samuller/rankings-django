@@ -228,11 +228,7 @@ Usage:
 </script>
 
 <svelte:head>
-	<script
-		on:load|once={setupPlot}
-		src="/js/plotly-2.26.0.min.js"
-		charset="utf-8"
-	></script>
+	<script on:load|once={setupPlot} src="/js/plotly-2.26.0.min.js" charset="utf-8"></script>
 </svelte:head>
 
 {#if browser && !('Plotly' in window) && loadingPlotlyLibrary}
