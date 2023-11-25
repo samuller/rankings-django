@@ -34,11 +34,15 @@ if os.getenv("DJANGO_SECRET_KEY") is None:
     try:
         from .secret_key import SECRET_KEY
     except ImportError:
+        import importlib
+
         # We create a new secret key file the first time an import is attempted.
         # This simplifies setup for new developers and still allows the key to
         # stay stable in dev environments (useful to maintain sessions even
         # when server constantly restarts due to hot reloading).
         generate_secret_key(os.path.join(SETTINGS_DIR, "secret_key.py"))
+        # https://stackoverflow.com/questions/52933869/why-does-importing-fail-after-creating-a-module-under-python-3-on-windows
+        importlib.invalidate_caches()
         from .secret_key import SECRET_KEY  # noqa: F401
 else:
     SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "")
