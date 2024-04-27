@@ -92,4 +92,6 @@ fi
 
 # Run function with same name of CLI argument (default to "help").
 cmd=${1:-"help"}
-$cmd
+# Remove argument we've already used.
+shift
+$cmd "$@"
