@@ -6,14 +6,24 @@
 # Fail on first error.
 set -e
 
+man_help="List all commands available."
 help() {
     echo "You have to provide a command to run, e.g. '$0 lint'"
-    # Get all function names and then add indent to each line.
-    commands=$(compgen -A function | sed 's/^/  /')
-    echo -e "All commands available are:\n$commands"
+    # List declared functions that are not from exports (-fx).
+    commands=$(echo "$KNOWN_COMMANDS" | cut -d' ' -f 3 | tr '\n' ' ')
+    echo "All commands available are:"
+    echo
+    (
+        for cmd in ${commands}; do
+            doc_name=man_$(echo "$cmd" | tr - _)
+            echo -e "  $cmd\t\t\t${!doc_name}"
+        done
+    ) | column -t -s$'\t'
+    echo
     exit
 }
 
+man_lint="Run lint, formatting and type checks for Python code."
 lint() {
     cd rankings
     echo "flake8..."
@@ -31,12 +41,14 @@ lint() {
     # cd - && cd deploys && caddy fmt
 }
 
+man_format="Auto-format all Python code."
 format() {
     cd rankings && black . && cd -
     # cd svelte-ui && npm run format && cd -
     # cd deploys && caddy fmt --overwrite && cd -
 }
 
+man_test="Run tests for Python code."
 test() {
     cd rankings
     # Run Django tests
@@ -47,6 +59,7 @@ test() {
     poetry run coverage report --fail-under=80
 }
 
+man_gen_docker="Prepare files for building docker images."
 gen-docker() {
     # Create stripped-down version of pyproject.toml (no version and comments) for use with Dockerfile so
     # meaningless changes to it won't invalidate the following caching layers.
@@ -66,6 +79,7 @@ gen-docker() {
     cd -
 }
 
+man_build="Build docker image."
 build() {
     # TODO: Cached builds:
     # - https://docs.gitlab.com/ee/ci/docker/docker_layer_caching.html
@@ -84,6 +98,10 @@ build() {
         -f deploy/Dockerfile \
         .
 }
+
+# Find all declared functions that are not from exports (-fx). This will only pick up functions before this point.
+KNOWN_COMMANDS=$(declare -F | grep -v "\-fx")
+
 
 if [ "$#" -gt 1 ]; then
     echo -n "Too many args. "
