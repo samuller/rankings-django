@@ -25,6 +25,11 @@ help() {
 
 man_lint="Run lint, formatting and type checks for Python code."
 lint() {
+    if [ "$#" -gt 0 ]; then
+        echo "Too many args."
+        exit
+    fi
+
     cd rankings
     echo "flake8..."
     poetry run flake8 --exclude **/migrations/
@@ -43,6 +48,11 @@ lint() {
 
 man_format="Auto-format all Python code."
 format() {
+    if [ "$#" -gt 0 ]; then
+        echo "Too many args."
+        exit
+    fi
+
     cd rankings && black . && cd -
     # cd svelte-ui && npm run format && cd -
     # cd deploys && caddy fmt --overwrite && cd -
@@ -50,6 +60,10 @@ format() {
 
 man_test="Run tests for Python code."
 test() {
+    if [ "$#" -gt 0 ]; then
+        echo "Too many args."
+        exit
+    fi
     cd rankings
     # Run Django tests
     PYTHONWARNINGS=default poetry run coverage run --source='.' manage.py test --debug-mode .
@@ -61,6 +75,10 @@ test() {
 
 man_gen_docker="Prepare files for building docker images."
 gen-docker() {
+    if [ "$#" -gt 0 ]; then
+        echo "Too many args."
+        exit
+    fi
     # Create stripped-down version of pyproject.toml (no version and comments) for use with Dockerfile so
     # meaningless changes to it won't invalidate the following caching layers.
     cat rankings/pyproject.toml \
@@ -81,6 +99,11 @@ gen-docker() {
 
 man_build="Build docker image."
 build() {
+    if [ "$#" -gt 1 ]; then
+        echo "Too many args."
+        exit
+    fi
+
     # TODO: Cached builds:
     # - https://docs.gitlab.com/ee/ci/docker/docker_layer_caching.html
     # - https://stackoverflow.com/questions/52646303/is-it-possible-to-cache-multi-stage-docker-builds/68459169#68459169
@@ -101,12 +124,6 @@ build() {
 
 # Find all declared functions that are not from exports (-fx). This will only pick up functions before this point.
 KNOWN_COMMANDS=$(declare -F | grep -v "\-fx")
-
-
-if [ "$#" -gt 1 ]; then
-    echo -n "Too many args. "
-    help
-fi
 
 # Run function with same name of CLI argument (default to "help").
 cmd=${1:-"help"}
