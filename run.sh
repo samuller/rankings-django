@@ -104,19 +104,25 @@ build() {
         exit
     fi
 
+    IMAGE="samuller/rankings-site"
+    TARGET="combined-app-alpine"
+    if [ "$1" = "test" ]; then
+        IMAGE="samuller/rankings-site-test"
+        TARGET="test-app"        
+    fi
+    API_VERSION=$(cat rankings/pyproject.toml | grep "^version = " | cut -d' ' -f3 | tr -d '"')
+    UI_VERSION=$(cat svelte-ui/package.json | grep '"version": "' | cut -d':' -f2 | tr -d ' ",')
+    GIT_HASH=$(git rev-parse HEAD)
     # TODO: Cached builds:
     # - https://docs.gitlab.com/ee/ci/docker/docker_layer_caching.html
     # - https://stackoverflow.com/questions/52646303/is-it-possible-to-cache-multi-stage-docker-builds/68459169#68459169
     # - https://docs.docker.com/engine/reference/commandline/build/#cache-from
-    IMAGE="rankings-site-test"
-    API_VERSION=$(cat rankings/pyproject.toml | grep "^version = " | cut -d' ' -f3 | tr -d '"')
-    UI_VERSION=$(cat svelte-ui/package.json | grep '"version": "' | cut -d':' -f2 | tr -d ' ",')
-    GIT_HASH=$(git rev-parse HEAD)
     gen-docker
     time docker build \
         --label "org.opencontainers.image.version=$UI_VERSION" \
         --label "org.opencontainers.image.revision=$GIT_HASH" \
         --tag "$IMAGE:$UI_VERSION" \
+        --target "$TARGET" \
         --tag "$IMAGE:latest" \
         -f deploy/Dockerfile \
         .
