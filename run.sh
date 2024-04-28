@@ -118,7 +118,10 @@ build() {
     # - https://stackoverflow.com/questions/52646303/is-it-possible-to-cache-multi-stage-docker-builds/68459169#68459169
     # - https://docs.docker.com/engine/reference/commandline/build/#cache-from
     gen-docker
+    # "--no-cache" is only needed when we want to update build date in UI's __APP_VERSION__.
     time docker build \
+        --no-cache \
+        --label "org.opencontainers.image.created=$(date -Is)" \
         --label "org.opencontainers.image.version=$UI_VERSION" \
         --label "org.opencontainers.image.revision=$GIT_HASH" \
         --tag "$IMAGE:$UI_VERSION" \
