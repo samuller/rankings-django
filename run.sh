@@ -111,16 +111,20 @@ build() {
         prod)
             IMAGE="samuller/rankings-site"
             TARGET="combined-app-alpine"
+            IMAGE_VERSION=$UI_VERSION
             ;;
         test)
             IMAGE="samuller/rankings-site-test"
             TARGET="test-app"
+            IMAGE_VERSION=$UI_VERSION
             ;;
         *)
             echo "Invalid arg '$1' expected 'prod' or 'test'."
             exit
             ;;
     esac
+
+    echo "Building $IMAGE:$IMAGE_VERSION..."
     # TODO: Cached builds:
     # - https://docs.gitlab.com/ee/ci/docker/docker_layer_caching.html
     # - https://stackoverflow.com/questions/52646303/is-it-possible-to-cache-multi-stage-docker-builds/68459169#68459169
@@ -132,8 +136,8 @@ build() {
         --label "org.opencontainers.image.created=$(date -Is)" \
         --label "org.opencontainers.image.version=$UI_VERSION" \
         --label "org.opencontainers.image.revision=$GIT_HASH" \
-        --tag "$IMAGE:$UI_VERSION" \
         --target "$TARGET" \
+        --tag "$IMAGE:$IMAGE_VERSION" \
         --tag "$IMAGE:latest" \
         -f deploy/Dockerfile \
         .
