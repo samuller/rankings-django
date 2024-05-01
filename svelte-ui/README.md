@@ -1,5 +1,15 @@
 # Rankings Svelte UI
 
+## Versioning
+
+Semantic versioning or [SemVer](https://semver.org/) is used for this frontend. While backend and frontend will always be updated together to be in sync, their versions will differ. This is because they have different users/clients and the differences in their "public APIs" means the concept of "breaking changes" will have different meanings.
+
+For the frontend, breaking changes that increment the MAJOR version will be defined by changes that break common workflows. This means:
+
+- Changes to the URL/routing structure (that aren't just additions), as they will break bookmarks and shared links.
+- Large shifts in position of UI element as such location changes affect muscle memory with mouse input and touch devices.
+- Changes to keyboard shortcuts which will break workflows based on keyboard input.
+
 ## Initial creation of project
 
 This Svelte project was created by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
