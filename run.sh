@@ -104,15 +104,23 @@ build() {
         exit
     fi
 
-    IMAGE="samuller/rankings-site"
-    TARGET="combined-app-alpine"
-    if [ "$1" = "test" ]; then
-        IMAGE="samuller/rankings-site-test"
-        TARGET="test-app"        
-    fi
     API_VERSION=$(cat rankings/pyproject.toml | grep "^version = " | cut -d' ' -f3 | tr -d '"')
     UI_VERSION=$(cat svelte-ui/package.json | grep '"version": "' | cut -d':' -f2 | tr -d ' ",')
     GIT_HASH=$(git rev-parse HEAD)
+    case "$1" in
+        prod)
+            IMAGE="samuller/rankings-site"
+            TARGET="combined-app-alpine"
+            ;;
+        test)
+            IMAGE="samuller/rankings-site-test"
+            TARGET="test-app"
+            ;;
+        *)
+            echo "Invalid arg '$1' expected 'prod' or 'test'."
+            exit
+            ;;
+    esac
     # TODO: Cached builds:
     # - https://docs.gitlab.com/ee/ci/docker/docker_layer_caching.html
     # - https://stackoverflow.com/questions/52646303/is-it-possible-to-cache-multi-stage-docker-builds/68459169#68459169
