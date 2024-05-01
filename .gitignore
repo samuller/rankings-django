@@ -7,7 +7,9 @@ tmp/
 deploy/Dockerfile
 pyproject.nover.toml
 
-# https://github.com/github/gitignore/blob/master/Python.gitignore
+#
+# All below is from: https://github.com/github/gitignore/blob/master/Python.gitignore
+#
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
