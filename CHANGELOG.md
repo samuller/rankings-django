@@ -16,6 +16,25 @@ There are a few different components in this project that each have their own ve
 
 ## [Unreleased]
 
+## [Docker 1.0.0] - 2024-05-01
+
+### Added
+
+- Uploaded `samuller/rankings-site` docker image with these versions: API `4.0.0` / UI `1.0.0`.
+
+## [API 4.0.0 / UI 1.0.0] - 2023-10-07
+
+### Added
+
+- Started experimenting with `Svelte` in first half of 2023 and looking for a UI/component framework:
+  - 2023-08-17: Started experimenting with [DaisyUI](https://daisyui.com/) component library.
+  - 2023-08-27: Updated `Django` to 3.2 and added [Django REST Framework](https://www.django-rest-framework.org/) (DRF) extension in preparation for a REST API that can be used by a Single-Page App (SPA) website.
+  - 2023-09-02: Merged "svelte-ui" branch into "master". Makes use of [SvelteKit](https://kit.svelte.dev/) framework.
+- 2023-09-16: Started creating Docker image.
+  - 2023-10-02: Uploaded first docker image (v0.9.0) to Docker Hub at `samuller/rankings-site-test`.
+
+---
+
 > [!NOTE]
 > We have summarised the project history below and added some revisionist versions, but proper (semantic) versioning was only started afterwards (above).
 
