@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 from typing import List
 
+from django.utils.log import DEFAULT_LOGGING
+
 
 def generate_secret_key(filename: str) -> None:
     """Generate a file, containing a newly generated secret key."""
@@ -58,6 +60,11 @@ ALLOWED_HOSTS: List[str] = os.getenv(
 ).split(",")
 
 APPEND_SLASH = True
+
+# Use logging config similar to Django's default
+LOGGING = DEFAULT_LOGGING.copy()
+# But enable logging errors to console even when not in debug mode
+LOGGING['handlers']['console']['filters'] = []  # remove require_debug_true filter
 
 # Application definition
 
