@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# Message of the day (motd) script for an Ubuntu server.
+# Provides a quick summary of how to manage the installed Rankings site.
+#
+# Installation instructions:
+# ```
+# # Disable other default motd messages
+# sudo chmod -x /etc/update-motd.d/10-help-text
+# sudo chmod -x /etc/update-motd.d/50-motd-news
+# # Add this motd message script
+# chmod +x ubuntu-motd
+# sudo cp ubuntu-motd /etc/update-motd.d/11-rankings-site
+# ```
+#
+
+printf "\n"
+printf " Rankings site management:\n"
+printf " * Service: service rankings-docker start | stop | restart\n"
+printf " * Logs: docker logs rankings-site\n"
+printf " * Configs & data: /opt/rankings-site/\n"
+printf "\n"
