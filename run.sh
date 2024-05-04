@@ -133,7 +133,7 @@ build() {
     # "--no-cache" is only needed when we want to update build date in UI's __APP_VERSION__.
     time docker build \
         --label "org.opencontainers.image.created=$(date -Is)" \
-        --label "org.opencontainers.image.version=$UI_VERSION" \
+        --label "org.opencontainers.image.version=$IMAGE_VERSION" \
         --label "org.opencontainers.image.revision=$GIT_HASH" \
         --target "$TARGET" \
         --tag "$IMAGE:$IMAGE_VERSION" \
