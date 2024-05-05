@@ -1,4 +1,6 @@
 #
+# Config for Caddy, see documentation: https://caddyserver.com/docs/caddyfile
+#
 # For development you can test this file by running (from parent dir):
 #     caddy run --config deploy/Caddyfile --watch
 #
@@ -30,6 +32,7 @@
 
 	# Create matcher for all Django URLs.
 	@django {
+		# TODO: move the two API requests that don't start with /api/ (but with {activity-url}/api/)
 		path */api/* /admin/* /ssr/*
 	}
 	handle @django {

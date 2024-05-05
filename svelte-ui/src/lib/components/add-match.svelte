@@ -238,7 +238,7 @@
 		</table>
 	{/each}
 
-	<!-- Multiple ways to select the winnig team or submit multiple match results. -->
+	<!-- Multiple ways to select the winning team or submit multiple match results. -->
 	<Tabs
 		hashPrefix=""
 		data={[
