@@ -16,7 +16,8 @@
 
 printf "\n"
 printf " Rankings site management:\n"
-printf " * Service: service rankings-docker start | stop | restart\n"
-printf " * Logs: docker logs rankings-site\n"
+printf " * Service: service rankings-docker start  /  stop  /  restart\n"
+printf " * Status:  service rankings-docker status         OR  docker ps --filter name=rankings\n"
+printf " * Logs:    journalctl -u rankings-docker.service  OR  docker logs rankings-site\n"
 printf " * Configs & data: /opt/rankings-site/\n"
 printf "\n"
