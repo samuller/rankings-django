@@ -64,7 +64,7 @@ APPEND_SLASH = True
 # Use logging config similar to Django's default
 LOGGING = DEFAULT_LOGGING.copy()
 # But enable logging errors to console even when not in debug mode
-LOGGING['handlers']['console']['filters'] = []  # remove require_debug_true filter
+LOGGING["handlers"]["console"]["filters"] = []  # remove require_debug_true filter
 
 # Application definition
 
