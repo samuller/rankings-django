@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Score keeper</title>
+  <meta name="description" content="Score keeper">
+  <!-- Font Awesome icons -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+  <style>
+    body {
+        background-color: black;
+        text-align: center;
+        color: #ddd;
+    }
+
+    .layout {
+        display: grid;
+        grid-gap: 0px;
+        width: 100vw;
+        /*height: 100vh;*/
+        grid-template-rows: 6fr 1fr;
+        /*grid-template-columns: 1fr 100px 1fr;*/
+        grid-template-areas:
+            "player1 vert player2"
+            ". reset .";
+    }
+
+    @media (orientation:portrait) {
+        .layout {
+            grid-template-rows: 1fr 1fr 1fr;
+            grid-template-areas:
+                "player1"
+                "player2"
+                "reset";
+        }
+    }
+
+    .player {
+        display: grid;
+        grid-template-areas:
+            "min score pl";
+    }
+
+    .vert {
+        border: 0;
+        width: 0;
+        height: 100%;
+        border-left: 1px solid rgba(0, 0, 0, 0.1);
+        border-right: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .name {
+        font-size: 48px;
+        text-decoration: underline;
+    }
+
+    input {
+        background:rgba(0,0,0,0);
+        border:none;
+
+        color: inherit;
+        font-size: inherit;
+        text-align: inherit;
+        text-decoration: inherit;
+
+        width: 100%;
+    }
+    input:hover {
+        background-color: #202C30;
+    }
+
+    .score {
+        font-size: 20vw;
+        font-weight: bold;
+    }
+
+    button {
+        background-color: black;
+        color: white;
+
+        border: none;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+    }
+    button:hover {
+        background-color: #202C30;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="layout">
+    <!-- Player A -->
+    <div class="player" style="grid-area: player1">
+        <div style="grid-area: score">
+            <div class="name">
+                <input type="text" value="Player A">
+            </div>
+            <div id="scoreA" class="score"
+                onclick="adjustScore('scoreA', 1)"
+                ondblclick="adjustScore(this.id, -3)">
+                0
+            </div>
+        </div>
+        <button style="grid-area: min" onclick="adjustScore('scoreA', -1)">
+            <i class="fa fa-minus fa-3x"></i>
+        </button>
+        <button style="grid-area: pl" onclick="adjustScore('scoreA', 1)">
+            <i class="fa fa-plus fa-3x"></i>
+        </button>
+    </div>
+
+    <!-- Vertical separator -->
+    <div style="grid-area: vert;"><hr class="vert"></div>
+
+    <!-- Player B -->
+    <div class="player" style="grid-area: player2">
+        <div style="grid-area: score">
+            <div class="name">
+                <input type="text" value="Player B">
+            </div>
+            <div id="scoreB" class="score" style="align-self: center"
+                onclick="adjustScore(this.id, 1)"
+                ondblclick="adjustScore(this.id, -3)">
+                0
+            </div>
+        </div>
+        <button style="grid-area: min" onclick="adjustScore('scoreB', -1)">
+            <i class="fa fa-minus fa-3x"></i>
+        </button>
+        <button style="grid-area: pl" onclick="adjustScore('scoreB', 1)">
+            <i class="fa fa-plus fa-3x"></i>
+        </button>
+    </div>
+
+    <!-- Reset -->
+    <div style="grid-area: reset">
+        <button onclick="clearScores('scoreA', 'scoreB')">
+            <i class="fa fa-undo fa-3x"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+    function adjustScore(elementId, addValue) {
+      var currValue = parseInt(document.getElementById(elementId).innerHTML);
+      newValue = currValue + addValue;
+      document.getElementById(elementId).innerHTML = newValue + "";
+    }
+    function clearScores(...elementIds) {
+      for (let elementId of elementIds) {
+        document.getElementById(elementId).innerHTML = "0";
+      }
+    }
+</script>
+</body>
+</html>

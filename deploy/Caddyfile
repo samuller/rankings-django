@@ -55,4 +55,6 @@
 		# Serve files (at "/").
 		file_server
 	}
+
+	import /app/static-sites/caddy/*
 }

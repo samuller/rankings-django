@@ -1,0 +1,6 @@
+	# Scoring static files.
+	handle /scoring/* {
+		# Matching path above will be appended to this root path.
+		root * /app/static-sites
+		file_server
+	}
