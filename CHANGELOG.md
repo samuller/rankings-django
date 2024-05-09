@@ -16,13 +16,27 @@ There are a few different components in this project that each have their own ve
 
 ## [Unreleased]
 
-## [Docker 1.0.0] - 2024-05-01
+## [Docker 4.0.1-1.0.1] - 2024-05-09
+
+### Changed
+
+- Docker: versioning of combined container now includes both API & UI versions.
+- API: enable logging of API errors to console when Django's debug mode is disabled.
+
+### Fixed
+
+- UI: fix table having wrong colors when browser uses light mode theme (looking like white box).
+- Docker: start-up errors of API will no longer flood logs as `autorestart` is disabled in `supervisord` service.
 
 ### Added
 
-- Uploaded `samuller/rankings-site` docker image with these versions: API `4.0.0` / UI `1.0.0`.
+- API: start-up check added to see and error if database file isn't writable.
+- Deploy: scripts added to help with deployments: `rankings-docker.service` & `ubuntu-motd`.
+- Docker: combined container now supports "static sites" that are served by Caddy if the correct folder & configs are mounted (see [README](deploy/static-sites/README.md)).
 
-## [API 4.0.0 / UI 1.0.0] - 2023-10-07
+## [Docker 1.0.0] - 2024-05-01
+
+- Versions: `API 4.0.0` & `UI 1.0.0`
 
 ### Added
 
@@ -32,6 +46,7 @@ There are a few different components in this project that each have their own ve
   - 2023-09-02: Merged "svelte-ui" branch into "master". Makes use of [SvelteKit](https://kit.svelte.dev/) framework.
 - 2023-09-16: Started creating Docker image.
   - 2023-10-02: Uploaded first docker image (v0.9.0) to Docker Hub at `samuller/rankings-site-test`.
+  - 2024-05-01: Uploaded `samuller/rankings-site` docker image (v1.0.0) with these versions: API `4.0.0` / UI `1.0.0`.
 
 ---
 
