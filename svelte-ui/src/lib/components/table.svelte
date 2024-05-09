@@ -15,9 +15,9 @@
 
 <div class="relative overflow-x-auto">
 	<table
-		class="w-full table-auto min-w-[16rem] md:min-w-[24rem] mx-auto text-sm text-left text-gray-500 dark:text-gray-400"
+		class="w-full table-auto min-w-[16rem] md:min-w-[24rem] mx-auto text-sm text-left text-gray-400"
 	>
-		<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+		<thead class="text-xs uppercase bg-gray-700 text-gray-400">
 			<tr>
 				{#each columnNames as name, idx}
 					<th scope="col" class="px-3 md:px-6 py-3 {columnAlignments[idx]}">
@@ -28,7 +28,7 @@
 		</thead>
 		<tbody>
 			{#each rows as row}
-				<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+				<tr class="border-b bg-gray-800 border-gray-700">
 					{#each row as cell, cell_idx}
 						<td class="px-3 md:px-6 py-4 text-white {columnAlignments[cell_idx]}">
 							<div
