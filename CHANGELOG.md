@@ -11,7 +11,7 @@ There are a few different components in this project that each have their own ve
 
 - The main project version refers to the backend server and in this file we'll prefix its versions with `API`, e.g. `API 1.2.3`.
 - The Single-Page App (SPA) web frontend has its own version which will be prefixed with `UI` in this file, e.g. `UI 1.2.3`.
-- Various docker containers might also be built and they'll use one of the above versions. A backend-only or frontend-only container will use the corresponding version, while a full-stack container will use the frontend's version (as the frontend is then the final interface to the intended user).
+- Various docker containers might also be built and they'll use one of the above versions. A backend-only or frontend-only container will use the corresponding version, while a full-stack container will use both versions, e.g. `1.2.3-4.5.6` (both are used as while the frontend is the final interface to the intended user, the backend and docker changes are also relevant to the deployment admin who is a different type of user).
   - Docker containers might also add an additional build number at the end of the version if they have multiple releases for the same version, e.g. `1.2.3-4`.
 
 ## [Unreleased]
