@@ -111,12 +111,12 @@ build() {
         prod)
             IMAGE="samuller/rankings-site"
             TARGET="combined-app-alpine"
-            IMAGE_VERSION=$UI_VERSION
+            IMAGE_VERSION="$API_VERSION-$UI_VERSION"
             ;;
         test)
             IMAGE="samuller/rankings-site-test"
             TARGET="test-app"
-            IMAGE_VERSION=$UI_VERSION
+            IMAGE_VERSION="$API_VERSION-$UI_VERSION"
             ;;
         *)
             echo "Invalid arg '$1' expected 'prod' or 'test'."
