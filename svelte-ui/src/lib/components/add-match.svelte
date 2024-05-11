@@ -18,10 +18,15 @@
 	// Full list of all known possible players.
 	export let players: Player[] = [];
 
-	let selectedMemberIds = [
-		[0, 0],
-		[0, 0]
-	];
+	let selectedMemberIds: number[][];
+	const resetSelectedMemberIds = function () {
+		selectedMemberIds = [
+			[0, 0],
+			[0, 0]
+		];
+	};
+
+	resetSelectedMemberIds();
 	$: selectedPlayers = selectedMemberIds
 		.flat()
 		.filter((id) => id != 0)
@@ -127,6 +132,8 @@
 				for (let element of allSubmitButtons) {
 					(element as HTMLButtonElement).disabled = false;
 				}
+				// Clear selected players.
+				resetSelectedMemberIds();
 			});
 	};
 
