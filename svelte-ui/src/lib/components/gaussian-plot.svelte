@@ -68,6 +68,7 @@ Usage:
 <PlotlyWrapper
 	{data}
 	{...$$restProps}
+	on:click-point
 	initRangeX={limits}
 	xAxisFixedRange={true}
 	yRangeMinMax={[0, null]}

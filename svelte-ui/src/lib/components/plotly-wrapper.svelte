@@ -11,7 +11,9 @@ Usage:
 -->
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
+	import { onMount, createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 
 	// Data to plot.
 	export let data: { x: number[]; y: number[] } = { x: [], y: [] };
@@ -209,6 +211,15 @@ Usage:
 		// @ts-ignore Plotly has on() that matches jQuery.
 		plotElement.on('plotly_relayout', async function (relayoutData) {
 			await onRelayout(Plotly, data_x, data_y, relayoutData);
+		});
+		// @ts-ignore
+		plotElement.on('plotly_click', async function (data) {
+			// See: https://plotly.com/javascript/click-events/
+			// Haven't yet seen plot types where more than one point is ever returned.
+			if (data.points.length !== 1) console.log(`Plot click received with ${data.points.length} close points`);
+			const closestPoint = data.points[0];
+			const pointClicked = { 'x': closestPoint.x, 'y': closestPoint.y };
+			dispatch('click-point', { 'point': pointClicked });
 		});
 	};
 
