@@ -210,12 +210,14 @@ class SkillHistorySerializer(
     result = ResultSerializer(fields=["game"])
     skill = serializers.ReadOnlyField()
     datetime = serializers.ReadOnlyField()
+    game_id = serializers.ReadOnlyField()
 
     class Meta:
         model = SkillHistory
         fields = [
             "activity_id",
             "datetime",
+            "game_id",
             "player",
             "result",
             "skill",
@@ -243,7 +245,7 @@ class SkillHistoryViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelV
         player_id = self.kwargs["player_id"]
         return base_query.filter(
             activity_id=activity_url, player__id=player_id
-        ).annotate(datetime=F("result__game__datetime"))
+        ).annotate(datetime=F("result__game__datetime"), game_id=F("result__game__id"))
 
 
 class TeamMemberSerializer(
