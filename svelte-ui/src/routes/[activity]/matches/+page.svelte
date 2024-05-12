@@ -31,7 +31,7 @@
 	<PagingNav {pageNr} pageable={matches} />
 	<Table
 		columnNames={['ID #', 'Date', 'Team 1', 'Team 2']}
-		columnAlignments={['text-center', 'text-center', 'text-center', 'text-center']}
+		columnStyle={['text-center', 'text-center', 'text-center', 'text-center']}
 		rows={matchesTable}
 	/>
 {:else}

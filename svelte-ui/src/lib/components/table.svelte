@@ -1,3 +1,4 @@
+<!-- Declare types in module scope so they can be also be used from outside of this component. -->
 <script context="module" lang="ts">
 	export interface CellDetail {
 		// Type is actually anything that can be implicitly converted to a string.
@@ -9,7 +10,8 @@
 
 <script lang="ts">
 	export let columnNames: string[];
-	export let columnAlignments: string[] = [];
+	export let columnStyle: string[] = Array(columnNames.length).fill('text-left');
+	export let columnHeaderStyle: boolean[] = Array(columnNames.length).fill('');
 	export let rows: CellDetail[][];
 </script>
 
@@ -20,7 +22,10 @@
 		<thead class="text-xs uppercase bg-gray-700 text-gray-400">
 			<tr>
 				{#each columnNames as name, idx}
-					<th scope="col" class="px-3 md:px-6 py-3 {columnAlignments[idx]}">
+					<th
+						scope="col"
+						class="px-3 md:px-6 py-3 {columnStyle[idx]} {columnHeaderStyle[idx]}"
+					>
 						{name}
 					</th>
 				{/each}
@@ -30,7 +35,7 @@
 			{#each rows as row}
 				<tr class="border-b bg-gray-800 border-gray-700">
 					{#each row as cell, cell_idx}
-						<td class="px-3 md:px-6 py-4 text-white {columnAlignments[cell_idx]}">
+						<td class="px-3 md:px-6 py-4 text-white {columnStyle[cell_idx]}">
 							<div
 								class:tooltip={cell.tooltip ?? false}
 								data-tip={cell.tooltip}

@@ -67,7 +67,7 @@
 	</div>
 	<Table
 		columnNames={['Name', 'Skill']}
-		columnAlignments={['text-left', 'text-right']}
+		columnStyle={['text-left', 'text-right']}
 		rows={rankingsTable.slice(0, 5)}
 	/>
 	<a href={`/${$page.params.activity}/players`} class="text-gray-700 text-2xl font-bold underline"

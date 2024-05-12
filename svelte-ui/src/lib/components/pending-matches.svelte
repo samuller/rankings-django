@@ -31,7 +31,7 @@
 {#if table.length > 0}
 	<Table
 		columnNames={['Date', 'Team 1', 'Team 2', 'Submittor']}
-		columnAlignments={['text-center', 'text-center', 'text-center', 'text-center']}
+		columnStyle={['text-center', 'text-center', 'text-center', 'text-center']}
 		rows={table}
 	/>
 {/if}
