@@ -31,6 +31,22 @@ export const dateToLocalISOWithTZ = function (date: Date) {
 	return `${dateToLocalISO(date)}${timezoneISO}`;
 };
 
+/**
+ * Compare function that can be provided to .sort() for strings that could be numbers.
+ *
+ * @returns null if strings aren't numerical, else (a-b) to indicate number odering.
+ */
+export const sortAsNumber = function (textA: string, textB: string) {
+	const numA = Number(textA);
+	const numB = Number(textB);
+	// Check if text could be converted to numbers (we have to check for empty string as well
+	// since Number('') returns 0 instead of NaN).
+	if (textA.length > 0 && textB.length > 0 && !Number.isNaN(numA) && !Number.isNaN(numB)) {
+		return numA - numB;
+	}
+	return null;
+};
+
 export const convertMatchesToTable = function (
 	matches: Matches[],
 	pending = false

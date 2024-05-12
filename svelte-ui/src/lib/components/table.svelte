@@ -9,10 +9,14 @@
 </script>
 
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	export let columnNames: string[];
 	export let columnStyle: string[] = Array(columnNames.length).fill('text-left');
-	export let columnHeaderStyle: boolean[] = Array(columnNames.length).fill('');
+	export let columnHeaderStyle: string[] = Array(columnNames.length).fill('');
 	export let rows: CellDetail[][];
+
+	const dispatch = createEventDispatcher();
 </script>
 
 <div class="relative overflow-x-auto">
@@ -25,6 +29,7 @@
 					<th
 						scope="col"
 						class="px-3 md:px-6 py-3 {columnStyle[idx]} {columnHeaderStyle[idx]}"
+						on:click={() => dispatch('click-column-header', idx)}
 					>
 						{name}
 					</th>
@@ -32,7 +37,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each rows as row}
+			{#each rows as row (row)}
 				<tr class="border-b bg-gray-800 border-gray-700">
 					{#each row as cell, cell_idx}
 						<td class="px-3 md:px-6 py-4 text-white {columnStyle[cell_idx]}">
