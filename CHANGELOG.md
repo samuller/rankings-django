@@ -16,6 +16,12 @@ There are a few different components in this project that each have their own ve
 
 ## [Unreleased]
 
+## [Docker 4.1.1-1.1.0] - 2024-05-14
+
+### Fixed
+
+- API: fix routing to custom Admin actions by placing them under `/admin_api/` path.
+
 ## [Docker 4.1.0-1.1.0] - 2024-05-14
 
 ### Changed
