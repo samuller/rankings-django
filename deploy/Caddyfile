@@ -33,7 +33,7 @@
 	# Create matcher for all Django URLs.
 	@django {
 		# TODO: move the two API requests that don't start with /api/ (but with {activity-url}/api/)
-		path */api/* /admin/* /ssr/*
+		path */api/* /admin/* /admin_api/* /ssr/*
 	}
 	handle @django {
 		reverse_proxy localhost:8000

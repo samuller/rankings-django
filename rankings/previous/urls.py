@@ -27,13 +27,13 @@ urlpatterns = [
     re_path(r"^(?P<activity_url>.+)/api/undo_submission$", api.undo_submit),
     path("api/", include(router.urls)),
     re_path(
-        r"^select_player_to_fix/(?P<session_ids_str>.*)$",
+        r"^admin_api/select_player_to_fix/(?P<session_ids_str>.*)$",
         views.select_player_to_replace_in_submissions,
         name="select_fix_player",
     ),
-    re_path(r"^(?P<activity_url>.+)/update$", views.update, name="update_rankings"),
+    re_path(r"^admin_api/(?P<activity_url>.+)/update$", views.update, name="update_rankings"),
     re_path(
-        r"^(?P<activity_url>.+)/update/(?P<year>[0-9]+)$",
+        r"^admin_api/(?P<activity_url>.+)/update/(?P<year>[0-9]+)$",
         views.update,
         name="update_rankings",
     ),

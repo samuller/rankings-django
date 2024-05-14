@@ -14,7 +14,7 @@ export default defineConfig({
 	},
 	server: {
 		proxy: {
-			'^(.*/api/|/admin/)': {
+			'^(.*/api/|/admin/|/admin_api/)': {
 				target: 'http://host.docker.internal:8000',
 				changeOrigin: true,
 				secure: false
