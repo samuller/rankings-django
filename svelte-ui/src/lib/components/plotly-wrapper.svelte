@@ -216,10 +216,12 @@ Usage:
 		plotElement.on('plotly_click', async function (data) {
 			// See: https://plotly.com/javascript/click-events/
 			// Haven't yet seen plot types where more than one point is ever returned.
-			if (data.points.length !== 1) console.log(`Plot click received with ${data.points.length} close points`);
+			if (data.points.length !== 1) {
+				console.log(`Plot click received with ${data.points.length} close points`);
+			}
 			const closestPoint = data.points[0];
-			const pointClicked = { 'x': closestPoint.x, 'y': closestPoint.y };
-			dispatch('click-point', { 'point': pointClicked });
+			const pointClicked = { x: closestPoint.x, y: closestPoint.y };
+			dispatch('click-point', { point: pointClicked });
 		});
 	};
 
