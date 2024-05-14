@@ -16,21 +16,24 @@ There are a few different components in this project that each have their own ve
 
 ## [Unreleased]
 
-## [Docker 4.0.1-1.0.1] - 2024-05-09
+## [Docker 4.1.0-1.1.0] - 2024-05-14
 
 ### Changed
 
 - Docker: versioning of combined container now includes both API & UI versions.
 - API: enable logging of API errors to console when Django's debug mode is disabled.
+- UI: updated DaisyUI from `3.1.7` to `3.9.4`.
 
 ### Fixed
 
 - UI: fix table having wrong colors when browser uses light mode theme (looking like white box).
+- API: fixed URL routing for mass admin extension.
 - Docker: start-up errors of API will no longer flood logs as `autorestart` is disabled in `supervisord` service.
 
 ### Added
 
 - API: start-up check added to see and error if database file isn't writable.
+- API: include `game_id` in JSON serialization of `SkillHistory` (otherwise accessible via `result.game.id`).
 - Deploy: scripts added to help with deployments: `rankings-docker.service` & `ubuntu-motd`.
 - Docker: combined container now supports "static sites" that are served by Caddy if the correct folder & configs are mounted (see [README](deploy/static-sites/README.md)).
 
