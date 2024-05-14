@@ -49,7 +49,7 @@ urlpatterns = [
         name="openapi-schema",
     ),
     path("api/docs", openapi_docs),
-    re_path(r"^admin/", admin.site.urls),
     re_path(r"^admin/", include("massadmin.urls")),
+    re_path(r"^admin/", admin.site.urls),
     re_path(r"^", include("previous.urls")),
 ]
