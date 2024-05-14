@@ -15,7 +15,9 @@
 #
 
 printf "\n"
+printf " ------------------------\n"
 printf " Rankings site management:\n"
+printf " ------------------------\n"
 printf " * Service: service rankings-docker start  /  stop  /  restart\n"
 printf " * Status:  service rankings-docker status         OR  docker ps --filter name=rankings\n"
 printf " * Logs:    journalctl -u rankings-docker.service  OR  docker logs rankings-site\n"
