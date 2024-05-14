@@ -231,12 +231,12 @@ class BasicDataTestCase(TestCase):
 
         act = self.activity_url
         # First request will fail as superuser is required (follow needed for redirect).
-        response = self.client.get(f"/{act}/update", follow=True)
+        response = self.client.get(f"/admin_api/{act}/update", follow=True)
         assert response.status_code == 404, response.status_code
 
         User.objects.create_superuser("adm", "admin@example.com", "passw")
         self.client.login(username="adm", password="passw")
-        response = self.client.get(f"/{act}/update")
+        response = self.client.get(f"/admin_api/{act}/update")
         self.client.logout()
         assert response.status_code == 200, response.status_code
 
