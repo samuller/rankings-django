@@ -1,5 +1,7 @@
 # Config for Systemd service to run Rankings website via docker.
 #
+# Config format docs: https://www.freedesktop.org/software/systemd/man/latest/systemd.syntax.html
+#
 # System setup:
 # ```
 # sudo apt-get install -y docker.io
@@ -22,8 +24,14 @@ Requires=docker.socket
 [Service]
 Restart=always
 # Need "bash -c" to run compound commands
-# TODO: install docker, create/maintain db, open ports, create backups
-ExecStartPre=/bin/bash -c "/usr/bin/docker container inspect rankings-site 2> /dev/null || /usr/bin/docker run -d --name rankings-site -p 80:8080 --env GUNICORN_TIMEOUT=300 --mount type=bind,src=/opt/rankings-site/rankings.db,dst=/db/db.sqlite3 samuller/rankings-site:1.0.0"
+# TODO: create/maintain db, open ports, create backups
+ExecStartPre=/bin/bash -c "/usr/bin/docker container inspect rankings-site 2> /dev/null || \
+    /usr/bin/docker run -d \
+        --name rankings-site \
+        -p 80:8080 \
+        --env GUNICORN_TIMEOUT=300 \
+        --mount type=bind,src=/opt/rankings-site/rankings.db,dst=/db/db.sqlite3 \
+        samuller/rankings-site:1.0.0"
 ExecStart=/usr/bin/docker start -a rankings-site
 ExecStop=/usr/bin/docker stop -t 10 rankings-site
 
