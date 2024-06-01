@@ -33,6 +33,16 @@ jobs:
       backend: ${{ steps.filter.outputs.backend }}
       frontend: ${{ steps.filter.outputs.frontend }}
 
+  test-scripts:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Check syntax of shell scripts
+        shell: bash
+        run: find . -name "*.sh" -not -path "./svelte-ui/node_modules/*" | xargs -I'{}' bash -n {}
+
   test-backend:
     needs: change-detection
     # Trigger if content changed or workflow was triggered manually
