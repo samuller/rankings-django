@@ -66,7 +66,7 @@ test() {
     fi
     cd rankings
     # Run Django tests
-    PYTHONWARNINGS=default poetry run coverage run --source='.' manage.py test --debug-mode .
+    PYTHONWARNINGS=always poetry run coverage run --source='.' manage.py test --debug-mode .
     # Generate HTML coverage report
     poetry run coverage html --show-contexts
     # Print coverage report
