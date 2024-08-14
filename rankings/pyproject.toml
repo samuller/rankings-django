@@ -21,7 +21,7 @@ include = ["NOTICE"]
 # our dependencies.
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
-Django = "4.1.13"
+Django = "4.2.15"
 trueskill = "0.4.5"
 # We prefer Jinja over Django Templating as we migrated our templates from a Flask app
 Jinja2 = "2.11.3"
