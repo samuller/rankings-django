@@ -35,6 +35,8 @@ django-mass-edit = "3.5.0"
 djangorestframework = "3.15.1"
 # Recommended by DRF for filtering capabilities
 django-filter = "23.5"
+# Needed for improved generation of OpenAPI docs (also to stop django-filter deprecation warnings)
+drf-spectacular = "0.27.2"
 # Needed for DRF's dynamic schema generation for OpenAPI docs
 # See: https://www.django-rest-framework.org/api-guide/schemas/#install-dependencies
 uritemplate = "4.1.1"

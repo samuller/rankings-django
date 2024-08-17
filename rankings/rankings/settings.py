@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework",
     "previous.apps.PreviousConfig",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -138,6 +139,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "drf_link_header_pagination.LinkHeaderLimitOffsetPagination",
     "PAGE_SIZE": 100,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 

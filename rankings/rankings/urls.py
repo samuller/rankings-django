@@ -21,6 +21,11 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 from rest_framework.schemas import get_schema_view
 from rest_framework.renderers import JSONOpenAPIRenderer
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 
 
 def openapi_docs(request: HttpRequest) -> HttpResponse:
@@ -52,4 +57,15 @@ urlpatterns = [
     re_path(r"^admin/", include("massadmin.urls")),
     re_path(r"^admin/", admin.site.urls),
     re_path(r"^", include("previous.urls")),
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "api/schema/swagger-ui/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path(
+        "api/schema/redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
+    ),
 ]
