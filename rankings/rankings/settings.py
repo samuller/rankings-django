@@ -146,6 +146,10 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     "TITLE": "rankings-django",
     "VERSION": importlib.metadata.version("rankings-django"),
+    # Don't show auth/login options in API docs
+    "AUTHENTICATION_WHITELIST": [],
+    # Hide APIs you do not currently have permissions for
+    "SERVE_PUBLIC": False,
 }
 
 
