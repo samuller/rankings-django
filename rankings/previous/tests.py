@@ -130,6 +130,27 @@ class BasicDataTestCase(TestCase):
         assert response.status_code == 200, response.status_code
         assert json.loads(response.content) == [{"name": "tennis"}]
 
+    def test_api_auth_activity(self) -> None:
+        """Test that Auth is required for alterinig activities via API endpoints.
+
+        I.e. that we use `permission_classes = [permissions.IsAuthenticatedOrReadOnly]`.
+        """
+        data = {
+            "id": "checkers",
+            "url": "checkers",
+            "name": "Checkers",
+        }
+        response = self.client.post("/api/activities/", data, follow=True)
+        assert response.status_code == 403, response.status_code
+
+        User.objects.create_superuser("adm", "admin@example.com", "passw")
+        self.client.login(username="adm", password="passw")
+        try:
+            response = self.client.post("/api/activities/", data, follow=True)
+            assert response.status_code == 201, response.status_code
+        finally:
+            self.client.logout()
+
     def test_gen_activity_summary_page(self) -> None:
         """Test generation of activity summary page."""
         act = self.activity_url

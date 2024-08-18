@@ -81,7 +81,7 @@ class ActivitySerializer(
         request = self.context.get("request")
         if request:
             # We remove the large "about" field by default, and only return it if you use the field_filter to
-            # selectively choose fields (one of which be "about").
+            # selectively choose fields and one of them is "about".
             field_filter = request.query_params.get(FIELD_FILTER_PARAM)
             if not field_filter:
                 fields.pop("about")
