@@ -1,4 +1,5 @@
 """Django views for this app."""
+
 import json
 import time
 from typing import List, Dict, Optional, Any, Tuple, cast
@@ -23,9 +24,7 @@ from .models import (
 
 def main_page(request: HttpRequest) -> HttpResponse:
     """Generate the home page that lists all current activities."""
-    activities = [
-        activity.to_dict_with_url() for activity in Activity.objects.filter(active=True)
-    ]
+    activities = [activity.to_dict_with_url() for activity in Activity.objects.filter(active=True)]
     context = {"player_ids": [], "activities": activities}
     return render(request, "main_page.html", context)
 
@@ -34,9 +33,7 @@ def activity_summary(request: HttpRequest, activity_url: str) -> HttpResponse:
     """Generate a summary page for an activity (listing recent matches and leading players)."""
     activity = Activity.objects.filter(url=activity_url)
     if len(activity) != 1:
-        return HttpResponseNotFound(
-            f"Path doesn't exist - unknown [activity]: '{activity_url}'."
-        )
+        return HttpResponseNotFound(f"Path doesn't exist - unknown [activity]: '{activity_url}'.")
     activity = activity[0].to_dict_with_url()
 
     active_players_ids = []
@@ -46,25 +43,19 @@ def activity_summary(request: HttpRequest, activity_url: str) -> HttpResponse:
     # active_time_ago = time.mktime((datetime.datetime.now() - datetime.timedelta(days=6*30)).timetuple())
     # active_players_query = Player.objects.filter(
     #     active=True, teammember__team__session__datetime__gt=active_time_ago).distinct()
-    all_players = [
-        p.to_dict_with_skill(activity["id"]) for p in Player.objects.filter(active=True)
-    ]
+    all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.filter(active=True)]
     all_players.sort(key=lambda pl: pl["skill"], reverse=True)
 
     top_players = all_players[:5]
     context = {
-        "activities": [
-            a.to_dict_with_url() for a in Activity.objects.filter(active=True)
-        ],
+        "activities": [a.to_dict_with_url() for a in Activity.objects.filter(active=True)],
         "activity": activity,
         "players": all_players,
         "active_players": [p for p in top_players],
         "matches": [m.__dict__ for m in GameSession.objects.all().order_by("-id")[:50]],
         "pending_matches": [
             m.to_dict_with_teams()
-            for m in Game.objects.filter(
-                session__activity=activity["id"], session__validated=None
-            ).order_by("-id")
+            for m in Game.objects.filter(session__activity=activity["id"], session__validated=None).order_by("-id")
         ],
         "deletable_match_ids": [],
         "player_ids": active_players_ids,
@@ -72,35 +63,25 @@ def activity_summary(request: HttpRequest, activity_url: str) -> HttpResponse:
     return render(request, "activity_summary.html", context)
 
 
-def list_players(
-    request: HttpRequest, activity_url: str, sort_by: Optional[str] = None
-) -> HttpResponse:
+def list_players(request: HttpRequest, activity_url: str, sort_by: Optional[str] = None) -> HttpResponse:
     """List all the players (and their skill) that are active in the given activity."""
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
-        return HttpResponseNotFound(
-            f"Path doesn't exist - unknown [activity]/players: '{activity_url}'."
-        )
+        return HttpResponseNotFound(f"Path doesn't exist - unknown [activity]/players: '{activity_url}'.")
     if sort_by is None or len(sort_by) == 0:
         sort_by = "name"
 
     if sort_by == "skill":
-        all_players = [
-            p.to_dict_with_skill(activity["id"])
-            for p in Player.objects.filter(active=True)
-        ]
+        all_players = [p.to_dict_with_skill(activity["id"]) for p in Player.objects.filter(active=True)]
         all_players.sort(key=lambda pl: pl["skill"], reverse=True)
     else:
         all_players = [
-            p.to_dict_with_skill(activity["id"])
-            for p in Player.objects.filter(active=True).order_by(sort_by)
+            p.to_dict_with_skill(activity["id"]) for p in Player.objects.filter(active=True).order_by(sort_by)
         ]
 
     context = {
-        "activities": [
-            a.to_dict_with_url() for a in Activity.objects.filter(active=True)
-        ],
+        "activities": [a.to_dict_with_url() for a in Activity.objects.filter(active=True)],
         "activity": activity,
         "players": [p.__dict__ for p in Player.objects.filter(active=True)],
         "active_players": all_players,
@@ -108,22 +89,16 @@ def list_players(
     return render(request, "list_players.html", context)
 
 
-def player_info(
-    request: HttpRequest, activity_url: str, player_id: int
-) -> HttpResponse:
+def player_info(request: HttpRequest, activity_url: str, player_id: int) -> HttpResponse:
     """Generate a summary/profile page for a player in a certain activity."""
     activities = [a.to_dict_with_url() for a in Activity.objects.all()]
     activity = next((a for a in activities if a["url"] == activity_url), None)
     if activity is None:
-        return HttpResponseNotFound(
-            f"Path doesn't exist - unknown [activity]/player/{player_id}: {activity_url}."
-        )
+        return HttpResponseNotFound(f"Path doesn't exist - unknown [activity]/player/{player_id}: {activity_url}.")
 
     player = Player.objects.get(id=player_id)
     context = {
-        "activities": [
-            a.to_dict_with_url() for a in Activity.objects.filter(active=True)
-        ],
+        "activities": [a.to_dict_with_url() for a in Activity.objects.filter(active=True)],
         "activity": activity,
         "player_info": player.to_dict_with_skill(activity["id"]),
         "player_id": player_id,
@@ -131,25 +106,19 @@ def player_info(
     return render(request, "player.html", context)
 
 
-def player_history(
-    request: HttpRequest, activity_url: str, player_id: int, max_len: int = 500
-) -> HttpResponse:
+def player_history(request: HttpRequest, activity_url: str, player_id: int, max_len: int = 500) -> HttpResponse:
     """Get the full skill history for a given player and given activity."""
     activity = Activity.objects.get(url=activity_url)
     if activity is None:
         return HttpResponse(json.dumps({"skill_history": []}))
 
-    history = SkillHistory.objects.filter(
-        player_id=player_id, activity_id=activity.id
-    ).order_by("result__datetime")
+    history = SkillHistory.objects.filter(player_id=player_id, activity_id=activity.id).order_by("result__datetime")
     # Limit history to last few points
     history = history[max(len(history) - max_len, 0) :]  # noqa: E203
     return HttpResponse(
         json.dumps(
             {
-                "skill_history": [
-                    {"y": h.calc_skill(), "id": h.result.game.id} for h in history
-                ],
+                "skill_history": [{"y": h.calc_skill(), "id": h.result.game.id} for h in history],
             }
         )
     )
@@ -178,43 +147,30 @@ def list_matches(
         end = int(page) * results_per_page
         matches = [
             m.to_dict_with_teams()
-            for m in Game.objects.filter(
-                session__activity__id=activity["id"], session__validated=1
-            ).order_by("-id")[start:end]
+            for m in Game.objects.filter(session__activity__id=activity["id"], session__validated=1).order_by("-id")[
+                start:end
+            ]
         ]
     else:
         matches = [Game.objects.get(id=match_id).to_dict_with_teams()]
 
     total_pages = 1 + (
-        Game.objects.filter(
-            session__activity__id=activity["id"], session__validated=1
-        ).count()
-        // results_per_page
+        Game.objects.filter(session__activity__id=activity["id"], session__validated=1).count() // results_per_page
     )
 
     list_pages = [
-        val
-        for val in range(1, total_pages + 1)
-        if val <= 1 or val > (total_pages - 1) or abs(page - val) < 3
+        val for val in range(1, total_pages + 1) if val <= 1 or val > (total_pages - 1) or abs(page - val) < 3
     ]
-    gaps_idx = [
-        idx
-        for idx in range(1, len(list_pages))
-        if list_pages[idx] - list_pages[idx - 1] > 1
-    ]
+    gaps_idx = [idx for idx in range(1, len(list_pages)) if list_pages[idx] - list_pages[idx - 1] > 1]
     for idx in reversed(gaps_idx):
         list_pages.insert(idx, -1)
 
     pending_matches = [
         m.to_dict_with_teams()
-        for m in Game.objects.filter(
-            session__activity__id=activity["id"], session__validated=None
-        ).order_by("-id")
+        for m in Game.objects.filter(session__activity__id=activity["id"], session__validated=None).order_by("-id")
     ]
     context = {
-        "activities": [
-            a.to_dict_with_url() for a in Activity.objects.filter(active=True)
-        ],
+        "activities": [a.to_dict_with_url() for a in Activity.objects.filter(active=True)],
         "activity": activity,
         "player_ids": players,
         "matches": matches,
@@ -227,9 +183,7 @@ def list_matches(
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def update(
-    request: HttpRequest, activity_url: str, year: Optional[str] = None
-) -> HttpResponse:
+def update(request: HttpRequest, activity_url: str, year: Optional[str] = None) -> HttpResponse:
     """
     Fully clears and recalculates all rankings.
 
@@ -257,25 +211,16 @@ def about(request: HttpRequest) -> HttpResponse:
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def select_player_to_replace_in_submissions(
-    request: HttpRequest, session_ids_str: str
-) -> HttpResponse:
+def select_player_to_replace_in_submissions(request: HttpRequest, session_ids_str: str) -> HttpResponse:
     """Generate a view to help select players during the fix of a mistaken submission."""
     session_ids = [int(val) for val in session_ids_str.split(",")]
 
-    team_members = TeamMember.objects.filter(
-        team__in=AdhocTeam.objects.filter(session__in=session_ids)
-    )
+    team_members = TeamMember.objects.filter(team__in=AdhocTeam.objects.filter(session__in=session_ids))
     context = {
         "session_ids": ",".join([str(id) for id in session_ids]),
-        "matches": [
-            res.summary_str() for res in GameSession.objects.filter(id__in=session_ids)
-        ],
+        "matches": [res.summary_str() for res in GameSession.objects.filter(id__in=session_ids)],
         "current_players": [
-            val
-            for val in Player.objects.filter(
-                id__in=team_members.values("player")
-            ).values("id", "name")
+            val for val in Player.objects.filter(id__in=team_members.values("player")).values("id", "name")
         ],
         "all_players": Player.objects.all().values("id", "name"),
     }
@@ -296,9 +241,7 @@ def generate_blank_ratings(activity: Activity) -> Dict[int, Rating]:
     return ratings
 
 
-def batch_update_player_skills(
-    activity_id: int, after_date: Optional[Tuple[int, int, int]] = None
-) -> None:
+def batch_update_player_skills(activity_id: int, after_date: Optional[Tuple[int, int, int]] = None) -> None:
     """Do a full/batch update of player skills for a specific activity.
 
     This will wipe all current rankings and recalculate them and the SkillHistory's from scratch,
@@ -310,11 +253,7 @@ def batch_update_player_skills(
 
     # We can filter to only consider matches after a given date
     if after_date is None:
-        earliest_date = (
-            GameSession.objects.filter(activity=activity, validated=1)
-            .earliest("datetime")
-            .datetime
-        )
+        earliest_date = GameSession.objects.filter(activity=activity, validated=1).earliest("datetime").datetime
         after_date_unix = earliest_date
     else:
         after_date_unix = int(time.mktime((*after_date, 0, 0, 0, 0, 0, 0)))
@@ -324,9 +263,7 @@ def batch_update_player_skills(
 
     # Process each match to calculate rating progress and determine final rankings
     incremental_update_player_skills(
-        GameSession.objects.filter(
-            activity=activity, validated=1, datetime__gte=after_date_unix
-        ),
+        GameSession.objects.filter(activity=activity, validated=1, datetime__gte=after_date_unix),
         ratings,
     )
 
@@ -364,20 +301,14 @@ def incremental_update_player_skills(
     for session in new_game_sessions.order_by("datetime"):
         teams = AdhocTeam.objects.filter(session=session)
 
-        for game in Game.objects.filter(session=session).order_by(
-            "datetime", "position"
-        ):
+        for game in Game.objects.filter(session=session).order_by("datetime", "position"):
             team_ratings = []
             for team in teams:
                 team_members = TeamMember.objects.filter(team=team)
-                team_ratings.append(
-                    [ratings[member.player.id] for member in team_members]
-                )
+                team_ratings.append([ratings[member.player.id] for member in team_members])
 
             results = [Result.objects.get(game=game, team=team) for team in teams]
-            team_ratings = rate(
-                team_ratings, ranks=[result.ranking for result in results]
-            )
+            team_ratings = rate(team_ratings, ranks=[result.ranking for result in results])
 
             # Update current ratings and save them to SkillHistory
             for idx_team, team in enumerate(teams):

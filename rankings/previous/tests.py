@@ -1,4 +1,5 @@
 """Tests for this app."""
+
 import json
 import time
 from typing import List
@@ -54,9 +55,7 @@ class BasicDataTestCase(TestCase):
     def setUp(self) -> None:
         """Test set-up."""
         self.client = Client()
-        activity = Activity.objects.create(
-            id=self.activity_url, url=self.activity_url, name=self.activity_url
-        )
+        activity = Activity.objects.create(id=self.activity_url, url=self.activity_url, name=self.activity_url)
         players = []
         for name in self.player_names:
             player = Player.objects.create(name=name, email=f"{name.lower()}")
@@ -84,15 +83,11 @@ class BasicDataTestCase(TestCase):
             )
 
             team = AdhocTeam.objects.create(session=session)
-            TeamMember.objects.create(
-                team=team, player=players[match[0]], validated=None
-            )
+            TeamMember.objects.create(team=team, player=players[match[0]], validated=None)
             Result.objects.create(game=game, team=team, ranking=1)
 
             team = AdhocTeam.objects.create(session=session)
-            TeamMember.objects.create(
-                team=team, player=players[match[1]], validated=None
-            )
+            TeamMember.objects.create(team=team, player=players[match[1]], validated=None)
             Result.objects.create(game=game, team=team, ranking=2)
 
     def test_main_page_activity(self) -> None:
@@ -101,9 +96,7 @@ class BasicDataTestCase(TestCase):
         assert Activity.objects.filter(url=act).count() == 1
         response = self.client.get(f"/{SSR_PREFIX}")
         assert response.status_code == 200
-        assert f'<li><a href="/{SSR_PREFIX}{act}/">{act}</a></li>' in str(
-            response.content
-        )
+        assert f'<li><a href="/{SSR_PREFIX}{act}/">{act}</a></li>' in str(response.content)
 
     def test_api_get_activity(self) -> None:
         """Test API endpoints for getting activities."""
@@ -209,9 +202,7 @@ class BasicDataTestCase(TestCase):
         all_names = [p["name"] for p in all_players]
         for idx, name in enumerate(self.player_names):
             # Players aren't shown until they've played a few games.
-            assert f'<a href="/{SSR_PREFIX}{act}/player/{idx}">{name}</a>' not in str(
-                response.content
-            )
+            assert f'<a href="/{SSR_PREFIX}{act}/player/{idx}">{name}</a>' not in str(response.content)
             assert name in all_names
 
     def check_expected_skill_changes(self):
@@ -227,9 +218,7 @@ class BasicDataTestCase(TestCase):
         assert all(diff > 0 for diff in change_per_value(skill_zeus[0:10]))
         assert all(diff < 0 for diff in change_per_value(skill_zeus[10:]))
         # Only increases due to smaller sigma.
-        assert all(
-            diff < 0.5 for diff in change_per_value(skill_hades[0:10])
-        ), skill_hades
+        assert all(diff < 0.5 for diff in change_per_value(skill_hades[0:10])), skill_hades
         assert all(diff > 0 for diff in change_per_value(skill_hades[10:]))
         # Check that mu changes as expected according to win/losses.
         mu_zeus = [h.mu for h in history if h.player.name == "Zeus"]

@@ -62,6 +62,9 @@ ignore = ["D105", "D106", "D107", "D212", "D203", "D213", "D413", "D417"]
 [tool.ruff.lint.mccabe]
 max-complexity = 10
 
+[tool.ruff.format]
+exclude = ["**/migrations/*"]
+
 [tool.mypy]
 # We only add configs here that can apply equally to our main code and our test code
 ignore_missing_imports = true

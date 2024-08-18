@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.10/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
+
 import importlib.metadata
 import os
 from typing import List
@@ -56,9 +57,7 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", False)
 
-ALLOWED_HOSTS: List[str] = os.getenv(
-    "DJANGO_ALLOWED_HOSTS", "*,localhost,host.docker.internal"
-).split(",")
+ALLOWED_HOSTS: List[str] = os.getenv("DJANGO_ALLOWED_HOSTS", "*,localhost,host.docker.internal").split(",")
 
 APPEND_SLASH = True
 

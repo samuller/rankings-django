@@ -1,4 +1,5 @@
 """Utility functions."""
+
 from typing import Literal, Optional, List, TypedDict
 
 from rest_framework import serializers, authentication
@@ -56,9 +57,7 @@ class FieldFilterMixin:
         # Filter fields returned in output.
         if self.field_filter_param is not None and fields is not None:
             if fields == "":
-                raise ValidationError(
-                    f"query parameter '{self.field_filter_param}' is empty"
-                )
+                raise ValidationError(f"query parameter '{self.field_filter_param}' is empty")
 
             fields = tuple(fields.split(","))
             # Check all the fields are valid.
@@ -66,8 +65,7 @@ class FieldFilterMixin:
             if not set(fields).issubset(all_fields):
                 invalid_fields = list(set(fields) - set(all_fields))
                 raise ValidationError(
-                    f"query parameter '{self.field_filter_param}'"
-                    + f" referenced invalid fields: {invalid_fields}"
+                    f"query parameter '{self.field_filter_param}'" + f" referenced invalid fields: {invalid_fields}"
                 )
 
             return super().get_serializer(fields=fields, *args, **kwargs)
@@ -89,10 +87,7 @@ class ValidateParamsMixin:
             api_settings.ORDERING_PARAM,
             api_settings.VERSION_PARAM,
             # Pagination params.
-            *[
-                param["name"]
-                for param in self.paginator.get_schema_operation_parameters(None)
-            ],
+            *[param["name"] for param in self.paginator.get_schema_operation_parameters(None)],
             *self.extra_allowed_params,
         ]
         if api_settings.URL_FORMAT_OVERRIDE is not None:

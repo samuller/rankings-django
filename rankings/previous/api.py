@@ -1,4 +1,5 @@
 """Django API views for this app."""
+
 import json
 import time
 import socket
@@ -56,9 +57,7 @@ SKILL_EXPRESSION = ExpressionWrapper(
 )
 
 
-class ActivitySerializer(
-    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
-):
+class ActivitySerializer(serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer):
     """Serializer for Activities."""
 
     class Meta:
@@ -113,9 +112,7 @@ class ActivityViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewS
     field_filter_param = FIELD_FILTER_PARAM
 
 
-class PlayerSerializer(
-    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
-):
+class PlayerSerializer(serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer):
     """Serializer for Players."""
 
     class Meta:
@@ -138,9 +135,7 @@ class PlayerViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet
 
 
 @extend_schema_serializer(exclude_fields=("skill",))
-class RankingSerializer(
-    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
-):
+class RankingSerializer(serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer):
     """Serializer for Rankings."""
 
     activity = ActivitySerializer(fields=["name"])
@@ -161,9 +156,7 @@ class RankingSerializer(
 class RankingViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
     """API for handling rankings of players per activity."""
 
-    queryset = Ranking.objects.annotate(skill=SKILL_EXPRESSION).filter(
-        player__active=True, skill__gt=0
-    )
+    queryset = Ranking.objects.annotate(skill=SKILL_EXPRESSION).filter(player__active=True, skill__gt=0)
     serializer_class = RankingSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filterset_fields = ["activity"]
@@ -171,9 +164,7 @@ class RankingViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSe
     field_filter_param = FIELD_FILTER_PARAM
 
 
-class SkillHistoryGameSerializer(
-    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
-):
+class SkillHistoryGameSerializer(serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer):
     """Serializer for Game."""
 
     class Meta:
@@ -187,9 +178,7 @@ class SkillHistoryGameSerializer(
         ]
 
 
-class ResultSerializer(
-    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
-):
+class ResultSerializer(serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer):
     """Serializer for Result."""
 
     game = SkillHistoryGameSerializer(fields=["id", "datetime", "submittor"])
@@ -204,9 +193,7 @@ class ResultSerializer(
 
 
 @extend_schema_serializer(exclude_fields=("datetime", "game_id", "skill"))
-class SkillHistorySerializer(
-    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
-):
+class SkillHistorySerializer(serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer):
     """Serializer for SkillHistory."""
 
     # activity = ActivitySerializer(fields=["name"])
@@ -233,9 +220,7 @@ class SkillHistorySerializer(
 class SkillHistoryViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
     """API for handling the historical record of a player's skill over time (per activity)."""
 
-    queryset = SkillHistory.objects.annotate(skill=SKILL_EXPRESSION).filter(
-        player__active=True
-    )
+    queryset = SkillHistory.objects.annotate(skill=SKILL_EXPRESSION).filter(player__active=True)
     serializer_class = SkillHistorySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filterset_fields = ["activity_id", "player"]
@@ -247,14 +232,12 @@ class SkillHistoryViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelV
         base_query = super().get_queryset()
         activity_url = self.kwargs["activity_url"]
         player_id = self.kwargs["player_id"]
-        return base_query.filter(
-            activity_id=activity_url, player__id=player_id
-        ).annotate(datetime=F("result__game__datetime"), game_id=F("result__game__id"))
+        return base_query.filter(activity_id=activity_url, player__id=player_id).annotate(
+            datetime=F("result__game__datetime"), game_id=F("result__game__id")
+        )
 
 
-class TeamMemberSerializer(
-    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
-):
+class TeamMemberSerializer(serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer):
     """Serializer for TeamMember."""
 
     player = PlayerSerializer()
@@ -264,9 +247,7 @@ class TeamMemberSerializer(
         fields = ["player"]
 
 
-class AdhocTeamSerializer(
-    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
-):
+class AdhocTeamSerializer(serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer):
     """Serializer for AdhocTeam."""
 
     members = TeamMemberSerializer(source="teammember_set", many=True, read_only=True)
@@ -277,9 +258,7 @@ class AdhocTeamSerializer(
 
 
 @extend_schema_serializer(exclude_fields=("winning_team",))
-class MatchGameSerializer(
-    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
-):
+class MatchGameSerializer(serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer):
     """Serializer for Game."""
 
     # results = MatchResultSerializer(source="result_set", many=True, read_only=True)
@@ -301,9 +280,7 @@ class MatchGameSerializer(
         return Result.objects.filter(game=game, ranking=1).first().team.id
 
 
-class MatchSerializer(
-    serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
-):
+class MatchSerializer(serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer):
     """Serializer for Matches (a GameSet of multiple Games)."""
 
     games = MatchGameSerializer(source="game_set", many=True, read_only=True)
@@ -363,9 +340,7 @@ class ValidReasonSerializer(serializers.Serializer):
 
 
 @extend_schema(
-    request=inline_serializer(
-        "MatchID", fields={"match-id": serializers.IntegerField()}
-    ),
+    request=inline_serializer("MatchID", fields={"match-id": serializers.IntegerField()}),
     responses=ValidReasonSerializer,
 )
 @api_view(["POST"])
@@ -392,17 +367,11 @@ def undo_submit(request: Request, activity_url: str) -> Response:
         return gen_valid_reason_response(False, f"Match not found: {match_id}")
 
     if game.session.submittor != submittor:
-        return gen_valid_reason_response(
-            False, "Only the original submittor can delete their submission"
-        )
+        return gen_valid_reason_response(False, "Only the original submittor can delete their submission")
 
-    expiry_time = datetime.datetime.fromtimestamp(
-        game.session.datetime
-    ) + datetime.timedelta(minutes=15)
+    expiry_time = datetime.datetime.fromtimestamp(game.session.datetime) + datetime.timedelta(minutes=15)
     if datetime.datetime.now() >= expiry_time:
-        return gen_valid_reason_response(
-            False, "Submission undo period has expired. It can no longer be altered."
-        )
+        return gen_valid_reason_response(False, "Submission undo period has expired. It can no longer be altered.")
 
     game.delete()
 
@@ -421,9 +390,7 @@ def gen_valid_reason_response(valid: bool, reason: str) -> HttpResponse:
             # Teams (list of player IDs) per match
             "teams": serializers.ListField(  # matches
                 child=serializers.ListField(  # teams
-                    child=serializers.ListField(
-                        child=serializers.IntegerField()
-                    )  # players
+                    child=serializers.ListField(child=serializers.IntegerField())  # players
                 )
             ),
             # Winning team ID per match
@@ -466,15 +433,11 @@ def submit_match(request: Request, activity_url: str) -> Response:
         return gen_valid_reason_response(False, "Invalid teams")
 
     # Look for the first negative player id (else set to None)
-    invalid_player = next(
-        (player for team in all_teams for player in team if player < 0), None
-    )
+    invalid_player = next((player for team in all_teams for player in team if player < 0), None)
     if invalid_player is not None:
         return gen_valid_reason_response(False, "Invalid player ids")
 
-    result_ids = record_matches(
-        activity, teams_per_match, winning_teams, submittor=submittor
-    )
+    result_ids = record_matches(activity, teams_per_match, winning_teams, submittor=submittor)
     # ip = request.environ['REMOTE_ADDR']
     # set_deletable_matches(result_ids)
 
@@ -509,13 +472,11 @@ def replace_player_in_submissions(request: Request) -> Response:
     prev_player_id = request.POST["prev_player_id"]
     new_player_id = request.POST["new_player_id"]
 
-    team_members = TeamMember.objects.filter(
-        team__in=AdhocTeam.objects.filter(session__in=session_ids)
-    )
+    team_members = TeamMember.objects.filter(team__in=AdhocTeam.objects.filter(session__in=session_ids))
 
-    count_changed = team_members.filter(
-        player=Player.objects.get(id=prev_player_id)
-    ).update(player=Player.objects.get(id=new_player_id))
+    count_changed = team_members.filter(player=Player.objects.get(id=prev_player_id)).update(
+        player=Player.objects.get(id=new_player_id)
+    )
     return HttpResponse(
         f"Successfully changed {count_changed} submissions",
         content_type="text/plain",
@@ -537,9 +498,7 @@ def record_matches(
     for i in range(len(teams_per_match)):
         if submission_time is None:
             submission_time = int(time.time())
-        session = GameSession(
-            activity=activity, datetime=submission_time, submittor=submittor
-        )
+        session = GameSession(activity=activity, datetime=submission_time, submittor=submittor)
         session.save()
 
         winning_team = winning_team_per_match[i]
@@ -552,9 +511,7 @@ def record_matches(
     return results
 
 
-def record_match(
-    session: GameSession, teams: List[List[int]], winning_team: int
-) -> Optional[Any]:
+def record_match(session: GameSession, teams: List[List[int]], winning_team: int) -> Optional[Any]:
     """Record a single match as part of the given GameSession."""
     # TODO: support any number of teams (2+)
     if winning_team == 1:
@@ -565,9 +522,7 @@ def record_match(
         assert False, f"Winner incorrectly identified: {winning_team}"
 
     submit_time = int(time.time())
-    game = Game.objects.create(
-        datetime=submit_time, submittor=session.submittor, session=session, position=0
-    )
+    game = Game.objects.create(datetime=submit_time, submittor=session.submittor, session=session, position=0)
 
     for i, team in enumerate(teams):
         if len(team) == 0:

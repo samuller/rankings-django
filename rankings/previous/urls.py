@@ -1,4 +1,5 @@
 """Django URL patterns to redirect URL paths to specific views."""
+
 from django.urls import re_path, path, include
 from rest_framework import routers
 
@@ -31,9 +32,7 @@ urlpatterns = [
         views.select_player_to_replace_in_submissions,
         name="select_fix_player",
     ),
-    re_path(
-        r"^admin_api/(?P<activity_url>.+)/update$", views.update, name="update_rankings"
-    ),
+    re_path(r"^admin_api/(?P<activity_url>.+)/update$", views.update, name="update_rankings"),
     re_path(
         r"^admin_api/(?P<activity_url>.+)/update/(?P<year>[0-9]+)$",
         views.update,

@@ -1,4 +1,5 @@
 """Django Admin tool configuration."""
+
 import time
 import datetime
 
@@ -41,9 +42,7 @@ class ActivityAdmin(admin.ModelAdmin):
             )
             return
 
-        return HttpResponseRedirect(
-            reverse("update_rankings", kwargs={"activity_url": queryset.first().id})
-        )
+        return HttpResponseRedirect(reverse("update_rankings", kwargs={"activity_url": queryset.first().id}))
 
     def recalc_skill_rankings_for_current_calendar_year(self, request, queryset):
         """Define action to recalculate the skill rankings, but only consider games for the current year."""
@@ -118,9 +117,7 @@ class GameSessionAdmin(admin.ModelAdmin):
         earliest_match = queryset.order_by("datetime").first()
         first_unvalidated = (
             # Null = unvalidated, True = validated, False = invalidated
-            GameSession.objects.filter(activity=activity, validated__isnull=True)
-            .order_by("datetime")
-            .first()
+            GameSession.objects.filter(activity=activity, validated__isnull=True).order_by("datetime").first()
         )
         if earliest_match != first_unvalidated:
             messages.error(
@@ -146,9 +143,7 @@ class GameSessionAdmin(admin.ModelAdmin):
     def fix_incorrect_player(self, request, queryset):
         """Define action to fix an incorrectly selected player in a GameSession submission."""
         result_ids = ",".join([str(val[0]) for val in queryset.values_list("id")])
-        return HttpResponseRedirect(
-            reverse("select_fix_player", kwargs={"session_ids_str": result_ids})
-        )
+        return HttpResponseRedirect(reverse("select_fix_player", kwargs={"session_ids_str": result_ids}))
 
 
 # Register your models here.

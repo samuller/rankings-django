@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Jinja configurations."""
+
 import json
 from typing import Any, List, Dict
 from django.contrib.staticfiles.storage import staticfiles_storage

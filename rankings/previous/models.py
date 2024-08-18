@@ -10,6 +10,7 @@ Originally generated with `inspectdb`.
 >   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
 > Feel free to rename the models, but don't rename db_table values or field names.
 """
+
 from __future__ import unicode_literals
 
 from django.db import models
@@ -25,9 +26,7 @@ class Activity(models.Model):
     url = models.TextField(unique=True, blank=False, null=False)
     name = models.TextField(blank=True, null=True)
     active = models.BooleanField(default=True)
-    skill_type = models.ForeignKey(
-        "SkillType", models.DO_NOTHING, db_column="skill_type", blank=True, null=True
-    )
+    skill_type = models.ForeignKey("SkillType", models.DO_NOTHING, db_column="skill_type", blank=True, null=True)
     min_teams_per_match = models.IntegerField(default=2)
     max_teams_per_match = models.IntegerField(blank=True, null=True)
     min_players_per_team = models.IntegerField(default=1)
@@ -75,9 +74,7 @@ class GameSession(SubmittedData):
 
     def get_ranked_teams(self):
         """Generate the list of teams involved in the session, orderd by their resulting ranking."""
-        return [
-            team for team in AdhocTeam.objects.filter(result=self).order_by("ranking")
-        ]
+        return [team for team in AdhocTeam.objects.filter(result=self).order_by("ranking")]
 
     def summary_str(self):
         """Generate string summarising game session details."""
@@ -90,9 +87,7 @@ class GameSession(SubmittedData):
         return f"[{self.id}] {self.activity.id} result: {result_str}"
 
     def __str__(self):
-        return (
-            f"Game of {self.activity} @ {self.datetime} (Submitter: {self.submittor})"
-        )
+        return f"Game of {self.activity} @ {self.datetime} (Submitter: {self.submittor})"
 
 
 class AdhocTeam(models.Model):
@@ -152,10 +147,7 @@ class Game(SubmittedData):
         return result
 
     def __str__(self):
-        return (
-            f"Game of {self.session.activity} @ {self.session.datetime}"
-            + f" (Submitter: {self.session.submittor})"
-        )
+        return f"Game of {self.session.activity} @ {self.session.datetime}" + f" (Submitter: {self.session.submittor})"
 
 
 class Result(SubmittedData):
@@ -244,10 +236,7 @@ class SkillHistory(models.Model):
         return skill
 
     def __str__(self):
-        return (
-            f"[Game {self.result.game.id}] {self.player} @ "
-            + f"{self.activity_id}: ({self.mu}, {self.sigma})"
-        )
+        return f"[Game {self.result.game.id}] {self.player} @ " + f"{self.activity_id}: ({self.mu}, {self.sigma})"
 
 
 class SkillType(models.Model):

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Management script for Django commands."""
+
 import os
 import sys
 

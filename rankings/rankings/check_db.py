@@ -1,4 +1,5 @@
 """Middleware for startup checks of database."""
+
 import os
 from pathlib import Path
 
@@ -15,9 +16,7 @@ class CheckDBMiddleware:
             curr_uid = os.getuid()
             file_uid = os.stat(db_path).st_uid
             cmp_str = f"current vs file UIDs: {curr_uid} vs. {file_uid}"
-            raise Exception(
-                f"Database file is not writable: {str(db_path)} ({cmp_str})"
-            )
+            raise Exception(f"Database file is not writable: {str(db_path)} ({cmp_str})")
         # Indicate that this middleware won't be used after initialization.
         # See: https://docs.djangoproject.com/en/dev/topics/http/middleware/#marking-middleware-as-unused
         raise MiddlewareNotUsed("Database check completed")
