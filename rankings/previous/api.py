@@ -17,13 +17,16 @@ from rest_framework.decorators import (
     authentication_classes,
 )
 from django_filters import FilterSet, BooleanFilter, NumberFilter
+from drf_spectacular.utils import (
+    extend_schema,
+    extend_schema_serializer,
+)
 
 from .utils import (
     CsrfExemptSessionAuthentication,
     FieldFilterModelSerializer,
     FieldFilterMixin,
     ValidateParamsMixin,
-    ManualAutoSchema,
 )
 from .models import (
     Activity,
@@ -91,24 +94,6 @@ class ActivityViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewS
     filterset_fields = ["active"]
     search_fields = ["id", "url", "name"]
     field_filter_param = FIELD_FILTER_PARAM
-    schema = ManualAutoSchema(
-        manual_fields=[
-            {
-                "name": "format",
-                "required": False,
-                "in": "query",
-                "description": "Format of response to return (e.g. json, api).",
-                "schema": {"type": "string"},
-            },
-            {
-                "name": "select",
-                "required": False,
-                "in": "query",
-                "description": "Comma separated list of the subset of fields to return in response.",
-                "schema": {"type": "string"},
-            },
-        ]
-    )
 
 
 class PlayerSerializer(
@@ -135,6 +120,7 @@ class PlayerViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet
     search_fields = ["name", "email"]
 
 
+@extend_schema_serializer(exclude_fields=("skill",))
 class RankingSerializer(
     serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
 ):
@@ -200,6 +186,7 @@ class ResultSerializer(
         ]
 
 
+@extend_schema_serializer(exclude_fields=("datetime", "game_id", "skill"))
 class SkillHistorySerializer(
     serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
 ):
@@ -272,6 +259,7 @@ class AdhocTeamSerializer(
         fields = ["id", "members"]
 
 
+@extend_schema_serializer(exclude_fields=("winning_team",))
 class MatchGameSerializer(
     serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer
 ):
@@ -291,7 +279,7 @@ class MatchGameSerializer(
             "winning_team",
         ]
 
-    def find_winning_team(self, game):
+    def find_winning_team(self, game) -> int:
         """Fetch ID of team with rank of 1 in the current game."""
         return Result.objects.filter(game=game, ranking=1).first().team.id
 
@@ -341,6 +329,7 @@ class MatchViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet)
         return base_query.filter(activity_id=activity_url)
 
 
+@extend_schema(request=None, responses=None, auth=[])
 @api_view()
 @authentication_classes([CsrfExemptSessionAuthentication])
 @permission_classes([permissions.IsAdminUser])
@@ -349,6 +338,7 @@ def validate_all_matches(request: Request) -> Response:
     return HttpResponse("")
 
 
+@extend_schema(request=None, responses=None)
 @api_view(["POST"])
 def undo_submit(request: Request, activity_url: str) -> Response:
     """
@@ -395,6 +385,7 @@ def gen_valid_reason_response(valid: bool, reason: str) -> HttpResponse:
     return HttpResponse(json.dumps({"valid": valid, "reason": reason}))
 
 
+@extend_schema(request=None, responses=None)
 @api_view(["POST"])
 @authentication_classes([])
 def submit_match(request: Request, activity_url: str) -> Response:
@@ -449,6 +440,7 @@ def submit_match(request: Request, activity_url: str) -> Response:
         return gen_valid_reason_response(True, "")
 
 
+@extend_schema(request=None, responses=None, auth=[])
 @api_view(["POST"])
 @authentication_classes([CsrfExemptSessionAuthentication])
 @permission_classes([permissions.IsAdminUser])
@@ -552,6 +544,7 @@ def record_match(
     return session.id
 
 
+@extend_schema(request=None, responses=None)
 @api_view()
 def show_source_id(request: Request) -> Response:
     """Return a string to identify the source of the client request."""

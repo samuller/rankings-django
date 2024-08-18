@@ -210,7 +210,7 @@ class Ranking(models.Model):
         db_table = "ranking"
         unique_together = (("player", "activity"),)
 
-    def calc_skill(self):
+    def calc_skill(self) -> float:
         """Calculate ranking/skill value from skill probability."""
         min_range = 0  # TODO: skill_type.min_skill_range
         max_range = 50  # skill_type.max_skill_range
