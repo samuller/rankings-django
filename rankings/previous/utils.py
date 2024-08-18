@@ -41,7 +41,7 @@ class FieldFilterModelSerializer(serializers.ModelSerializer):
 
 
 class FieldFilterMixin:
-    """This mixin allows you to return only a subset of the fields serialized.
+    """Mixin that allows you to return only a subset of the fields serialized.
 
     Use with a class extending `rest_framework.viewsets.ModelViewSet` and that is already using a `serializer_class`
     that is based on `DynamicFieldsModelSerializer`.

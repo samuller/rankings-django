@@ -30,9 +30,11 @@ lint() {
         exit
     fi
 
+    # Change into Python directory so Poetry can use pyproject.toml
     cd rankings
-    echo "flake8..."
-    poetry run flake8 --exclude **/migrations/
+    echo "ruff check..."
+    # Run ruff from parent directory so that it can will find and use .gitignore
+    poetry run ruff check ..
     # We're not as strict about docstrings in our tests
     # poetry run flake8 --extend-ignore=D tests/
     echo "mypy..."
