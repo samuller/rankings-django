@@ -46,7 +46,6 @@ drf-link-header-pagination = "0.2.0"
 # through yet.
 [tool.poetry.dev-dependencies]
 ruff = "0.6.1"
-black = "^23.7.0"
 mypy = "^1.11.1"
 coverage = "^7.6.1"
 

@@ -41,8 +41,8 @@ lint() {
     poetry run mypy .
     # No "strict" type requirements for tests.
     # poetry run mypy tests/
-    echo "black..."
-    poetry run black --check .
+    echo "ruff format..."
+    poetry run ruff format --check ..
 
     # cd svelte-ui && npm run lint && cd -
     # cd - && cd deploys && caddy fmt
@@ -55,7 +55,7 @@ format() {
         exit
     fi
 
-    cd rankings && black . && cd -
+    cd rankings && ruff format .. && cd -
     # cd svelte-ui && npm run format && cd -
     # cd deploys && caddy fmt --overwrite && cd -
 }
