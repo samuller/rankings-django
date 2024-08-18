@@ -4,7 +4,6 @@ from typing import Literal, Optional, List, TypedDict
 from rest_framework import serializers, authentication
 from rest_framework.settings import api_settings
 from rest_framework.exceptions import ValidationError
-from rest_framework.schemas import openapi
 
 
 class CsrfExemptSessionAuthentication(authentication.SessionAuthentication):
@@ -126,26 +125,6 @@ OpenAPIParameters = TypedDict(
     },
     total=False,
 )
-
-
-class ManualAutoSchema(openapi.AutoSchema):
-    """An AutoSchema that allows some extra fields to be manually added."""
-
-    def __init__(
-        self,
-        manual_fields: List[OpenAPIParameters],
-        tags=None,
-        operation_id_base=None,
-        component_name=None,
-    ):
-        super().__init__(tags, operation_id_base, component_name)
-        self.manual_fields = manual_fields
-
-    def get_operation(self, path, method):
-        """Get operation schema details of API endpoint."""
-        operation = super().get_operation(path, method)
-        operation["parameters"].extend(self.manual_fields)
-        return operation
 
 
 def cardinalToOrdinal(num: int) -> str:

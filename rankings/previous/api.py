@@ -20,6 +20,9 @@ from django_filters import FilterSet, BooleanFilter, NumberFilter
 from drf_spectacular.utils import (
     extend_schema,
     extend_schema_serializer,
+    inline_serializer,
+    OpenApiTypes,
+    OpenApiParameter,
 )
 
 from .utils import (
@@ -85,6 +88,20 @@ class ActivitySerializer(
         return fields
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter(
+            "format",
+            # We don't set "default" as we prefer if value is unset in API docs.
+            description='Format of response to return (defaults to "json").',
+            enum=["json", "api"],
+        ),
+        OpenApiParameter(
+            FIELD_FILTER_PARAM,
+            description="Subset of fields to return in response (comma separated list).",
+        ),
+    ]
+)
 class ActivityViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelViewSet):
     """API for handling all known activities."""
 
@@ -338,7 +355,19 @@ def validate_all_matches(request: Request) -> Response:
     return HttpResponse("")
 
 
-@extend_schema(request=None, responses=None)
+class ValidReasonSerializer(serializers.Serializer):
+    """A general result to say if processing was successful, and if not give a reason."""
+
+    valid = serializers.BooleanField()
+    reason = serializers.CharField()
+
+
+@extend_schema(
+    request=inline_serializer(
+        "MatchID", fields={"match-id": serializers.IntegerField()}
+    ),
+    responses=ValidReasonSerializer,
+)
 @api_view(["POST"])
 def undo_submit(request: Request, activity_url: str) -> Response:
     """
@@ -385,7 +414,24 @@ def gen_valid_reason_response(valid: bool, reason: str) -> HttpResponse:
     return HttpResponse(json.dumps({"valid": valid, "reason": reason}))
 
 
-@extend_schema(request=None, responses=None)
+@extend_schema(
+    request=inline_serializer(
+        "SubmitMatchResults",
+        fields={
+            # Teams (list of player IDs) per match
+            "teams": serializers.ListField(  # matches
+                child=serializers.ListField(  # teams
+                    child=serializers.ListField(
+                        child=serializers.IntegerField()
+                    )  # players
+                )
+            ),
+            # Winning team ID per match
+            "wins": serializers.ListField(child=serializers.IntegerField()),
+        },
+    ),
+    responses=ValidReasonSerializer,
+)
 @api_view(["POST"])
 @authentication_classes([])
 def submit_match(request: Request, activity_url: str) -> Response:
@@ -440,7 +486,17 @@ def submit_match(request: Request, activity_url: str) -> Response:
         return gen_valid_reason_response(True, "")
 
 
-@extend_schema(request=None, responses=None, auth=[])
+@extend_schema(
+    request=inline_serializer(
+        "ReplacePlayer",
+        fields={
+            "prev_player_id": serializers.IntegerField(),
+            "new_player_id": serializers.IntegerField(),
+        },
+    ),
+    responses=OpenApiTypes.STR,
+    auth=[],
+)
 @api_view(["POST"])
 @authentication_classes([CsrfExemptSessionAuthentication])
 @permission_classes([permissions.IsAdminUser])
@@ -544,7 +600,15 @@ def record_match(
     return session.id
 
 
-@extend_schema(request=None, responses=None)
+@extend_schema(
+    request=None,
+    responses=inline_serializer(
+        "SourceID",
+        fields={
+            "source": serializers.CharField(),
+        },
+    ),
+)
 @api_view()
 def show_source_id(request: Request) -> Response:
     """Return a string to identify the source of the client request."""
