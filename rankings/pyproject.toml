@@ -45,6 +45,7 @@ drf-link-header-pagination = "0.2.0"
 # actually it's just because that's the default - not because we've thought it
 # through yet.
 [tool.poetry.dev-dependencies]
+ruff = "0.6.1"
 flake8 = "^7.1.1"
 black = "^23.7.0"
 flake8-docstrings = "^1.7.0"
