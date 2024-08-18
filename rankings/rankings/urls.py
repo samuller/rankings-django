@@ -13,14 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-import importlib.metadata
-
 from django.urls import include, re_path, path
 from django.contrib import admin
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
-from rest_framework.schemas import get_schema_view
-from rest_framework.renderers import JSONOpenAPIRenderer
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
@@ -44,28 +40,20 @@ def openapi_docs(request: HttpRequest) -> HttpResponse:
 
 
 urlpatterns = [
-    path(
-        "api/openapi.json",
-        get_schema_view(
-            title="rankings-django",
-            version=importlib.metadata.version("rankings-django"),
-            renderer_classes=[JSONOpenAPIRenderer],
-        ),
-        name="openapi-schema",
-    ),
+    path("api/openapi.json", SpectacularAPIView.as_view(), name="openapi-schema"),
+    # Custom generation of Swagger UI docs (used before drf-spectacular)
     path("api/docs", openapi_docs),
+    path(
+        "api/docs/swagger",
+        SpectacularSwaggerView.as_view(url_name="openapi-schema"),
+        name="swagger",
+    ),
+    path(
+        "api/docs/redoc",
+        SpectacularRedocView.as_view(url_name="openapi-schema"),
+        name="redoc",
+    ),
     re_path(r"^admin/", include("massadmin.urls")),
     re_path(r"^admin/", admin.site.urls),
     re_path(r"^", include("previous.urls")),
-    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
-    path(
-        "api/schema/swagger-ui/",
-        SpectacularSwaggerView.as_view(url_name="schema"),
-        name="swagger-ui",
-    ),
-    path(
-        "api/schema/redoc/",
-        SpectacularRedocView.as_view(url_name="schema"),
-        name="redoc",
-    ),
 ]

@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.10/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
+import importlib.metadata
 import os
 from typing import List
 
@@ -140,6 +141,11 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "drf_link_header_pagination.LinkHeaderLimitOffsetPagination",
     "PAGE_SIZE": 100,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "rankings-django",
+    "VERSION": importlib.metadata.version("rankings-django"),
 }
 
 
