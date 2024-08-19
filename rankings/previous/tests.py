@@ -4,21 +4,21 @@ import json
 import time
 from typing import List
 
+from django.contrib.auth.models import User
+from django.test import Client, TestCase
+from django.urls import reverse
+
 from .models import (
     Activity,
-    Player,
-    GameSession,
-    Game,
     AdhocTeam,
-    TeamMember,
+    Game,
+    GameSession,
+    Player,
     Result,
     SkillHistory,
+    TeamMember,
 )
 from .urls import SSR_PREFIX
-
-from django.urls import reverse
-from django.test import TestCase, Client
-from django.contrib.auth.models import User
 
 # from .views import submit_match
 

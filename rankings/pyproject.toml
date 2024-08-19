@@ -54,9 +54,9 @@ line-length = 120
 
 [tool.ruff.lint]
 exclude = ["**/migrations/*"]
-# Options to enable soon: "DJ", "G" (-"G004")
-extend-select = ["E", "D", "W", "C90", "YTT", "ASYNC", "ICN", "LOG", "INP", "PYI", "ISC", "N", "B"]
-ignore = ["D105", "D106", "D107", "D212", "D203", "D213", "D413", "D417", "ISC003",
+# Options to enable soon: "DJ"
+extend-select = ["E", "D", "W", "C90", "YTT", "ASYNC", "ICN", "LOG", "INP", "PYI", "ISC", "N", "B", "G", "FBT", "I"]
+ignore = ["D105", "D106", "D107", "D212", "D203", "D213", "D413", "D417", "ISC003", "G004",
     # Warning in Ruff format about conflicts (false positive?) - see: https://github.com/astral-sh/ruff/issues/8272
     "ISC001"]
 

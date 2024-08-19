@@ -13,8 +13,9 @@ Originally generated with `inspectdb`.
 
 from __future__ import unicode_literals
 
-from django.db import models
 import datetime
+
+from django.db import models
 
 from .utils import cardinal_to_ordinal
 

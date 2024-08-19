@@ -1,9 +1,9 @@
 """Django URL patterns to redirect URL paths to specific views."""
 
-from django.urls import re_path, path, include
+from django.urls import include, path, re_path
 from rest_framework import routers
 
-from . import views, api
+from . import api, views
 
 # Prefix for paths that generate HTML (server-side rendered)
 SSR_PREFIX = "ssr/"

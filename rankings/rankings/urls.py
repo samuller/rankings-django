@@ -16,10 +16,10 @@ Examples
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 
-from django.urls import include, re_path, path
 from django.contrib import admin
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.urls import include, path, re_path
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,

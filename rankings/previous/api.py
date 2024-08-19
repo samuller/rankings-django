@@ -1,47 +1,47 @@
 """Django API views for this app."""
 
-import json
-import time
-import socket
 import datetime
-from typing import List, Optional, Any
+import json
+import socket
+import time
+from typing import Any, List, Optional
 
-from django.http import HttpResponse, HttpRequest
+from django.db.models import ExpressionWrapper, F, FloatField, Value
 from django.db.models.functions import Greatest, Least
-from django.db.models import ExpressionWrapper, Value, F, FloatField
-from rest_framework import permissions, serializers, viewsets
-from rest_framework.request import Request
-from rest_framework.response import Response
-from rest_framework.decorators import (
-    api_view,
-    permission_classes,
-    authentication_classes,
-)
-from django_filters import FilterSet, BooleanFilter, NumberFilter
+from django.http import HttpRequest, HttpResponse
+from django_filters import BooleanFilter, FilterSet, NumberFilter
 from drf_spectacular.utils import (
+    OpenApiParameter,
+    OpenApiTypes,
     extend_schema,
     extend_schema_serializer,
     inline_serializer,
-    OpenApiTypes,
-    OpenApiParameter,
 )
+from rest_framework import permissions, serializers, viewsets
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
+from rest_framework.request import Request
+from rest_framework.response import Response
 
-from .utils import (
-    CsrfExemptSessionAuthentication,
-    FieldFilterModelSerializer,
-    FieldFilterMixin,
-    ValidateParamsMixin,
-)
 from .models import (
     Activity,
     AdhocTeam,
-    Player,
     Game,
     GameSession,
+    Player,
     Ranking,
     Result,
     SkillHistory,
     TeamMember,
+)
+from .utils import (
+    CsrfExemptSessionAuthentication,
+    FieldFilterMixin,
+    FieldFilterModelSerializer,
+    ValidateParamsMixin,
 )
 
 # Query parameter to use for filtering fields returned by the serializer.
@@ -354,31 +354,33 @@ def undo_submit(request: Request, activity_url: str) -> Response:
 
     activity = Activity.objects.get(url=activity_url)
     if activity is None:
-        return gen_valid_reason_response(False, "Activity not found")
+        return gen_valid_reason_response(valid=False, reason="Activity not found")
 
     if request.method != "POST":
-        return gen_valid_reason_response(False, "Only POST supported")
+        return gen_valid_reason_response(valid=False, reason="Only POST supported")
 
     json_data = json.loads(request.body.decode("utf-8"))
     match_id = json_data["match-id"]
     try:
         game = Game.objects.get(id=match_id)
     except Game.DoesNotExist:
-        return gen_valid_reason_response(False, f"Match not found: {match_id}")
+        return gen_valid_reason_response(valid=False, reason=f"Match not found: {match_id}")
 
     if game.session.submittor != submittor:
-        return gen_valid_reason_response(False, "Only the original submittor can delete their submission")
+        return gen_valid_reason_response(valid=False, reason="Only the original submittor can delete their submission")
 
     expiry_time = datetime.datetime.fromtimestamp(game.session.datetime) + datetime.timedelta(minutes=15)
     if datetime.datetime.now() >= expiry_time:
-        return gen_valid_reason_response(False, "Submission undo period has expired. It can no longer be altered.")
+        return gen_valid_reason_response(
+            valid=False, reason="Submission undo period has expired. It can no longer be altered."
+        )
 
     game.delete()
 
-    return gen_valid_reason_response(True, "Match {match_id} deleted")
+    return gen_valid_reason_response(valid=True, reason="Match {match_id} deleted")
 
 
-def gen_valid_reason_response(valid: bool, reason: str) -> HttpResponse:
+def gen_valid_reason_response(valid: bool, reason: str) -> HttpResponse:  # noqa: FBT001
     """Help to generate a JSON message providing feedback on the submission process."""
     return HttpResponse(json.dumps({"valid": valid, "reason": reason}))
 
@@ -416,10 +418,10 @@ def submit_match(request: Request, activity_url: str) -> Response:
 
     activity = Activity.objects.get(url=activity_url)
     if activity is None:
-        return gen_valid_reason_response(False, "Activity not found")
+        return gen_valid_reason_response(valid=False, reason="Activity not found")
 
     if request.method != "POST":
-        return gen_valid_reason_response(False, "Only POST supported")
+        return gen_valid_reason_response(valid=False, reason="Only POST supported")
 
     json_data = json.loads(request.body.decode("utf-8"))
 
@@ -430,12 +432,12 @@ def submit_match(request: Request, activity_url: str) -> Response:
     # Look for the first empty team (else set to None)
     invalid_team = next((team for team in all_teams if len(team) == 0), None)
     if len(all_teams) == 0 or invalid_team is not None:
-        return gen_valid_reason_response(False, "Invalid teams")
+        return gen_valid_reason_response(valid=False, reason="Invalid teams")
 
     # Look for the first negative player id (else set to None)
     invalid_player = next((player for team in all_teams for player in team if player < 0), None)
     if invalid_player is not None:
-        return gen_valid_reason_response(False, "Invalid player ids")
+        return gen_valid_reason_response(valid=False, reason="Invalid player ids")
 
     result_ids = record_matches(activity, teams_per_match, winning_teams, submittor=submittor)
     # ip = request.environ['REMOTE_ADDR']
@@ -444,9 +446,9 @@ def submit_match(request: Request, activity_url: str) -> Response:
     # JSON object returned should identify whether submission succeeded and
     # help locate any issues in the form
     if result_ids is None:
-        return gen_valid_reason_response(False, "Submission failed")
+        return gen_valid_reason_response(valid=False, reason="Submission failed")
     else:
-        return gen_valid_reason_response(True, "")
+        return gen_valid_reason_response(valid=True, reason="")
 
 
 @extend_schema(

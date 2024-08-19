@@ -2,20 +2,20 @@
 
 import json
 import time
-from typing import List, Dict, Optional, Any, Tuple, cast
+from typing import Any, Dict, List, Optional, Tuple, cast
 
-from django.http import HttpResponse, HttpRequest, HttpResponseNotFound
+from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from trueskill import Rating, rate
-from django.contrib.auth.decorators import user_passes_test
 
 from .models import (
     Activity,
     AdhocTeam,
-    Player,
-    Ranking,
     Game,
     GameSession,
+    Player,
+    Ranking,
     Result,
     SkillHistory,
     TeamMember,

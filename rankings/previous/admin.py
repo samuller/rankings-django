@@ -1,26 +1,25 @@
 """Django Admin tool configuration."""
 
-import time
 import datetime
+import time
 
-from django.contrib import admin
-from django.contrib import messages
+from django.contrib import admin, messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .views import incremental_update_player_skills, get_common_activity
 from .models import (
     Activity,
     AdhocTeam,
-    Player,
-    Ranking,
     Game,
     GameSession,
+    Player,
+    Ranking,
     Result,
     SkillHistory,
     SkillType,
     TeamMember,
 )
+from .views import get_common_activity, incremental_update_player_skills
 
 
 class ActivityAdmin(admin.ModelAdmin):

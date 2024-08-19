@@ -1,10 +1,10 @@
 """Utility functions."""
 
-from typing import Literal, Optional, List, TypedDict
+from typing import List, Literal, Optional, TypedDict
 
-from rest_framework import serializers, authentication
-from rest_framework.settings import api_settings
+from rest_framework import authentication, serializers
 from rest_framework.exceptions import ValidationError
+from rest_framework.settings import api_settings
 
 
 class CsrfExemptSessionAuthentication(authentication.SessionAuthentication):

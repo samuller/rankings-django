@@ -2,15 +2,14 @@
 """Jinja configurations."""
 
 import json
-from typing import Any, List, Dict, Optional
+from typing import Any, Dict, List, Optional
+
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
-
-
 from jinja2 import Environment
 
 
-def no_op(with_categories: bool = False, category_filter: Optional[List[str]] = None) -> None:
+def no_op(with_categories: bool = False, category_filter: Optional[List[str]] = None) -> None:  # noqa
     """Define custom filter to override Flask's `get_flashed_messages`."""
     return None
 
