@@ -447,8 +447,7 @@ def submit_match(request: Request, activity_url: str) -> Response:
     # help locate any issues in the form
     if result_ids is None:
         return gen_valid_reason_response(valid=False, reason="Submission failed")
-    else:
-        return gen_valid_reason_response(valid=True, reason="")
+    return gen_valid_reason_response(valid=True, reason="")
 
 
 @extend_schema(
@@ -494,7 +493,8 @@ def record_matches(
     submission_time: Optional[int] = None,
 ) -> Optional[List[int]]:
     """Record multiple matches for a single activity."""
-    assert len(teams_per_match) == len(winning_team_per_match)
+    if len(teams_per_match) != len(winning_team_per_match):
+        raise ValueError("Per-match lists should have the same length")
     results = []
 
     for i in range(len(teams_per_match)):
@@ -518,7 +518,7 @@ def record_match(session: GameSession, teams: List[List[int]], winning_team: int
     # TODO: support any number of teams (2+)
     if winning_team == 1:
         rankings = [1, 2]
-    elif winning_team == 2:
+    elif winning_team == 2:  # noqa: PLR2004
         rankings = [2, 1]
     else:
         raise AssertionError(f"Winner incorrectly identified: {winning_team}")
@@ -587,7 +587,7 @@ def identify_request_source(request: HttpRequest) -> str:
         # addr = socket.getfqdn(submittor)
         addr = socket.gethostbyaddr(src)
         src = f"{src} ({addr[0]})"
-    except:  # noqa: E722
+    except:  # noqa: E722,S110
         pass
 
     return src

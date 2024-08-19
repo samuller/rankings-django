@@ -112,7 +112,7 @@ class BasicDataTestCase(TestCase):
             assert response.status_code == 200
             jsresp_new = json.loads(response.content)
             if jsresp is not None:
-                assert jsresp_new == jsresp_new
+                assert jsresp == jsresp_new
             jsresp = jsresp_new
             assert len(jsresp) == 1
             assert jsresp[0]["id"] == "tennis"

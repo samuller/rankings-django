@@ -157,10 +157,14 @@ def list_matches(
     total_pages = 1 + (
         Game.objects.filter(session__activity__id=activity["id"], session__validated=1).count() // results_per_page
     )
-
+    # Get page numbers for navigation (if they exist): first, curr-2, curr-1, curr, curr+1, curr+2, last
+    adjacent_pages = 2
     list_pages = [
-        val for val in range(1, total_pages + 1) if val <= 1 or val > (total_pages - 1) or abs(page - val) < 3
+        val
+        for val in range(1, total_pages + 1)
+        if val <= 1 or val > (total_pages - 1) or abs(page - val) <= adjacent_pages
     ]
+    # Get the indices where any page numbers were skipped in navigation
     gaps_idx = [idx for idx in range(1, len(list_pages)) if list_pages[idx] - list_pages[idx - 1] > 1]
     for idx in reversed(gaps_idx):
         list_pages.insert(idx, -1)
@@ -278,6 +282,21 @@ def get_common_activity(game_sessions: List[GameSession]) -> Optional[Activity]:
     return cast(Activity, activity)
 
 
+def get_ratings_for_all_players(activity):
+    """Generate ratings for all known players, even new ones that haven't yet participated in activity.
+
+    We generate empty ratings for all players and then fill-in all the known ratings.
+    """
+    # Generate rankings for everyone since some people might not have rankings already
+    current_ratings = generate_blank_ratings(activity)
+    # Set the values for everyone that already has a ranking
+    for ranking in Ranking.objects.filter(activity_id=activity.id):
+        if ranking.player.id not in current_ratings:
+            raise ValueError("Unknown player")
+        current_ratings[ranking.player.id] = Rating(ranking.mu, ranking.sigma)
+    return current_ratings
+
+
 def incremental_update_player_skills(
     new_game_sessions: Any, current_ratings: Optional[Dict[int, Rating]] = None
 ) -> Optional[Dict[int, Rating]]:
@@ -286,15 +305,11 @@ def incremental_update_player_skills(
         return current_ratings
 
     activity = get_common_activity(new_game_sessions)
-    assert activity is not None
+    if activity is None:
+        raise ValueError("Unknown activity")
 
     if current_ratings is None:
-        # Generatings for everyone since some people might not have rankings already
-        current_ratings = generate_blank_ratings(activity)
-        # Set the values for everyone that already has a ranking
-        for ranking in Ranking.objects.filter(activity_id=activity.id):
-            assert ranking.player.id in current_ratings
-            current_ratings[ranking.player.id] = Rating(ranking.mu, ranking.sigma)
+        current_ratings = get_ratings_for_all_players(activity)
 
     ratings = current_ratings
     # Process each match (chronologically) to calculate rating progress and determine final rankings

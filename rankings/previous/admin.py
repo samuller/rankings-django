@@ -39,7 +39,7 @@ class ActivityAdmin(admin.ModelAdmin):
                 "Can not update more than one activity at once.",
                 level=messages.constants.WARNING,
             )
-            return
+            return None
 
         return HttpResponseRedirect(reverse("update_rankings", kwargs={"activity_url": queryset.first().id}))
 
@@ -51,7 +51,7 @@ class ActivityAdmin(admin.ModelAdmin):
                 "Can not update more than one activity at once.",
                 level=messages.constants.WARNING,
             )
-            return
+            return None
 
         return HttpResponseRedirect(
             reverse(

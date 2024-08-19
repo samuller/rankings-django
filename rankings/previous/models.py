@@ -138,12 +138,10 @@ class Game(SubmittedData):
         result["relative_date"] = datetime.datetime.fromtimestamp(self.datetime)
         result["date"] = datetime.datetime.fromtimestamp(self.datetime)
         teams = AdhocTeam.objects.filter(session=self.session)
-        cnt = 0
-        for team in teams:
-            result[f"team{cnt + 1}"] = team.members_str()
+        for idx, team in enumerate(teams):
+            result[f"team{idx + 1}"] = team.members_str()
             team_result = Result.objects.get(game=self, team=team)
-            result[f"team{cnt + 1}_rank"] = team_result.ranking
-            cnt += 1
+            result[f"team{idx + 1}_rank"] = team_result.ranking
 
         return result
 

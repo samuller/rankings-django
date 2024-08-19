@@ -55,7 +55,7 @@ else:
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DJANGO_DEBUG", default=False)
+DEBUG = os.getenv("DJANGO_DEBUG", default="False") == "True"
 
 ALLOWED_HOSTS: List[str] = os.getenv("DJANGO_ALLOWED_HOSTS", "*,localhost,host.docker.internal").split(",")
 
