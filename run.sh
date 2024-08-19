@@ -37,12 +37,12 @@ lint() {
     poetry run ruff check ..
     # We're not as strict about docstrings in our tests
     # poetry run flake8 --extend-ignore=D tests/
+    echo "ruff format..."
+    poetry run ruff format --check ..
     echo "mypy..."
     poetry run mypy .
     # No "strict" type requirements for tests.
     # poetry run mypy tests/
-    echo "ruff format..."
-    poetry run ruff format --check ..
 
     # cd svelte-ui && npm run lint && cd -
     # cd - && cd deploys && caddy fmt

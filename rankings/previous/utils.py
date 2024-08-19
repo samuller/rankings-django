@@ -65,10 +65,10 @@ class FieldFilterMixin:
             if not set(fields).issubset(all_fields):
                 invalid_fields = list(set(fields) - set(all_fields))
                 raise ValidationError(
-                    f"query parameter '{self.field_filter_param}'" + f" referenced invalid fields: {invalid_fields}"
+                    f"query parameter '{self.field_filter_param}' referenced invalid fields: {invalid_fields}"
                 )
 
-            return super().get_serializer(fields=fields, *args, **kwargs)
+            return super().get_serializer(*args, fields=fields, **kwargs)
         return super().get_serializer(*args, **kwargs)
 
 
@@ -122,7 +122,7 @@ OpenAPIParameters = TypedDict(
 )
 
 
-def cardinalToOrdinal(num: int) -> str:
+def cardinal_to_ordinal(num: int) -> str:
     """Convert a cardinal number (how many) to an ordinal number string (which position)."""
     suffix = {
         1: "st",

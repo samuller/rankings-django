@@ -519,7 +519,7 @@ def record_match(session: GameSession, teams: List[List[int]], winning_team: int
     elif winning_team == 2:
         rankings = [2, 1]
     else:
-        assert False, f"Winner incorrectly identified: {winning_team}"
+        raise AssertionError(f"Winner incorrectly identified: {winning_team}")
 
     submit_time = int(time.time())
     game = Game.objects.create(datetime=submit_time, submittor=session.submittor, session=session, position=0)

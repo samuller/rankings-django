@@ -16,7 +16,7 @@ from __future__ import unicode_literals
 from django.db import models
 import datetime
 
-from .utils import cardinalToOrdinal
+from .utils import cardinal_to_ordinal
 
 
 class Activity(models.Model):
@@ -80,7 +80,7 @@ class GameSession(SubmittedData):
         """Generate string summarising game session details."""
         result_str = ", ".join(
             [
-                f"{cardinalToOrdinal(Result.objects.get(team=team).ranking)}: {team.members_str()}"
+                f"{cardinal_to_ordinal(Result.objects.get(team=team).ranking)}: {team.members_str()}"
                 for team in AdhocTeam.objects.filter(session=self)
             ]
         )
@@ -147,7 +147,7 @@ class Game(SubmittedData):
         return result
 
     def __str__(self):
-        return f"Game of {self.session.activity} @ {self.session.datetime}" + f" (Submitter: {self.session.submittor})"
+        return f"Game of {self.session.activity} @ {self.session.datetime} (Submitter: {self.session.submittor})"
 
 
 class Result(SubmittedData):
@@ -236,7 +236,7 @@ class SkillHistory(models.Model):
         return skill
 
     def __str__(self):
-        return f"[Game {self.result.game.id}] {self.player} @ " + f"{self.activity_id}: ({self.mu}, {self.sigma})"
+        return f"[Game {self.result.game.id}] {self.player} @ {self.activity_id}: ({self.mu}, {self.sigma})"
 
 
 class SkillType(models.Model):
