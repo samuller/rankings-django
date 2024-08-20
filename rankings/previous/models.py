@@ -25,17 +25,20 @@ class Activity(models.Model):
 
     id = models.TextField(primary_key=True)
     url = models.TextField(unique=True, blank=False, null=False)
-    name = models.TextField(blank=True, null=True)
+    name = models.TextField(blank=True, default="")
     active = models.BooleanField(default=True)
     skill_type = models.ForeignKey("SkillType", models.DO_NOTHING, db_column="skill_type", blank=True, null=True)
     min_teams_per_match = models.IntegerField(default=2)
     max_teams_per_match = models.IntegerField(blank=True, null=True)
     min_players_per_team = models.IntegerField(default=1)
     max_players_per_team = models.IntegerField(blank=True, null=True, default=1)
-    about = models.TextField(blank=True, null=True)
+    about = models.TextField(blank=True, default="")
 
     class Meta:
         db_table = "activity"
+
+    def __str__(self):
+        return self.name
 
     def to_dict_with_url(self):
         """Convert whole object to a dictionary."""
@@ -44,15 +47,12 @@ class Activity(models.Model):
         # result["url"] = result["id"]
         return result
 
-    def __str__(self):
-        return self.name
-
 
 class SubmittedData(models.Model):
     """An abstract class for objects for recording how data was submitted."""
 
     datetime = models.IntegerField(blank=True, null=True)
-    submittor = models.TextField(blank=True, null=True)
+    submittor = models.TextField(blank=True, default="")
 
     class Meta:
         abstract = True
@@ -73,6 +73,9 @@ class GameSession(SubmittedData):
     class Meta:
         db_table = "gamesession"
 
+    def __str__(self):
+        return f"Game of {self.activity} @ {self.datetime} (Submitter: {self.submittor})"
+
     def get_ranked_teams(self):
         """Generate the list of teams involved in the session, orderd by their resulting ranking."""
         return [team for team in AdhocTeam.objects.filter(result=self).order_by("ranking")]
@@ -87,9 +90,6 @@ class GameSession(SubmittedData):
         )
         return f"[{self.id}] {self.activity.id} result: {result_str}"
 
-    def __str__(self):
-        return f"Game of {self.activity} @ {self.datetime} (Submitter: {self.submittor})"
-
 
 class AdhocTeam(models.Model):
     """A group of players that formed a team for a session (see TeamMember)."""
@@ -98,6 +98,9 @@ class AdhocTeam(models.Model):
 
     class Meta:
         db_table = "adhoc_team"
+
+    def __str__(self):
+        return f"Team {self.id}"
 
     def members_str(self):
         """Generate a text summary of players in team."""
@@ -108,15 +111,15 @@ class AdhocTeam(models.Model):
             return members[0]
         return ", ".join(members[:-1]) + " & " + members[-1]
 
-    def __str__(self):
-        return f"Team {self.id}"
-
 
 class Game(SubmittedData):
     """A single game played within a session."""
 
     session = models.ForeignKey(GameSession, models.DO_NOTHING)
     position = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"Game of {self.session.activity} @ {self.session.datetime} (Submitter: {self.session.submittor})"
 
     def summary_str_2(self):
         """Generate string summarising the game result."""
@@ -145,9 +148,6 @@ class Game(SubmittedData):
 
         return result
 
-    def __str__(self):
-        return f"Game of {self.session.activity} @ {self.session.datetime} (Submitter: {self.session.submittor})"
-
 
 class Result(SubmittedData):
     """The ranking result of a specific team in a given game."""
@@ -165,11 +165,14 @@ class Player(models.Model):
 
     # id = models.IntegerField(primary_key=True)  # AutoField?
     name = models.TextField()
-    email = models.TextField(blank=True, null=True)
+    email = models.TextField(blank=True, default="")
     active = models.BooleanField(default=True)
 
     class Meta:
         db_table = "player"
+
+    def __str__(self):
+        return self.name
 
     def to_dict_with_skill(self, activity_id):
         """Get player's skill as dict containing ranking and skill probabilities."""
@@ -183,9 +186,6 @@ class Player(models.Model):
             result["mu"] = ranks[0].mu
             result["sigma"] = ranks[0].sigma
         return result
-
-    def __str__(self):
-        return self.name
 
 
 class Ranking(models.Model):
@@ -201,6 +201,9 @@ class Ranking(models.Model):
         db_table = "ranking"
         unique_together = (("player", "activity"),)
 
+    def __str__(self):
+        return f"{self.player} @ {self.activity}: ({self.mu}, {self.sigma})"
+
     def calc_skill(self) -> float:
         """Calculate ranking/skill value from skill probability."""
         min_range = 0  # TODO: skill_type.min_skill_range
@@ -209,22 +212,22 @@ class Ranking(models.Model):
         skill = max(min_range, min(self.mu - 3 * self.sigma, max_range))
         return skill
 
-    def __str__(self):
-        return f"{self.player} @ {self.activity}: ({self.mu}, {self.sigma})"
-
 
 class SkillHistory(models.Model):
     """A person's historical skill ranking directly after a given game's result."""
 
     result = models.ForeignKey(Result, models.DO_NOTHING)
     player = models.ForeignKey(Player, models.DO_NOTHING)
-    activity_id = models.TextField(blank=True, null=True)
+    activity_id = models.ForeignKey(Activity, models.DO_NOTHING)
     mu = models.FloatField(blank=True, null=True)
     sigma = models.FloatField(blank=True, null=True)
 
     class Meta:
         db_table = "skill_history"
         unique_together = (("player", "result"),)
+
+    def __str__(self):
+        return f"[Game {self.result.game.id}] {self.player} @ {self.activity_id}: ({self.mu}, {self.sigma})"
 
     def calc_skill(self):
         """Calculate ranking/skill value from skill probability."""
@@ -233,9 +236,6 @@ class SkillHistory(models.Model):
 
         skill = max(min_range, min(self.mu - 3 * self.sigma, max_range))
         return skill
-
-    def __str__(self):
-        return f"[Game {self.result.game.id}] {self.player} @ {self.activity_id}: ({self.mu}, {self.sigma})"
 
 
 class SkillType(models.Model):
