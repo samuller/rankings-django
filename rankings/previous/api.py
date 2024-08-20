@@ -369,8 +369,9 @@ def undo_submit(request: Request, activity_url: str) -> Response:
     if game.session.submittor != submittor:
         return gen_valid_reason_response(valid=False, reason="Only the original submittor can delete their submission")
 
-    expiry_time = datetime.datetime.fromtimestamp(game.session.datetime) + datetime.timedelta(minutes=15)
-    if datetime.datetime.now() >= expiry_time:
+    # TODO: use UTC?
+    expiry_time = datetime.datetime.fromtimestamp(game.session.datetime).astimezone() + datetime.timedelta(minutes=15)
+    if datetime.datetime.now().astimezone() >= expiry_time:
         return gen_valid_reason_response(
             valid=False, reason="Submission undo period has expired. It can no longer be altered."
         )

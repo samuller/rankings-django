@@ -58,7 +58,8 @@ class ActivityAdmin(admin.ModelAdmin):
                 "update_rankings",
                 kwargs={
                     "activity_url": queryset.first().id,
-                    "year": datetime.datetime.now().year,
+                    # TODO: use UTC?
+                    "year": datetime.datetime.now().astimezone().year,
                 },
             )
         )

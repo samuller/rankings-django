@@ -54,11 +54,10 @@ line-length = 120
 
 [tool.ruff.lint]
 exclude = ["**/migrations/*"]
-# Options to enable soon: "DTZ"
 extend-select = [
     "E", "D", "W", "C90", "YTT", "ASYNC", "ICN", "LOG", "INP",
     "PYI", "ISC", "N", "B", "G", "FBT", "I", "S", "PL", "ANN",
-    "SIM", "RET", "TRY", "FURB", "DJ"
+    "SIM", "RET", "TRY", "FURB", "DJ", "DTZ"
 ]
 ignore = ["D105", "D106", "D107", "D212", "D203", "D213", "D413", "D417",
     "ISC003", "G004", "RET501", "RET504", "TRY003",

@@ -138,8 +138,9 @@ class Game(SubmittedData):
     def to_dict_with_teams(self):
         """Get game as well as team details as a dict."""
         result = self.__dict__
-        result["relative_date"] = datetime.datetime.fromtimestamp(self.datetime)
-        result["date"] = datetime.datetime.fromtimestamp(self.datetime)
+        # TODO: use UTC?
+        result["relative_date"] = datetime.datetime.fromtimestamp(self.datetime).astimezone()
+        result["date"] = datetime.datetime.fromtimestamp(self.datetime).astimezone()
         teams = AdhocTeam.objects.filter(session=self.session)
         for idx, team in enumerate(teams):
             result[f"team{idx + 1}"] = team.members_str()
