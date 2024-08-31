@@ -34,7 +34,8 @@ jobs:
       frontend: ${{ steps.filter.outputs.frontend }}
 
   test-scripts:
-    runs-on: ubuntu-22.04
+    # Match with UBUNTU_VERSION in devcontainer
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Check out repository code
@@ -107,7 +108,8 @@ jobs:
         include:
           # Test with specific supported versions
           - name: supported
-            os: ubuntu-22.04
+            # Match with UBUNTU_VERSION in devcontainer
+            os: ubuntu-24.04
             # Match with NODE_VERSION in built docker
             node: 22
 

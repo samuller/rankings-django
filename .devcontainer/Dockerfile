@@ -1,7 +1,7 @@
 #
 # VSCode devcontainer for development with: Ubuntu + Node + Python + Poetry
 #
-ARG UBUNTU_VERSION=22.04
+ARG UBUNTU_VERSION=24.04
 # Match with NODE_VERSION in built docker
 ARG NODE_MAJOR_VERSION=22
 ARG PYTHON_VERSION=3.8
@@ -79,18 +79,13 @@ RUN apt-get update && apt-get -y upgrade && apt-get -qqy install apt-transport-h
 # Setup vscode user
 ########
 
-# Create the non-root user that we're going to use for dev
-# -m: create home
-# -s: set shell
-# -G sudo: add to sudo group
-RUN useradd -ms /bin/bash -G sudo vscode
-# The whole sudo group does not need to supply password when sudoing.
+# Set whole sudo group to not need to supply password when sudoing.
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-USER vscode
-# In-case base image sets this to root, we have to reset to vscode's home (USER
-# statement not sufficient)
-ENV HOME=/home/vscode
+# Use non-root user for dev.
+# Since Ubuntu 24.04 the docker has included this user.
+# See: https://askubuntu.com/questions/1513927/ubuntu-24-04-docker-images-now-includes-user-ubuntu-with-uid-gid-1000
+USER ubuntu
 
 ########
 # Install Poetry
