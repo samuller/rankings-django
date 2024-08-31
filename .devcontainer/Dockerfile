@@ -73,7 +73,7 @@ RUN /opt/venv/bin/python${PYTHON_VERSION} -m pip install --upgrade pip
 
 # Note that we don't clear out the APT-GET cache -- one often needs to install
 # packages inside the devcontainer.
-RUN apt-get update && apt-get -y upgrade && apt-get -qqy install apt-transport-https iputils-ping sudo gnupg2 tzdata
+RUN apt-get update && apt-get -qqy install apt-transport-https iputils-ping sudo gnupg2 tzdata
 
 ########
 # Setup vscode user
