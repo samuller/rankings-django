@@ -63,7 +63,8 @@ jobs:
             postgres: 10
           # Test everything with latest versions
           - name: latest
-            os: ubuntu-latest
+            # Compare with UBUNTU_VERSION in devcontainer
+            os: ubuntu-24.04
             python: 3.x
             postgres: latest
 
