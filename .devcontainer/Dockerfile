@@ -2,7 +2,8 @@
 # VSCode devcontainer for development with: Ubuntu + Node + Python + Poetry
 #
 ARG UBUNTU_VERSION=22.04
-ARG NODE_MAJOR_VERSION=20
+# Match with NODE_VERSION in built docker
+ARG NODE_MAJOR_VERSION=22
 ARG PYTHON_VERSION=3.8
 ARG POETRY_VERSION=1.4.2
 

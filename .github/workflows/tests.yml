@@ -108,7 +108,8 @@ jobs:
           # Test with specific supported versions
           - name: supported
             os: ubuntu-22.04
-            node: 20
+            # Match with NODE_VERSION in built docker
+            node: 22
 
     steps:
       - name: Check out repository code
