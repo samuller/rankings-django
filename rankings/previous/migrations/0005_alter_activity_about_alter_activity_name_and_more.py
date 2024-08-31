@@ -47,4 +47,9 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(default='', on_delete=django.db.models.deletion.DO_NOTHING, to='previous.activity'),
             preserve_default=False,
         ),
+        migrations.RenameField(
+            model_name='skillhistory',
+            old_name='activity_id',
+            new_name='activity',
+        )
     ]

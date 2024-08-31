@@ -219,7 +219,7 @@ class SkillHistory(models.Model):
 
     result = models.ForeignKey(Result, models.DO_NOTHING)
     player = models.ForeignKey(Player, models.DO_NOTHING)
-    activity_id = models.ForeignKey(Activity, models.DO_NOTHING)
+    activity = models.ForeignKey(Activity, models.DO_NOTHING)
     mu = models.FloatField(blank=True, null=True)
     sigma = models.FloatField(blank=True, null=True)
 
@@ -228,7 +228,7 @@ class SkillHistory(models.Model):
         unique_together = (("player", "result"),)
 
     def __str__(self):
-        return f"[Game {self.result.game.id}] {self.player} @ {self.activity_id}: ({self.mu}, {self.sigma})"
+        return f"[Game {self.result.game.id}] {self.player} @ {self.activity}: ({self.mu}, {self.sigma})"
 
     def calc_skill(self):
         """Calculate ranking/skill value from skill probability."""
