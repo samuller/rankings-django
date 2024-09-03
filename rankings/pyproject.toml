@@ -44,7 +44,7 @@ drf-link-header-pagination = "0.2.0"
 # We currently use more lenient dependency versions for our dev tools, but
 # actually it's just because that's the default - not because we've thought it
 # through yet.
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 ruff = "0.6.1"
 mypy = "^1.11.1"
 coverage = "^7.6.1"

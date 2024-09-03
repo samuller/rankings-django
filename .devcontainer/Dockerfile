@@ -5,7 +5,7 @@ ARG UBUNTU_VERSION=24.04
 # Match with NODE_VERSION in built docker
 ARG NODE_MAJOR_VERSION=22
 ARG PYTHON_VERSION=3.8
-ARG POETRY_VERSION=1.4.2
+ARG POETRY_VERSION=1.8.3
 
 FROM ubuntu:$UBUNTU_VERSION
 # FROM creates a new build stage, so we need to redeclare any arguments we want to keep.
