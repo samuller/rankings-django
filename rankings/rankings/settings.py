@@ -104,7 +104,6 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "environment": "rankings.jinja2.environment",
-            "extensions": ["jinja2.ext.with_"],
         },
     },
     {
