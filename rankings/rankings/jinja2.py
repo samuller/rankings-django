@@ -33,7 +33,7 @@ def url_for(endpoint: str, **values: Dict[str, Any]) -> str:
 def environment(**options: Dict[str, Any]) -> Environment:
     """Define Jinja environment configurations."""
     # TODO: enable autoescape - see: https://stackoverflow.com/questions/17257138/cant-disable-the-autoescape-in-jinja2
-    env = Environment(**options)  # noqa: S701
+    env = Environment(**options)  # type: ignore # noqa: S701
     env.globals.update(
         {
             "static": staticfiles_storage.url,
