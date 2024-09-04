@@ -81,11 +81,14 @@ gen-docker() {
         echo "Too many args."
         exit
     fi
-    # Create stripped-down version of pyproject.toml (no version and comments) for use with Dockerfile so
-    # meaningless changes to it won't invalidate the following caching layers.
+    # Create stripped-down version of pyproject.toml for use with Dockerfile so meaningless changes to it
+    # won't invalidate the following caching layers. We remove the project version, any comments and also
+    # the "readme" config since that breaks the "poetry check" command we perform on the file when we only
+    # use it to install dependencies.
     cat rankings/pyproject.toml \
         | sed 's/^version = ".*"/version = "0"/' \
         | sed 's/^\s*#.*//' \
+        | sed 's/^readme = ".*"//' \
         | sed '/^$/d' \
         > rankings/pyproject.nover.toml
 
