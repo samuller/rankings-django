@@ -1,6 +1,6 @@
 """Utility functions."""
 
-from typing import Any, List, Literal, Optional, Protocol, Type, TypedDict
+from typing import TYPE_CHECKING, Any, List, Literal, Optional, Protocol, Type, TypedDict
 
 from rest_framework import authentication, serializers
 from rest_framework.exceptions import ValidationError
@@ -41,33 +41,39 @@ class FieldFilterModelSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
 
 
-class ModelViewSetProtocol(Protocol):
-    """Protocol for rest_framework.viewsets.ModelViewSet."""
+if TYPE_CHECKING:  # pragma: no cover
 
-    # Property from django.views.generic.base.View
-    @property
-    def request(self): ...  # noqa: D102
+    class ModelViewSetProtocol(Protocol):
+        """Protocol for rest_framework.viewsets.ModelViewSet."""
 
-    # Property from rest_framework.filters.SearchFilter
-    @property
-    def search_fields(self): ...  # noqa: D102
+        # Property from django.views.generic.base.View
+        @property
+        def request(self): ...  # noqa: D102
 
-    # Property from django.filters.FilterSet
-    @property
-    def filterset_fields(self): ...  # noqa: D102
+        # Property from rest_framework.filters.SearchFilter
+        @property
+        def search_fields(self): ...  # noqa: D102
 
-    # Properties and methods from rest_framework.generics.GenericAPIView
-    @property
-    def paginator(self): ...  # noqa: D102
+        # Property from django.filters.FilterSet
+        @property
+        def filterset_fields(self): ...  # noqa: D102
 
-    def get_serializer_class(self: Any) -> Type[Any]: ...  # noqa: D102
+        # Properties and methods from rest_framework.generics.GenericAPIView
+        @property
+        def paginator(self): ...  # noqa: D102
 
+        def get_serializer_class(self: Any) -> Type[Any]: ...  # noqa: D102
 
-class FieldFilterMixinProtocol(Protocol):
-    """Protocol for FieldFilterMixin."""
+    class FieldFilterMixinProtocol(Protocol):
+        """Protocol for FieldFilterMixin."""
 
-    @property
-    def field_filter_param(self): ...  # noqa: D102
+        @property
+        def field_filter_param(self): ...  # noqa: D102
+else:
+
+    class ModelViewSetProtocol: ...  # noqa: D101
+
+    class FieldFilterMixinProtocol: ...  # noqa: D101
 
 
 class FieldFilterMixin(ModelViewSetProtocol):
