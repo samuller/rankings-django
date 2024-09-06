@@ -77,11 +77,6 @@ exclude = ["**/migrations/*"]
 ignore_missing_imports = true
 exclude = ["migrations/"]  # "**/*/migrations/"
 
-[tool.black]
-exclude = "migrations/"
-# Change black's default line length from 88 to 120 characters.
-# line-length = 120
-
 [tool.coverage.run]
 branch = true
 dynamic_context = "test_function"
