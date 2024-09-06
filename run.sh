@@ -41,6 +41,8 @@ lint() {
     poetry run ruff format --check ..
     echo "mypy..."
     poetry run mypy .
+    # Start doing strict checks on some code.
+    poetry run mypy --strict --allow-subclassing-any --allow-untyped-defs previous/{models,utils}.py
     # No "strict" type requirements for tests.
     # poetry run mypy tests/
 

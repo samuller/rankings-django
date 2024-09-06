@@ -14,6 +14,7 @@ Originally generated with `inspectdb`.
 from __future__ import unicode_literals
 
 import datetime
+from typing import Any
 
 from django.db import models
 
@@ -135,7 +136,7 @@ class Game(SubmittedData):
 
         return f"[{summary['activity_id']}] ID: {summary['id']}, {summary['team1']} {verb} vs. {summary['team2']}"
 
-    def to_dict_with_teams(self):
+    def to_dict_with_teams(self) -> dict[str, Any]:
         """Get game as well as team details as a dict."""
         result = self.__dict__
         # TODO: use UTC?
@@ -210,7 +211,9 @@ class Ranking(models.Model):
         min_range = 0  # TODO: skill_type.min_skill_range
         max_range = 50  # skill_type.max_skill_range
 
-        skill = max(min_range, min(self.mu - 3 * self.sigma, max_range))
+        if self.mu is None or self.sigma is None:
+            return min_range
+        skill: float = max(min_range, min(self.mu - 3 * self.sigma, max_range))
         return skill
 
 

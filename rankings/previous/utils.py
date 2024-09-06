@@ -1,6 +1,6 @@
 """Utility functions."""
 
-from typing import List, Literal, Optional, TypedDict
+from typing import Any, List, Literal, Optional, Protocol, Type, TypedDict
 
 from rest_framework import authentication, serializers
 from rest_framework.exceptions import ValidationError
@@ -41,7 +41,36 @@ class FieldFilterModelSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
 
 
-class FieldFilterMixin:
+class ModelViewSetProtocol(Protocol):
+    """Protocol for rest_framework.viewsets.ModelViewSet."""
+
+    # Property from django.views.generic.base.View
+    @property
+    def request(self): ...  # noqa: D102
+
+    # Property from rest_framework.filters.SearchFilter
+    @property
+    def search_fields(self): ...  # noqa: D102
+
+    # Property from django.filters.FilterSet
+    @property
+    def filterset_fields(self): ...  # noqa: D102
+
+    # Properties and methods from rest_framework.generics.GenericAPIView
+    @property
+    def paginator(self): ...  # noqa: D102
+
+    def get_serializer_class(self: Any) -> Type[Any]: ...  # noqa: D102
+
+
+class FieldFilterMixinProtocol(Protocol):
+    """Protocol for FieldFilterMixin."""
+
+    @property
+    def field_filter_param(self): ...  # noqa: D102
+
+
+class FieldFilterMixin(ModelViewSetProtocol):
     """Mixin that allows you to return only a subset of the fields serialized.
 
     Use with a class extending `rest_framework.viewsets.ModelViewSet` and that is already using a `serializer_class`
@@ -51,7 +80,7 @@ class FieldFilterMixin:
     # Name of the query parameter to use for filtering fields."""
     field_filter_param: Optional[str] = None
 
-    def get_serializer(self, *args, **kwargs):
+    def get_serializer(self, *args: Any, **kwargs: Any) -> serializers.Serializer:
         """Return the serializer instance to be used."""
         fields = self.request.query_params.get(self.field_filter_param)
         # Filter fields returned in output.
@@ -68,11 +97,11 @@ class FieldFilterMixin:
                     f"query parameter '{self.field_filter_param}' referenced invalid fields: {invalid_fields}"
                 )
 
-            return super().get_serializer(*args, fields=fields, **kwargs)
-        return super().get_serializer(*args, **kwargs)
+            return super().get_serializer(*args, fields=fields, **kwargs)  # type: ignore
+        return super().get_serializer(*args, **kwargs)  # type: ignore
 
 
-class ValidateParamsMixin:
+class ValidateParamsMixin(ModelViewSetProtocol, FieldFilterMixinProtocol):
     """Mixin for validating query parameters.
 
     Use with a class extending `rest_framework.viewsets.ModelViewSet`.
@@ -103,7 +132,7 @@ class ValidateParamsMixin:
             invalid_params = list(set(self.request.GET.keys()) - set(allowed_params))
             raise ValidationError(f"Invalid parameter: {invalid_params}")
 
-        return super().get_queryset()
+        return super().get_queryset()  # type: ignore
 
 
 # Need to use TypedDict's function syntax due to reserved keywords in Python ("in", "type").
