@@ -9,10 +9,10 @@
 
 	const playerInfo = readJSONAPI<Player | null>(null, `/api/players/${$page.params.player_id}/`);
 	const skillHistory = readJSONAPIList<
-		{ datetime: number; skill: number; game_id: number }[] | null
+		{ datetime: number; skill: number; match_id: number }[] | null
 	>(
 		null,
-		`/api/skill-history/${$page.params.activity}/${$page.params.player_id}/?select=skill,datetime,game_id`
+		`/api/skill-history/${$page.params.activity}/${$page.params.player_id}/?select=skill,datetime,match_id`
 	);
 	const currentSkill = readJSONAPIList<
 		[{ datetime: number; skill: number; mu: number; sigma: number }] | null
@@ -25,7 +25,7 @@
 	$: skillPlotData = {
 		x: $skillHistory ? $skillHistory.map((obj, idx) => idx) : [],
 		y: $skillHistory ? $skillHistory.map((obj) => obj.skill) : [],
-		text: $skillHistory ? $skillHistory.map((obj) => obj.game_id) : []
+		text: $skillHistory ? $skillHistory.map((obj) => obj.match_id) : []
 	};
 
 	function gotoMatch(matchId: number | undefined) {
@@ -57,7 +57,7 @@
 				initRangeX={[Math.max(skillPlotData.x.length - 15, 0), skillPlotData.x.length]}
 				yRangeMinMax={[-2, null]}
 				hovertemplate={hoverTemplate}
-				on:click-point={(event) => gotoMatch($skillHistory?.[event.detail.point.x]['game_id'])}
+				on:click-point={(event) => gotoMatch($skillHistory?.[event.detail.point.x]['match_id'])}
 			/>
 		{/if}
 		{#if $currentSkill && $currentSkill.length == 1}

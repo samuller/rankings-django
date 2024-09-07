@@ -192,7 +192,7 @@ class ResultSerializer(serializers.HyperlinkedModelSerializer, FieldFilterModelS
         ]
 
 
-@extend_schema_serializer(exclude_fields=("datetime", "game_id", "skill"))
+@extend_schema_serializer(exclude_fields=("datetime", "match_id", "skill"))
 class SkillHistorySerializer(serializers.HyperlinkedModelSerializer, FieldFilterModelSerializer):
     """Serializer for SkillHistory."""
 
@@ -201,14 +201,14 @@ class SkillHistorySerializer(serializers.HyperlinkedModelSerializer, FieldFilter
     result = ResultSerializer(fields=["game"])
     skill = serializers.ReadOnlyField()
     datetime = serializers.ReadOnlyField()
-    game_id = serializers.ReadOnlyField()
+    match_id = serializers.ReadOnlyField()
 
     class Meta:
         model = SkillHistory
         fields = [
             "activity_id",
             "datetime",
-            "game_id",
+            "match_id",
             "player",
             "result",
             "skill",
@@ -233,7 +233,7 @@ class SkillHistoryViewSet(FieldFilterMixin, ValidateParamsMixin, viewsets.ModelV
         activity_url = self.kwargs["activity_url"]
         player_id = self.kwargs["player_id"]
         return base_query.filter(activity_id=activity_url, player__id=player_id).annotate(
-            datetime=F("result__game__datetime"), game_id=F("result__game__id")
+            datetime=F("result__game__datetime"), match_id=F("result__game__session__id")
         )
 
 
@@ -360,11 +360,11 @@ def undo_submit(request: Request, activity_url: str) -> Response:
         return gen_valid_reason_response(valid=False, reason="Only POST supported")
 
     json_data = json.loads(request.body.decode("utf-8"))
-    match_id = json_data["match-id"]
+    game_id = json_data["match-id"]
     try:
-        game = Game.objects.get(id=match_id)
+        game = Game.objects.get(id=game_id)
     except Game.DoesNotExist:
-        return gen_valid_reason_response(valid=False, reason=f"Match not found: {match_id}")
+        return gen_valid_reason_response(valid=False, reason=f"Match not found: {game_id}")
 
     if game.session.submittor != submittor:
         return gen_valid_reason_response(valid=False, reason="Only the original submittor can delete their submission")
@@ -378,7 +378,7 @@ def undo_submit(request: Request, activity_url: str) -> Response:
 
     game.delete()
 
-    return gen_valid_reason_response(valid=True, reason="Match {match_id} deleted")
+    return gen_valid_reason_response(valid=True, reason=f"Match {game_id} deleted")
 
 
 def gen_valid_reason_response(valid: bool, reason: str) -> HttpResponse:  # noqa: FBT001
