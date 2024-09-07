@@ -149,6 +149,19 @@ build() {
         .
 }
 
+man_push="Upload docker image to Docker Hub."
+push() {
+    if [ "$#" -gt 0 ]; then
+        echo "Too many args."
+        exit
+    fi
+    build "prod"
+    echo "Uploading $IMAGE:$IMAGE_VERSION..."
+    docker login --username samuller
+    docker push docker.io/$IMAGE:$IMAGE_VERSION
+    docker push docker.io/$IMAGE:latest
+}
+
 # Find all declared functions that are not from exports (-fx). This will only pick up functions before this point.
 KNOWN_COMMANDS=$(declare -F | grep -v "\-fx")
 
