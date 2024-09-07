@@ -3,6 +3,9 @@
 	import { Card, TimePlot, GaussianPlot, DynamicData } from '$lib/components';
 	import { readJSONAPI, readJSONAPIList } from '$lib/api';
 	import type { Player } from '../../../../store';
+	
+	// Format template for hover overlays. Add <extra></extra> to hide Trace IDs section.
+	const hoverTemplate = ['Match #%{x}', 'ID: %{text}', 'Skill: %{y:.2f}', '<extra></extra>'].join("<br>");
 
 	const playerInfo = readJSONAPI<Player | null>(null, `/api/players/${$page.params.player_id}/`);
 	const skillHistory = readJSONAPIList<
@@ -21,7 +24,8 @@
 
 	$: skillPlotData = {
 		x: $skillHistory ? $skillHistory.map((obj, idx) => idx) : [],
-		y: $skillHistory ? $skillHistory.map((obj) => obj.skill) : []
+		y: $skillHistory ? $skillHistory.map((obj) => obj.skill) : [],
+		text: $skillHistory ? $skillHistory.map((obj) => obj.game_id) : []
 	};
 
 	function gotoMatch(matchId: number | undefined) {
@@ -52,6 +56,7 @@
 				data={skillPlotData}
 				initRangeX={[Math.max(skillPlotData.x.length - 15, 0), skillPlotData.x.length]}
 				yRangeMinMax={[-2, null]}
+				hovertemplate={hoverTemplate}
 				on:click-point={(event) => gotoMatch($skillHistory?.[event.detail.point.x]['game_id'])}
 			/>
 		{/if}

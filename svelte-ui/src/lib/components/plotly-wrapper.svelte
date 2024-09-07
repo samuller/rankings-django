@@ -16,7 +16,7 @@ Usage:
 	const dispatch = createEventDispatcher();
 
 	// Data to plot.
-	export let data: { x: number[]; y: number[] } = { x: [], y: [] };
+	export let data: { x: number[]; y: number[]; text?: string[] } = { x: [], y: [] };
 	// Options for hard-coding or auto-scaling axes.
 	export let initRangeX: [number | null, number | null] | null = [null, null];
 	export let yRangeMinMax: (number | null)[] = [null, null];
@@ -33,6 +33,7 @@ Usage:
 	export let annotations: any[] = [];
 	export let smoothing = 0;
 	export let dtick = 1;
+	export let hovertemplate = '';
 
 	let loadingMessage = 'Loading charting library...';
 
@@ -153,15 +154,21 @@ Usage:
 		// const domElement = document.getElementById('tester');
 		const data_x = data.x;
 		const data_y = data.y;
+		// If trace "mode" contains a combination of "lines", "markers" and/or "text", then these docs apply:
+		// https://plotly.com/javascript/reference/scatter/
 		const traces = [
 			{
 				x: data_x,
 				y: data_y,
+				text: data.text ?? undefined,
+				// Add <extra></extra> to hide trace IDs
+				hovertemplate: hovertemplate,
 				mode: chartType,
 				...(fill && { fill: fill }),
 				...(smoothing && { line: { shape: 'spline', smoothing: smoothing } })
 			}
 		];
+		// See layout options: https://plotly.com/javascript/reference/layout/
 		const layout = {
 			// b: 0 -> Causes bottom tick labels to be cut-off.
 			// t: 0 -> Causes title to be cut-off.
@@ -194,6 +201,7 @@ Usage:
 			...(shapes && { shapes: shapes }),
 			...(annotations && { annotations: annotations })
 		};
+		// See config options here: https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js
 		const config = {
 			// staticPlot: true,
 			responsive: true,
