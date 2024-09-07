@@ -3,9 +3,11 @@
 	import { Card, TimePlot, GaussianPlot, DynamicData } from '$lib/components';
 	import { readJSONAPI, readJSONAPIList } from '$lib/api';
 	import type { Player } from '../../../../store';
-	
+
 	// Format template for hover overlays. Add <extra></extra> to hide Trace IDs section.
-	const hoverTemplate = ['Match #%{x}', 'ID: %{text}', 'Skill: %{y:.2f}', '<extra></extra>'].join("<br>");
+	const hoverTemplate = ['Match #%{x}', 'ID: %{text}', 'Skill: %{y:.2f}', '<extra></extra>'].join(
+		'<br>'
+	);
 
 	const playerInfo = readJSONAPI<Player | null>(null, `/api/players/${$page.params.player_id}/`);
 	const skillHistory = readJSONAPIList<
