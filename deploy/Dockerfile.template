@@ -113,6 +113,9 @@ RUN poetry check
 # Install dependencies
 RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --no-root --without dev --no-cache --no-ansi
 
+# Workaround for SyntaxWarning in Python 3.12 from library trueskill v0.4.5
+RUN sed -i 's/\\ /\\\\/g' .venv/lib/python3.12/site-packages/trueskill/__init__.py
+
 # Install gunicorn dependency
 RUN poetry run pip install gunicorn==$GUNICORN_VERSION
 
