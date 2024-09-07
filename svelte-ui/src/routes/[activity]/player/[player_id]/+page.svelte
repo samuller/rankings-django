@@ -5,9 +5,11 @@
 	import type { Player } from '../../../../store';
 
 	const playerInfo = readJSONAPI<Player | null>(null, `/api/players/${$page.params.player_id}/`);
-	const skillHistory = readJSONAPIList<{ datetime: number; skill: number }[] | null>(
+	const skillHistory = readJSONAPIList<
+		{ datetime: number; skill: number; game_id: number }[] | null
+	>(
 		null,
-		`/api/skill-history/${$page.params.activity}/${$page.params.player_id}/?select=skill,datetime`
+		`/api/skill-history/${$page.params.activity}/${$page.params.player_id}/?select=skill,datetime,game_id`
 	);
 	const currentSkill = readJSONAPIList<
 		[{ datetime: number; skill: number; mu: number; sigma: number }] | null
@@ -21,6 +23,12 @@
 		x: $skillHistory ? $skillHistory.map((obj, idx) => idx) : [],
 		y: $skillHistory ? $skillHistory.map((obj) => obj.skill) : []
 	};
+
+	function gotoMatch(matchId: number | undefined) {
+		if (matchId === undefined) return;
+		const currURL = new URL(`/${$page.params.activity}/matches/${matchId}`, window.location.origin);
+		window.location.href = currURL.toString();
+	}
 </script>
 
 <DynamicData data={playerInfo} />
@@ -44,6 +52,7 @@
 				data={skillPlotData}
 				initRangeX={[Math.max(skillPlotData.x.length - 15, 0), skillPlotData.x.length]}
 				yRangeMinMax={[-2, null]}
+				on:click-point={(event) => gotoMatch($skillHistory?.[event.detail.point.x]['game_id'])}
 			/>
 		{/if}
 		{#if $currentSkill && $currentSkill.length == 1}

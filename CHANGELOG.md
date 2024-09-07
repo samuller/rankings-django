@@ -16,7 +16,11 @@ There are a few different components in this project that each have their own ve
 
 ## [Unreleased]
 
-## [Docker 4.2.0-1.1.0] - 2024-09-06
+## [Docker 4.2.0-1.2.0] - 2024-09-06
+
+### Added
+
+- UI: clicking on data points in skill history plot will redirect to related game result.
 
 ### Changed
 
