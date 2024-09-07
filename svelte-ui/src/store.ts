@@ -1,11 +1,12 @@
 import { writable } from 'svelte/store';
 import { asyncDerived } from '@square/svelte-store';
-import { DefaultDict, readJSONAPIList, type PageableAPIStore } from '$lib/api';
+import { DefaultDict, readJSONAPI, readJSONAPIList, type PageableAPIStore } from '$lib/api';
 
 export const currentActivityUrl = writable<string | null>(null);
 // Title used for breadcrumbs in the navbar.
 export const navTitle = writable<string>('');
 
+/** Stores for activities **/
 export interface Activity {
 	url: string;
 	name: string;
@@ -19,7 +20,7 @@ export const activitiesAbout = readJSONAPIList<Activity[]>(
 	[],
 	'/api/activities/?active=true&select=url,name,about'
 );
-// AsycnDerive waits until after all of the async parents have finished loading.
+// AsyncDerive waits until after all of the async parents have finished loading.
 export const currentActivity = asyncDerived(
 	[currentActivityUrl, activities],
 	// We return null to indicate error.
@@ -36,6 +37,7 @@ export const currentActivity = asyncDerived(
 	}
 );
 
+/** Stores for players **/
 export interface Player {
 	id: number;
 	name: string;
@@ -43,6 +45,7 @@ export interface Player {
 }
 export const players = readJSONAPIList<Player[]>([], '/api/players/?ordering=name');
 
+/** Stores for player rankings **/
 export interface Ranking {
 	player: {
 		id: number;
@@ -60,6 +63,7 @@ export const rankingsAPIStore = function (activity_url: string) {
 // accessed for the first time.
 export const apiRankings = new DefaultDict(rankingsAPIStore) as { [key: string]: any };
 
+/** Stores for lists of matches **/
 export interface Matches {
 	id: number;
 	datetime: number;
@@ -103,4 +107,20 @@ export const apiPendingMatches = function (
 ): PageableAPIStore<Matches[]> {
 	const url = `/api/matches/${activity_url}/?ordering=-datetime&pending=true`;
 	return _apiPendingMatches[addPagingToURL(url, pageNr, limit)];
+};
+
+/** Stores for single matches **/
+export const generateSingleMatchAPIStore = function <T>(url: string) {
+	return readJSONAPI<T | null>(null, url);
+};
+const _apiSingleMatch = new DefaultDict(generateSingleMatchAPIStore<Matches>) as {
+	[key: string]: PageableAPIStore<Matches>;
+};
+
+export const apiSingleMatch = function (
+	activity_url: string,
+	matchId = 1
+): PageableAPIStore<Matches> {
+	const url = `/api/matches/${activity_url}/${matchId}/`;
+	return _apiSingleMatch[url] as unknown as PageableAPIStore<Matches>;
 };
