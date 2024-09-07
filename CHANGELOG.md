@@ -16,6 +16,20 @@ There are a few different components in this project that each have their own ve
 
 ## [Unreleased]
 
+## [Docker 4.2.0-1.1.0] - 2024-09-06
+
+### Changed
+
+- API: updated dependencies - Django from `3.2.20` to `4.2.15`, `djangorestframework` (DRF) from `3.14.0` to `3.15.1`, `django-filter` from `23.2` to `24.3` and Jinja from `2.11.3` to `3.1.4`.
+  - Also updated all transitive dependencies to newest supported versions.
+- API: replaced dev dependencies `flake8` & `black` with `ruff` (`0.6.1`) and updated Poetry from `1.4.2` to `1.8.3`.
+  - Also enabled lots of `ruff`'s extra lint and formatting checks.
+- API: converted docs from DRF's schema to `drf-spectacular` (`0.27.2`).
+- Database migration required:
+  - Mainly to set defaults for text columns to align with Django recommendations.
+  - Also to change `SkillHistory.activity_id` into a proper foreign key.
+- Docker: updated Alpine from `3.18` to `3.20`, Python from `3.8.18` to `3.12.5`, Caddy from `2.7.4` to `2.8.4` and Gunicorn from `21.2.0` to `23.0.0`.
+
 ## [Docker 4.1.1-1.1.0] - 2024-05-14
 
 ### Fixed
