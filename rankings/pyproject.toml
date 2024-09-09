@@ -21,6 +21,7 @@ include = ["NOTICE"]
 # our dependencies.
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
+# Not yet updated to v5.0 since it drops support for Python 3.8 & 3.9
 Django = "4.2.15"
 trueskill = "0.4.5"
 # We prefer Jinja over Django Templating as we migrated our templates from a Flask app
@@ -50,11 +51,13 @@ line-length = 120
 
 [tool.ruff.lint]
 exclude = ["**/migrations/*"]
+# Other options to consider: "EXE" (not on Windows), "PT" (we use Django tests), "DOC" (in preview)
 extend-select = [
     "E", "D", "W", "C90", "YTT", "ASYNC", "ICN", "LOG", "INP",
     "PYI", "ISC", "N", "B", "G", "FBT", "I", "S", "PL", "ANN",
     "SIM", "RET", "TRY", "FURB", "DJ", "DTZ"
 ]
+# Previously ignored, but not yet in ruff: "E226", "E024", "E126", "E121", "W503", "W504", "E704", "E123", "E231"
 ignore = ["D105", "D106", "D107", "D212", "D203", "D213", "D413", "D417",
     "ISC003", "G004", "RET501", "RET504", "TRY003",
     # Basically mypy strict checks
