@@ -189,22 +189,19 @@
 				[smi[2], smi[1]]
 			]
 		];
-		const indexesOfTeamWithPlayer = function (playerId: number) {
+		const indexesOfTeam = function (teamPredicate: (team: number[]) => boolean) {
 			return teamsPerGame.map((game) => {
-				if (game[0].indexOf(playerId) != -1) {
-					return 1;
-				}
-				if (game[1].indexOf(playerId) != -1) {
-					return 2;
-				}
-				return -1;
+				let result = game.findIndex(teamPredicate);
+				return result === undefined ? -1 : result + 1;
 			});
 		};
 		let winners: number[] = [];
 		if (roundRobinWinPlayer != 0) {
-			winners = indexesOfTeamWithPlayer(roundRobinWinPlayer);
+			// Teams with player
+			winners = indexesOfTeam((team) => team.indexOf(roundRobinWinPlayer) != -1);
 		} else if (roundRobinLosePlayer != 0) {
-			winners = indexesOfTeamWithPlayer(roundRobinLosePlayer);
+			// Teams without player
+			winners = indexesOfTeam((team) => team.indexOf(roundRobinLosePlayer) == -1);
 		} else {
 			console.log('No winner/loser selected');
 			return;

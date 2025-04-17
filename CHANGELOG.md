@@ -16,12 +16,18 @@ There are a few different components in this project that each have their own ve
 
 ## [Unreleased]
 
+## [Docker 4.2.0-1.2.1] - 2025-04-17
+
+### Fixed
+
+- UI: fixed bug when submitting Round Robin matches and selecting player who "lost 3 games" which submitted them as wins.
+
 ## [Docker 4.2.0-1.2.0] - 2024-09-07
 
 ### Added
 
 - UI: extra functionality for data points in skill history plot:
-  - Additional data displayes when hovering over data points.
+  - Additional data displays when hovering over data points.
   - Clicking on data points will redirect to related game result.
 
 ### Changed
