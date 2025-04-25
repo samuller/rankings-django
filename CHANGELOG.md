@@ -16,6 +16,12 @@ There are a few different components in this project that each have their own ve
 
 ## [Unreleased]
 
+## [Docker 4.2.1-1.2.1] - 2025-04-25
+
+### Fixed
+
+- API: fix admin tool failing to validate with error: "sqlite3.IntegrityError: FOREIGN KEY constraint failed".
+
 ## [Docker 4.2.0-1.2.1] - 2025-04-17
 
 ### Fixed

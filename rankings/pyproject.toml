@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rankings-django"
-version = "4.2.0"
+version = "4.2.1"
 description = ""
 authors = ["Simon Muller <samullers@gmail.com>"]
 readme = "README.md"
