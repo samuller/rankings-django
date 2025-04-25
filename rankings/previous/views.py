@@ -112,7 +112,7 @@ def player_history(request: HttpRequest, activity_url: str, player_id: int, max_
     if activity is None:
         return HttpResponse(json.dumps({"skill_history": []}))
 
-    history = SkillHistory.objects.filter(player_id=player_id, activity_id=activity).order_by("result__datetime")
+    history = SkillHistory.objects.filter(player_id=player_id, activity_id=activity.id).order_by("result__datetime")
     # Limit history to last few points
     history = history[max(len(history) - max_len, 0) :]  # noqa: E203
     return HttpResponse(
@@ -263,7 +263,7 @@ def batch_update_player_skills(activity_id: int, after_date: Optional[Tuple[int,
         after_date_unix = int(time.mktime((*after_date, 0, 0, 0, 0, 0, 0)))
 
     # Clear skill history that will be reconstructed
-    SkillHistory.objects.filter(activity_id=activity).delete()
+    SkillHistory.objects.filter(activity_id=activity.id).delete()
 
     # Process each match to calculate rating progress and determine final rankings
     incremental_update_player_skills(
@@ -290,7 +290,7 @@ def get_ratings_for_all_players(activity):
     # Generate rankings for everyone since some people might not have rankings already
     current_ratings = generate_blank_ratings(activity)
     # Set the values for everyone that already has a ranking
-    for ranking in Ranking.objects.filter(activity_id=activity):
+    for ranking in Ranking.objects.filter(activity_id=activity.id):
         if ranking.player.id not in current_ratings:
             raise ValueError("Unknown player")
         current_ratings[ranking.player.id] = Rating(ranking.mu, ranking.sigma)
@@ -331,7 +331,7 @@ def incremental_update_player_skills(
                 for idx_member, member in enumerate(team_members):
                     ratings[member.player.id] = team_ratings[idx_team][idx_member]
                     history = SkillHistory(
-                        activity_id=activity,
+                        activity_id=activity.id,
                         result=results[idx_team],
                         player=member.player,
                         mu=team_ratings[idx_team][idx_member].mu,
@@ -341,7 +341,7 @@ def incremental_update_player_skills(
     # Save/update calculated rankings
     for player_id, rating in ratings.items():
         ranking, _ = Ranking.objects.update_or_create(
-            activity_id=activity,
+            activity_id=activity.id,
             player_id=player_id,
             defaults={"mu": rating.mu, "sigma": rating.sigma},
         )
