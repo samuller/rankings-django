@@ -146,13 +146,20 @@ class GameSessionAdmin(admin.ModelAdmin):
         return HttpResponseRedirect(reverse("select_fix_player", kwargs={"session_ids_str": result_ids}))
 
 
+class GameAdmin(admin.ModelAdmin):
+    """Admin view for Games."""
+
+    # Make it read-only so that it loads faster (no dropdown listing all GameSessions)
+    readonly_fields = ("session",)
+
+
 # Register your models here.
 admin.site.register(Activity, ActivityAdmin)
 admin.site.register(AdhocTeam)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Ranking, RankingAdmin)
 admin.site.register(GameSession, GameSessionAdmin)
-admin.site.register(Game)
+admin.site.register(Game, GameAdmin)
 admin.site.register(Result)
 admin.site.register(SkillHistory)
 admin.site.register(SkillType)
