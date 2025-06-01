@@ -56,9 +56,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Test with specific supported versions
+          # Test with minimum supported versions
           - name: supported
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             # Compare with PYTHON_VERSION in devcontainer
             python: 3.12
             postgres: 10
