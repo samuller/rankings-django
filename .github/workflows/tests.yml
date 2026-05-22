@@ -66,7 +66,9 @@ jobs:
           - name: latest
             # Compare with UBUNTU_VERSION in devcontainer
             os: ubuntu-24.04
-            python: 3.x
+            # Can't use 3.x until the following dependency issue is resolved:
+            #   rpds-py 0.20.0 uses PyO3 0.22.2, which only supports up to Python 3.13
+            python: 3.13
             postgres: latest
 
     steps:
